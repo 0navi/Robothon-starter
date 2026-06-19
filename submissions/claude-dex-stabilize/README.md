@@ -116,9 +116,14 @@ No GPU required.
 | Position | Shows |
 |---|---|
 | Bottom-left | `t`, `drift (mm)`, `grip tighten (0–1)` updating every frame |
-| Top-left (red banner) | `! PERTURBATION #N` — appears only while a perturbation is active |
+| Top-left (red banner) | `! PERTURBATION #N @ angle°` — only while a perturbation is active |
 | Top-right | `HOLD` (green) or `DROP` (red) — cube z-height sanity check |
-| Bottom-right | Project title |
+| **Mid-screen (red arrow)** | **Force-vector arrow** from cube center, drawn at the actual perturbation angle, only while active |
+| **Right-mid (chart)** | **Drift over time (mm)** strip — last 5 s, with the 5 mm grip-tightening threshold marked |
+| **Right-bottom (legend)** | **Finger color legend** — index (blue), middle (green), ring (orange), thumb (yellow) |
+| Bottom-center | Project title |
+
+The four LEAP fingers are recolored in the rendered scene so each finger is visually distinct — you can see which finger contacts the cube on each perturbation.
 
 ## How this maps to the official rubric
 

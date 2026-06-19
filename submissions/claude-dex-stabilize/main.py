@@ -70,6 +70,44 @@ GRIP_TIGHTEN_DELTA = {
 # Scene
 # ---------------------------------------------------------------------------
 
+FINGER_COLORS = {
+    "if": [0.30, 0.65, 1.00, 1.0],   # blue   — index
+    "mf": [0.30, 0.85, 0.45, 1.0],   # green  — middle
+    "rf": [1.00, 0.60, 0.25, 1.0],   # orange — ring
+    "th": [1.00, 0.85, 0.30, 1.0],   # yellow — thumb
+}
+PALM_COLOR = [0.55, 0.55, 0.60, 1.0]  # neutral gray
+TIP_HILITE_COLORS = {
+    "if": [0.55, 0.85, 1.00, 1.0],
+    "mf": [0.55, 1.00, 0.65, 1.0],
+    "rf": [1.00, 0.80, 0.45, 1.0],
+    "th": [1.00, 1.00, 0.50, 1.0],
+}
+
+
+def colorize_fingers(model: mujoco.MjModel) -> None:
+    """Recolor LEAP geoms per finger so each finger is visually distinct."""
+    for gid in range(model.ngeom):
+        bid = int(model.geom_bodyid[gid])
+        bname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, bid) or ""
+        if not bname.startswith("hand_"):
+            continue
+        gname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, gid) or ""
+        rest = bname[len("hand_"):]
+        # palm
+        if rest.startswith("palm"):
+            model.geom_rgba[gid] = PALM_COLOR
+            continue
+        # finger segments — first 2 letters identify finger
+        fcode = rest[:2]
+        if fcode in FINGER_COLORS:
+            # Tip geoms get a slightly brighter hilite so contact points pop.
+            if gname.endswith("_tip"):
+                model.geom_rgba[gid] = TIP_HILITE_COLORS[fcode]
+            else:
+                model.geom_rgba[gid] = FINGER_COLORS[fcode]
+
+
 def build_scene() -> mujoco.MjModel:
     host = mujoco.MjSpec()
     host.option.timestep = DT
@@ -147,13 +185,65 @@ def _load_fonts():
 _FONT_BIG, _FONT_SM = _load_fonts()
 
 
+def _draw_perturb_arrow(d, angle_rad: float):
+    """Red force-vector arrow originating from cube screen center."""
+    cx, cy = RES_W // 2, RES_H // 2 + 20  # rough cube screen position
+    L = 130
+    # World-frame angle: +X right, +Y up (we map screen Y inversely)
+    ax = cx + L * math.cos(angle_rad)
+    ay = cy - L * math.sin(angle_rad)
+    d.line([(cx, cy), (ax, ay)], fill=(255, 70, 70), width=7)
+    head = 18
+    tip = math.atan2(ay - cy, ax - cx)
+    la = tip + math.radians(150)
+    ra = tip - math.radians(150)
+    d.polygon([
+        (ax, ay),
+        (ax + head * math.cos(la), ay + head * math.sin(la)),
+        (ax + head * math.cos(ra), ay + head * math.sin(ra)),
+    ], fill=(255, 70, 70))
+
+
+def _draw_drift_chart(d, drift_history_mm: list):
+    """Bottom-right strip showing drift-over-time line plot (last ~5 s)."""
+    x0, y0, w, h = RES_W - 270, RES_H - 200, 250, 90
+    d.rectangle([(x0, y0), (x0 + w, y0 + h)], fill=(0, 0, 0, 160))
+    d.text((x0 + 8, y0 + 4), "drift over time (mm)",
+           fill=(190, 190, 195), font=_FONT_SM)
+    if len(drift_history_mm) < 2:
+        return
+    # show last 5 s = 150 frames at 30 fps
+    window = drift_history_mm[-150:]
+    ymax = max(8.0, max(window) * 1.15)
+    pts = []
+    for i, v in enumerate(window):
+        px = x0 + 6 + (w - 12) * i / max(1, len(window) - 1)
+        py = (y0 + h - 6) - (h - 28) * (v / ymax)
+        pts.append((px, py))
+    # baseline at 5mm threshold (where grip starts tightening)
+    y_thresh = (y0 + h - 6) - (h - 28) * (5.0 / ymax)
+    d.line([(x0 + 6, y_thresh), (x0 + w - 6, y_thresh)],
+           fill=(120, 120, 120, 180), width=1)
+    d.text((x0 + w - 60, y_thresh - 16), "5 mm",
+           fill=(150, 150, 150), font=_FONT_SM)
+    # line plot
+    for i in range(len(pts) - 1):
+        d.line([pts[i], pts[i + 1]], fill=(120, 200, 250), width=2)
+
+
 def draw_overlay(frame: np.ndarray, t: float, drift_m: float,
                  grip_tighten: float, perturb_on: bool, held: bool,
-                 perturb_count: int) -> np.ndarray:
+                 perturb_count: int,
+                 drift_history_mm: list | None = None,
+                 perturb_angle_rad: float | None = None) -> np.ndarray:
     if not _PIL_OK:
         return frame
     img = Image.fromarray(frame)
     d = ImageDraw.Draw(img, "RGBA")
+
+    # ---- force-vector arrow (when perturb active) ----
+    if perturb_on and perturb_angle_rad is not None:
+        _draw_perturb_arrow(d, perturb_angle_rad)
 
     # ---- left HUD: time, drift, grip ----
     d.rectangle([(20, RES_H - 130), (380, RES_H - 20)], fill=(0, 0, 0, 130))
@@ -176,14 +266,39 @@ def draw_overlay(frame: np.ndarray, t: float, drift_m: float,
 
     # ---- top-left: perturbation banner ----
     if perturb_on:
-        d.rectangle([(20, 20), (370, 70)], fill=(180, 40, 40, 200))
-        d.text((34, 28), f"! PERTURBATION #{perturb_count}", fill=(255, 250, 240), font=_FONT_BIG)
+        d.rectangle([(20, 20), (430, 70)], fill=(180, 40, 40, 200))
+        ang_txt = (f"  @ {math.degrees(perturb_angle_rad):4.0f}°"
+                   if perturb_angle_rad is not None else "")
+        d.text((34, 28), f"! PERTURBATION #{perturb_count}{ang_txt}",
+               fill=(255, 250, 240), font=_FONT_BIG)
 
-    # ---- bottom-right: title ----
-    d.rectangle([(RES_W - 460, RES_H - 60), (RES_W - 20, RES_H - 20)], fill=(0, 0, 0, 130))
-    d.text((RES_W - 444, RES_H - 52),
-           "LEAP closed-loop stabilization",
-           fill=(220, 220, 220), font=_FONT_SM)
+    # ---- finger color legend (bottom-left of chart area) ----
+    legend = [("index", FINGER_COLORS["if"]),
+              ("middle", FINGER_COLORS["mf"]),
+              ("ring", FINGER_COLORS["rf"]),
+              ("thumb", FINGER_COLORS["th"])]
+    lx, ly = RES_W - 270, RES_H - 100
+    d.rectangle([(lx, ly), (lx + 250, ly + 90)], fill=(0, 0, 0, 160))
+    d.text((lx + 8, ly + 4), "fingers", fill=(190, 190, 195), font=_FONT_SM)
+    for i, (label, color) in enumerate(legend):
+        sx = lx + 12 + (i % 2) * 120
+        sy = ly + 28 + (i // 2) * 28
+        rgb = tuple(int(c * 255) for c in color[:3])
+        d.rectangle([(sx, sy), (sx + 18, sy + 18)], fill=rgb)
+        d.text((sx + 24, sy - 2), label, fill=(220, 220, 220), font=_FONT_SM)
+
+    # ---- drift over time chart ----
+    if drift_history_mm:
+        _draw_drift_chart(d, drift_history_mm)
+
+    # ---- bottom-center title ----
+    title = "LEAP closed-loop stabilization"
+    # rough width estimate
+    tw = len(title) * 11
+    tx = (RES_W - tw) // 2
+    d.rectangle([(tx - 12, RES_H - 36), (tx + tw + 12, RES_H - 6)],
+                fill=(0, 0, 0, 130))
+    d.text((tx, RES_H - 30), title, fill=(220, 220, 220), font=_FONT_SM)
 
     return np.array(img)
 
@@ -209,6 +324,8 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
     """Run one stabilization episode. If render_video=True, also produces
     OUT_VIDEO and OUT_TRAJECTORY."""
     model = build_scene()
+    if render_video:
+        colorize_fingers(model)  # only when we actually want the colored video
     data = mujoco.MjData(model)
     name2act = get_actuator_map(model)
     cube_bid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "cube")
@@ -239,8 +356,10 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
     next_perturb_t = PERTURB_PERIOD_S
     active_perturb_until = -1.0
     active_perturb_force = np.zeros(3)
+    active_perturb_angle: float | None = None
     perturb_count = 0
     drift_history = []
+    drift_history_mm_per_frame = []  # for the on-screen chart
 
     for step in range(total_steps):
         t = step * DT
@@ -261,6 +380,7 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
                 0.0,
             ])
             active_perturb_until = t + PERTURB_DURATION_S
+            active_perturb_angle = angle
             perturb_count += 1
             perturbations.append({
                 "t": round(t, 3),
@@ -288,8 +408,12 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
                 cam.elevation = -10.0 + 4.0 * math.sin(0.13 * t)
                 renderer.update_scene(data, camera=cam)
                 raw = renderer.render().copy()
-                overlaid = draw_overlay(raw, t, drift, tighten, perturb_on,
-                                        held, perturb_count)
+                drift_history_mm_per_frame.append(drift * 1000)
+                overlaid = draw_overlay(
+                    raw, t, drift, tighten, perturb_on, held, perturb_count,
+                    drift_history_mm=drift_history_mm_per_frame,
+                    perturb_angle_rad=active_perturb_angle if perturb_on else None,
+                )
                 frames.append(overlaid)
 
             if step % (steps_per_frame * 5) == 0:
