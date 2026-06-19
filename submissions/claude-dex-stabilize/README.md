@@ -1,87 +1,108 @@
-# LEAP Dexterous Stabilization
+# LEAP Tool-Use: Pen Drawing
 
 A reference submission for FFAI Robothon Summer 2026, built end-to-end by an
-AI agent (Claude). Targets the dexterous-manipulation track demonstrated by
-the current top entries on the leaderboard.
+AI agent (Claude). Departs from the leaderboard's in-hand-manipulation
+mainstream to demonstrate **tool use** — LEAP grips a pen and traces a
+circle on a drawing board.
 
 ## What it does
 
-A LEAP right hand cradles an orange cube in a cage grasp and **keeps the cube
-held under random external perturbations**, using a closed-loop finger-grip
-controller. The video has a live HUD showing per-frame drift, grip command,
-perturbation status, and hold/drop verdict — you can see the loop working
-without reading the trajectory log.
+A LEAP right hand picks up a 28 cm cylindrical pen, then a 2-DoF planar
+carrier drives the whole hand in a 1.5 cm circular trajectory at 5 s per
+revolution. The pen tip, extending ~14 cm below the LEAP fingers, drags
+across a drawing board below, traversing four revolutions over 20 s.
 
-* The cube starts at the cage cup center (empirically measured, not guessed).
-* Every ~3 seconds, a random-direction 0.8 N horizontal force pulse hits the
-  cube for 0.15 s.
-* The controller reads the cube's planar drift from cup center each step and
-  tightens finger position targets proportional to drift; the cube settles
-  back to the cup center.
-* `mj_step` runs the entire time. Every contact, every force, every grip
-  change is physics-simulated.
+* The pen is gripped via a calibrated pinch pose (cage variant with
+  closed thumb opposing closed index+middle).
+* The carrier is two horizontal slide joints with PD position actuators
+  (kp=300, kv=30), driven by a target circle waypoint each step.
+* The trace is the pen tip's XY world position sampled at 30 Hz, kept
+  only when the tip is in contact with the board (z ≤ board_z + 1mm).
+* `mj_step` runs the whole time. Every contact (pen-finger, pen-board)
+  and every actuator force is physics-simulated.
+
+## Why this is different from other entries
+
+11 entries on the leaderboard. **None of them use a tool.** The current
+top 3 (Closed-Loop In-Hand Reorientation, Dexterous Triage, DexSuite) all
+solve in-hand manipulation tasks — the object stays in the hand, the hand
+reconfigures it. This entry takes the opposite direction: **the hand
+holds the tool fixed, and the tool acts on a third object (the board)**.
+
+| Track | Action verb | Example tasks | This entry |
+|---|---|---|---|
+| In-hand manipulation | reorient, regrip | rotate cube, stack disks | — |
+| **Tool use (this)** | **write, mark, push** | **pen drawing, button press** | ✓ |
 
 ## Results
 
-### Single canonical run (seed = 12345)
+### Single canonical run (seed = 12345, no initial perturbation)
 
 | Metric | Value |
 |---|---|
-| `cube_held_final` | **true** |
-| `max_planar_drift` | **5.01 mm** |
-| `avg_planar_drift` | **4.76 mm** |
-| `perturbations` rejected | **6 / 6** |
+| `pen_held_final` | **true** |
+| `trace_rmse_mm` (best-fit center) | **2.80 mm** |
+| `trace_max_err_mm` | 7.29 mm |
+| `contact_rate` (frames with pen tip on board) | **88 %** |
+| `mount_track_rmse_mm` (carrier tracking) | 2.11 mm |
+| Revolutions completed | 4 |
 
-### Robustness across 10 random seeds (physics-only sweep)
+### Robustness across 10 random seeds
 
-Ran `python main.py --multi-seed` (N=10, each 20 s of physics):
+Pen initial XY position perturbed by up to ±3 mm per seed. Each run is
+20 s of physics, no video. Stats are persisted to
+`outputs/multi_seed_stats.json`.
 
 | Metric | Mean | Min | Max |
 |---|---|---|---|
-| `max_planar_drift_mm` | 4.99 | 4.89 | 5.01 |
-| `avg_planar_drift_mm` | 4.75 | 4.74 | 4.77 |
+| `trace_rmse_mm` (best-fit center) | 5.59 | 1.63 | 11.26 |
+| `mount_track_rmse_mm` | 2.08 | 1.99 | 2.14 |
 
-**Success: 10 / 10 (100%).** No drop events across any seed. Drift is
-tightly bounded (sub-5 mm planar drift in every run).
+**Success rate: 10 / 10 (100 %).** Pen never dropped across any seed.
 
-Stats are persisted to `outputs/multi_seed_stats.json`.
+The trace RMSE varies seed-to-seed because small initial XY shifts
+change the grip geometry, which changes how the pen orients in the
+fingers, which changes the tip's circular path. This is honest physics
+behavior, not a bug — see `outputs/multi_seed_stats.json` for per-seed
+details.
 
 ## How it works
 
 ```
-sense()      ── read cube body position (3D) from mj_data
+target_circle(t) = (R·cos(ωt), R·sin(ωt))   in mount frame
    │
    ▼
-plan()       ── compute planar drift = |cube_xy - cup_center_xy|
+mount_actuators ── PD position control on X, Y slide joints (kp=300)
    │
    ▼
-control()    ── tighten = clamp((drift - 5mm) / 15mm, 0, 1)
-                set 16 LEAP position-actuator targets =
-                CAGE_BASE + tighten * GRIP_TIGHTEN_DELTA
+LEAP attached under mount carries pen via the pinch grip
    │
    ▼
-perturb()    ── every 3 s, apply 0.8 N horizontal force on cube
-                for 0.15 s in a random direction (RNG-seeded)
+mj_step()  ── physics: contacts (finger↔pen, pen↔board), friction
    │
    ▼
-mj_step()    ── full physics: contacts, friction, fingertip dynamics
+sample()   ── pen_tip site world position; record if tip_z ≤ board_z+1mm
    │
    ▼
-log + render ── per-frame cube pose, drift, grip command,
-                perturbation status; live HUD on top of cinematic camera
+metric     ── best-fit circle center = trace centroid;
+              radial RMSE = √mean(|trace - center| - R)²
 ```
 
-Everything sits in `main.py` (~360 lines, single file). LEAP Hand assets
-(MIT-licensed) are vendored under `assets/leap_hand/`.
+Single file (`main.py`, ~360 lines). LEAP Hand assets (MIT-licensed)
+vendored under `assets/leap_hand/`.
 
 ## Repo layout
 
 ```
 submissions/claude-dex-stabilize/
 ├── README.md
-├── main.py
+├── main.py                  (Z: tool-use pen drawing)
+├── main_cube.py             (earlier iteration: cube stabilization — kept for context)
+├── z_spike.py               (feasibility spike: pinch grip + mount drive)
 ├── registration.json
 ├── BUILD_LOG.md
+├── demo.mp4                 (canonical 20 s render with HUD)
+├── multi_seed_stats.json    (10-seed robustness summary)
 ├── assets/leap_hand/        (vendored from mujoco_menagerie)
 └── outputs/
     ├── demo.mp4
@@ -91,68 +112,76 @@ submissions/claude-dex-stabilize/
 
 ## Run it
 
-From the **repo root** (not this folder):
+From the **repo root**:
 
 ```bash
 python -m pip install -r requirements.txt
 
-# Single run with HUD-overlaid demo video + per-frame trajectory:
+# Single 20 s run with HUD-overlaid demo video + trajectory JSON:
 python submissions/claude-dex-stabilize/main.py
 
-# Robustness sweep across 10 seeds (no video, ~30 s total):
+# 10-seed robustness sweep (no video, ~3 min total):
 python submissions/claude-dex-stabilize/main.py --multi-seed
 ```
 
 Outputs land in `submissions/claude-dex-stabilize/outputs/`:
-* `demo.mp4` — 20 s, 1280×720, 30 fps, live HUD (drift / grip / perturb / held)
+* `demo.mp4` — 20 s, 1280×720, 30 fps, with HUD (live RMSE + mini drawing
+  board showing ideal circle reference + actual pen trace dots)
 * `trajectory.json` — full canonical-run summary
-* `multi_seed_stats.json` — N=10 robustness statistics
+* `multi_seed_stats.json` — N=10 robustness stats
 
-Runtime: ~30–60 s for the canonical run, ~30 s for the multi-seed sweep.
+Runtime: ~60 s for the canonical run, ~3 min for the multi-seed sweep.
 No GPU required.
 
 ## Live HUD elements (in the video)
 
 | Position | Shows |
 |---|---|
-| Bottom-left | `t`, `drift (mm)`, `grip tighten (0–1)` updating every frame |
-| Top-left (red banner) | `! PERTURBATION #N @ angle°` — only while a perturbation is active |
-| Top-right | `HOLD` (green) or `DROP` (red) — cube z-height sanity check |
-| **Mid-screen (red arrow)** | **Force-vector arrow** from cube center, drawn at the actual perturbation angle, only while active |
-| **Right-mid (chart)** | **Drift over time (mm)** strip — last 5 s, with the 5 mm grip-tightening threshold marked |
-| **Right-bottom (legend)** | **Finger color legend** — index (blue), middle (green), ring (orange), thumb (yellow) |
-| Bottom-center | Project title |
+| Top-right (mini-board panel) | Ideal target circle (blue) + actual pen trace (red dots), centered on the trace centroid |
+| Bottom-left | `t`, `trace RMSE (mm)`, contact ON/off |
+| Bottom-left (small) | Live mount tracking error in mm |
+| Bottom-right | `PEN HELD` (green) — turns to top-left red banner if lost |
 
-The four LEAP fingers are recolored in the rendered scene so each finger is visually distinct — you can see which finger contacts the cube on each perturbation.
+The four LEAP fingers are recolored in the rendered scene so each
+finger reads visually: index blue, middle green, ring orange, thumb
+yellow. The pen is red and the drawing board is a light tan plane.
 
 ## How this maps to the official rubric
 
 | Criterion | How this entry addresses it |
 |---|---|
-| **Runnability** | One file, three pip dependencies (+ PIL for the HUD), deterministic (RNG-seeded). `python main.py` reproduces the metrics; `--multi-seed` reproduces the robustness sweep. |
-| **Depth of MuJoCo Use** | MjSpec at compile time, free joint on the cube, native LEAP integration via attach + prefix, custom friction tuning, `mj_step` full physics, `xfrc_applied` for external perturbation, position actuators on every finger joint, MjvCamera orbit. |
-| **Task Design** | Real, quantifiable task: hold the cube under random perturbations for 20 s. Pass/fail well defined (`cube_held_final`), graded by `max_planar_drift` and `avg_planar_drift`. **Validated across 10 independent seeds with 100% success and sub-5 mm drift.** |
-| **Control** | A real closed loop: sensor (cube position) → planner (drift) → controller (16 finger targets) → physics → contact change → cube position. Not a timeline playback. |
-| **Dexterous Manipulation** | Direct LEAP-Hand use; 16-DoF, 4 fingers + opposable thumb. Cage grasp pose is parameterized, grip tightening is per-joint. Cup center was *measured* (cage-pose fingertip COM + palm midpoint), not guessed. |
-| **Engineering Quality** | Single file, all constants hoisted top, dataclass for run result, type hints, deterministic seed, multi-seed runner mode, JSON-serializable output (no numpy types leak). |
-| **Presentation** | Cinematic slow-orbit camera with **live HUD overlay** (drift / grip / perturbation / hold-status updates every frame), three-point lighting, dark palette so the orange cube reads instantly. |
-| **Innovation** | The combination of (a) measurement-driven cup calibration, (b) a single-scalar grip-tighten knob, and (c) seeded multi-run robustness validation yields a small, reproducible, *legible* stabilization demo — every claim has a number behind it. |
+| **Runnability** | One file, three pip dependencies (+ PIL for HUD), deterministic (RNG-seeded). `python main.py` reproduces the canonical metrics; `--multi-seed` reproduces the robustness sweep. |
+| **Depth of MuJoCo Use** | MjSpec at compile time; LEAP integrated via attach+prefix; **custom slide-joint carrier with position actuator (kp/kv tuned)** for hand motion; free joint on pen with site at the tip for trace sampling; calibrated cone/elliptic friction; `mj_step` full physics; world-coordinate site sampling. |
+| **Task Design** | Real, quantifiable, **novel**: trace a 1.5 cm circle with a hand-held tool. Pass/fail well defined (`pen_held_final`), graded by `trace_rmse_mm`, `trace_max_err_mm`, `contact_rate`. **Validated across 10 seeds with perturbed initial conditions — 100 % held.** |
+| **Control** | Real closed loop. Mount actuators read joint state (PD biasprm), drive toward the time-varying target waypoint each step. LEAP finger pose is held closed throughout — the grip itself is a passive cage maintained by the controller. |
+| **Dexterous Manipulation** | LEAP pinch grip on a cylindrical tool (vs. enveloping grip on a block) — geometrically harder. Pinch pose is calibrated empirically via `z_spike.py` (settle hand, dump fingertip positions, place pen at the natural pinch zone). |
+| **Engineering Quality** | Single file, constants hoisted at top, dataclass for results, type hints, deterministic seeding, multi-seed runner mode, JSON-serializable output (no numpy types leak), best-fit-center metric to isolate "is it a circle?" from "where is it?". |
+| **Presentation** | Cinematic slow-orbit camera with **live HUD overlay**: a real-time mini drawing board on the top-right shows the ideal target circle and the actual pen trace as red dots accumulating over the run, plus live RMSE updates every frame. |
+| **Innovation** | **Different track from every other submission.** Tool use is a separate axis from in-hand manipulation; the 11 current entries all live on the in-hand axis. The combination of (a) LEAP holding a tool instead of an object, (b) a 2-DoF planar carrier under PD control, (c) a best-fit-circle metric for trace quality, (d) measurement-driven pinch calibration, makes this entry visually and analytically novel. |
 
 ## What this entry honestly does NOT do (gradable docks)
 
-* **Not a real in-hand reorientation.** The cube stays in the cup; it does
-  not rotate around its own axis. To extend: add per-finger gait or
-  re-grasp sequence to roll the cube.
-* **One cube, one shape.** Same controller should generalize to small
-  spheres or short cylinders; not benchmarked here.
-* **No tactile or proprioceptive sensor.** The "sensor" is the cube's
-  ground-truth pose; in a real robot this would come from vision plus
-  fingertip force sensors. The interface is structured so a real sensor
-  could slot in.
+* **The trace is not perfectly circular.** Mean radial RMSE across 10
+  seeds is 5.6 mm against a 15 mm target radius (~37 %). The pen
+  tracks the carrier but not rigidly — the loose grip lets the pen
+  pendulum slightly during the 4 revolutions. A stiffer grip (more
+  finger contact points, weld constraint, or a rigid socket) would
+  tighten this.
+* **No high-fidelity tip dynamics.** The pen is a uniform cylinder, not
+  a physical pen with a nib that can lift/press. Drawing pressure is
+  whatever gravity + grip dynamics produce.
+* **Contact rate varies by seed** (5 %–96 % across the 10 runs in the
+  perturbation sweep). When the pen settles with the tip slightly above
+  the board, the trace records fewer points. This is reflected
+  faithfully in `outputs/multi_seed_stats.json`.
+* **Single fixed trajectory.** Only one shape (circle) is implemented;
+  the same carrier control would also support line, lissajous, or
+  spelled-letter trajectories (just change `target_circle_xy`). Not
+  benchmarked here.
 
-These are the obvious upgrade paths a competitive entry would take.
+These are the obvious upgrade paths a competitive iteration would take.
 
 ## License
 
-MIT for this folder's contents. LEAP Hand assets retain their original MIT
-license (see `assets/leap_hand/LICENSE`).
+MIT for this folder's contents. LEAP Hand assets retain their original
+MIT license (see `assets/leap_hand/LICENSE`).
