@@ -1,5 +1,6 @@
 {
   "uuid": "3e50a51e-5281-4bd9-8c5d-67d4d37507d2",
   "participant_name": "Anonymous",
-  "project_name": "LEAP Tool-Use: Pen Drawing"
+  "project_name": "LEAP Closed-Loop Stabilization (with engineering journey)",
+  "ai_tool": "Claude Code (Claude Opus 4.7)"
 }
