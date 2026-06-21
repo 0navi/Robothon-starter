@@ -16,8 +16,8 @@ consumers.
 ```
 submissions/claude-dex-stabilize/
 ├── README.md                  this file
-├── BUILD_LOG.md               full engineering journey (3 abandoned tracks)
-├── main.py                    shipping entry: scene + controller + data collection
+├── BUILD_LOG.md               engineering journal (decisions + lessons)
+├── main.py                    scene + controller + data collection
 ├── test_controller.py         pytest unit tests (9 tests, all pass)
 ├── run.sh                     one-shot reproducer
 ├── registration.json          UUID + AI tool tag
