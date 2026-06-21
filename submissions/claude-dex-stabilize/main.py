@@ -49,7 +49,7 @@ CUBE_START = (-0.022, 0.020, 0.346)
 CUP_CENTER = np.array(CUBE_START)
 
 PERTURB_PERIOD_S = 5.0       # one perturbation every 5 s (18 across the 90 s demo)
-PERTURB_FORCE_N = 4.0        # 4 N horizontal shove — visibly displaces the cube
+PERTURB_FORCE_N = 8.0        # 8 N horizontal shove — visibly displaces the cube ~15 mm
 PERTURB_DURATION_S = 0.40    # 0.4 s shove duration — enough frames to read on video
 
 CAGE_BASE = {

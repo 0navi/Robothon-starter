@@ -9,7 +9,8 @@ consumers.
 
 > **Headline:** 100% hold rate across 30 seeds × 3 force levels (2 N, 4 N, 8 N),
 > peak drift 14.97 mm under 8 N shoves, controller reads only sensor data
-> (no ground-truth state).
+> (no ground-truth state). The shipped canonical run uses the 8 N profile
+> so the closed-loop control is plainly visible (~ 1.5 cm cube jolts).
 
 ## Repo layout
 
@@ -75,10 +76,10 @@ mocap reference │  cup_ref (mocap body)    │
 |---|---|
 | Duration | **90 s** (within 1–3 min spec) |
 | `cube_held_final` | **true** |
-| Perturbations applied | **17** (every 5 s, 4 N × 0.4 s, random angle) |
+| Perturbations applied | **17** (every 5 s, **8 N** × 0.4 s, random angle) |
 | Drop events | **0** |
-| Max planar drift | **6.69 mm** |
-| Avg planar drift | **4.95 mm** |
+| Max planar drift | **13.75 mm** |
+| Avg planar drift | **5.21 mm** |
 
 ## Results — robustness across difficulty levels
 

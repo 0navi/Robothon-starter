@@ -9,94 +9,94 @@
   ],
   "cube_held_final": true,
   "any_drop_event": false,
-  "max_planar_drift_m": 0.00669,
-  "avg_planar_drift_m": 0.00495,
+  "max_planar_drift_m": 0.01375,
+  "avg_planar_drift_m": 0.00521,
   "perturbations_n": 17,
   "perturbations": [
     {
       "t": 5.0,
       "angle_deg": 81.8,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 10.0,
       "angle_deg": 114.0,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 15.0,
       "angle_deg": 287.1,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 20.0,
       "angle_deg": 243.5,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 25.0,
       "angle_deg": 140.8,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 30.0,
       "angle_deg": 119.8,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 35.0,
       "angle_deg": 215.4,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 40.0,
       "angle_deg": 67.2,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 45.0,
       "angle_deg": 242.2,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 50.0,
       "angle_deg": 339.0,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 55.0,
       "angle_deg": 89.4,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 60.0,
       "angle_deg": 341.6,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 65.0,
       "angle_deg": 240.2,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 70.0,
       "angle_deg": 34.5,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 75.0,
       "angle_deg": 159.1,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 80.0,
       "angle_deg": 319.1,
-      "force_N": 4.0
+      "force_N": 8.0
     },
     {
       "t": 85.0,
       "angle_deg": 251.1,
-      "force_N": 4.0
+      "force_N": 8.0
     }
   ],
   "closed_loop": {
@@ -469,10 +469,10 @@
       "t": 5.1,
       "cube_pos": [
         -0.0266,
-        0.0227,
+        0.0244,
         0.3497
       ],
-      "planar_drift_m": 0.0053,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -481,10 +481,10 @@
       "t": 5.27,
       "cube_pos": [
         -0.0266,
-        0.0236,
+        0.0281,
         0.3497
       ],
-      "planar_drift_m": 0.0058,
+      "planar_drift_m": 0.0092,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -492,11 +492,11 @@
     {
       "t": 5.44,
       "cube_pos": [
-        -0.0265,
-        0.0239,
-        0.3497
+        -0.0264,
+        0.0298,
+        0.3498
       ],
-      "planar_drift_m": 0.006,
+      "planar_drift_m": 0.0108,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -504,11 +504,11 @@
     {
       "t": 5.61,
       "cube_pos": [
-        -0.0265,
-        0.0227,
+        -0.0263,
+        0.0271,
         0.3496
       ],
-      "planar_drift_m": 0.0053,
+      "planar_drift_m": 0.0083,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -516,11 +516,11 @@
     {
       "t": 5.78,
       "cube_pos": [
-        -0.0265,
-        0.0224,
-        0.3496
+        -0.0263,
+        0.0256,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.007,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -528,11 +528,11 @@
     {
       "t": 5.95,
       "cube_pos": [
-        -0.0265,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0252,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0067,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -540,11 +540,11 @@
     {
       "t": 6.12,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.025,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0066,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -552,11 +552,11 @@
     {
       "t": 6.29,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -564,11 +564,11 @@
     {
       "t": 6.46,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -576,11 +576,11 @@
     {
       "t": 6.63,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -588,11 +588,11 @@
     {
       "t": 6.8,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -600,11 +600,11 @@
     {
       "t": 6.97,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -612,11 +612,11 @@
     {
       "t": 7.14,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -624,11 +624,11 @@
     {
       "t": 7.31,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -636,11 +636,11 @@
     {
       "t": 7.48,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -648,11 +648,11 @@
     {
       "t": 7.65,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -660,11 +660,11 @@
     {
       "t": 7.82,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -672,11 +672,11 @@
     {
       "t": 7.99,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -684,11 +684,11 @@
     {
       "t": 8.16,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -696,11 +696,11 @@
     {
       "t": 8.33,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -708,11 +708,11 @@
     {
       "t": 8.5,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -720,11 +720,11 @@
     {
       "t": 8.67,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -732,11 +732,11 @@
     {
       "t": 8.84,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -744,11 +744,11 @@
     {
       "t": 9.01,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -756,11 +756,11 @@
     {
       "t": 9.18,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -768,11 +768,11 @@
     {
       "t": 9.35,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -780,11 +780,11 @@
     {
       "t": 9.52,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -792,11 +792,11 @@
     {
       "t": 9.69,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -804,11 +804,11 @@
     {
       "t": 9.86,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -817,10 +817,10 @@
       "t": 10.03,
       "cube_pos": [
         -0.0266,
-        0.0226,
-        0.3495
+        0.0258,
+        0.3494
       ],
-      "planar_drift_m": 0.0053,
+      "planar_drift_m": 0.0074,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -828,11 +828,11 @@
     {
       "t": 10.2,
       "cube_pos": [
-        -0.0268,
-        0.0237,
-        0.3497
+        -0.0272,
+        0.0292,
+        0.3498
       ],
-      "planar_drift_m": 0.006,
+      "planar_drift_m": 0.0106,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -840,11 +840,11 @@
     {
       "t": 10.37,
       "cube_pos": [
-        -0.0268,
-        0.0244,
-        0.3497
+        -0.0274,
+        0.0321,
+        0.3499
       ],
-      "planar_drift_m": 0.0065,
+      "planar_drift_m": 0.0132,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -852,11 +852,11 @@
     {
       "t": 10.54,
       "cube_pos": [
-        -0.0265,
-        0.0232,
-        0.3496
+        -0.0264,
+        0.0296,
+        0.3497
       ],
-      "planar_drift_m": 0.0056,
+      "planar_drift_m": 0.0105,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -864,11 +864,11 @@
     {
       "t": 10.71,
       "cube_pos": [
-        -0.0265,
-        0.0225,
+        -0.0263,
+        0.027,
         0.3496
       ],
-      "planar_drift_m": 0.0051,
+      "planar_drift_m": 0.0083,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -876,11 +876,11 @@
     {
       "t": 10.88,
       "cube_pos": [
-        -0.0265,
-        0.0223,
-        0.3496
+        -0.0263,
+        0.0255,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.007,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -888,11 +888,11 @@
     {
       "t": 11.05,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0251,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0067,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -900,11 +900,11 @@
     {
       "t": 11.22,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.025,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0066,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -912,11 +912,11 @@
     {
       "t": 11.39,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -924,11 +924,11 @@
     {
       "t": 11.56,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -936,11 +936,11 @@
     {
       "t": 11.73,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -948,11 +948,11 @@
     {
       "t": 11.9,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -960,11 +960,11 @@
     {
       "t": 12.07,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -972,11 +972,11 @@
     {
       "t": 12.24,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -984,11 +984,11 @@
     {
       "t": 12.41,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -996,11 +996,11 @@
     {
       "t": 12.58,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1008,11 +1008,11 @@
     {
       "t": 12.75,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1020,11 +1020,11 @@
     {
       "t": 12.92,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1032,11 +1032,11 @@
     {
       "t": 13.09,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1044,11 +1044,11 @@
     {
       "t": 13.26,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1056,11 +1056,11 @@
     {
       "t": 13.43,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1068,11 +1068,11 @@
     {
       "t": 13.6,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1080,11 +1080,11 @@
     {
       "t": 13.77,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1092,11 +1092,11 @@
     {
       "t": 13.94,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1104,11 +1104,11 @@
     {
       "t": 14.11,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1116,11 +1116,11 @@
     {
       "t": 14.28,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1128,11 +1128,11 @@
     {
       "t": 14.45,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1140,11 +1140,11 @@
     {
       "t": 14.62,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1152,11 +1152,11 @@
     {
       "t": 14.79,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1164,11 +1164,11 @@
     {
       "t": 14.96,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1176,11 +1176,11 @@
     {
       "t": 15.13,
       "cube_pos": [
-        -0.0263,
-        0.0214,
-        0.3496
+        -0.0254,
+        0.0215,
+        0.3497
       ],
-      "planar_drift_m": 0.0045,
+      "planar_drift_m": 0.0037,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -1188,11 +1188,11 @@
     {
       "t": 15.3,
       "cube_pos": [
-        -0.0263,
-        0.0212,
-        0.3496
+        -0.0254,
+        0.02,
+        0.3498
       ],
-      "planar_drift_m": 0.0045,
+      "planar_drift_m": 0.0034,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -1200,11 +1200,11 @@
     {
       "t": 15.47,
       "cube_pos": [
-        -0.0265,
-        0.0218,
-        0.3495
+        -0.0259,
+        0.0216,
+        0.3492
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0043,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1212,11 +1212,11 @@
     {
       "t": 15.64,
       "cube_pos": [
-        -0.0265,
-        0.0221,
-        0.3496
+        -0.026,
+        0.0222,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0046,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1224,11 +1224,11 @@
     {
       "t": 15.81,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0224,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1236,11 +1236,11 @@
     {
       "t": 15.98,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1248,11 +1248,11 @@
     {
       "t": 16.15,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1260,11 +1260,11 @@
     {
       "t": 16.32,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1272,11 +1272,11 @@
     {
       "t": 16.49,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1284,11 +1284,11 @@
     {
       "t": 16.66,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1296,11 +1296,11 @@
     {
       "t": 16.83,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1308,11 +1308,11 @@
     {
       "t": 17.0,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1320,11 +1320,11 @@
     {
       "t": 17.17,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1332,11 +1332,11 @@
     {
       "t": 17.34,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1344,11 +1344,11 @@
     {
       "t": 17.51,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1356,11 +1356,11 @@
     {
       "t": 17.68,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1368,11 +1368,11 @@
     {
       "t": 17.85,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1380,11 +1380,11 @@
     {
       "t": 18.02,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1392,11 +1392,11 @@
     {
       "t": 18.19,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1404,11 +1404,11 @@
     {
       "t": 18.36,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1416,11 +1416,11 @@
     {
       "t": 18.53,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1428,11 +1428,11 @@
     {
       "t": 18.7,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1440,11 +1440,11 @@
     {
       "t": 18.87,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1452,11 +1452,11 @@
     {
       "t": 19.04,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1464,11 +1464,11 @@
     {
       "t": 19.21,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1476,11 +1476,11 @@
     {
       "t": 19.38,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1488,11 +1488,11 @@
     {
       "t": 19.55,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1500,11 +1500,11 @@
     {
       "t": 19.72,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1512,11 +1512,11 @@
     {
       "t": 19.89,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1524,11 +1524,11 @@
     {
       "t": 20.06,
       "cube_pos": [
-        -0.0267,
-        0.0217,
-        0.3496
+        -0.0264,
+        0.0212,
+        0.3497
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0046,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -1536,11 +1536,11 @@
     {
       "t": 20.23,
       "cube_pos": [
-        -0.0267,
-        0.0214,
+        -0.0266,
+        0.0203,
         0.3496
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0046,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -1549,10 +1549,10 @@
       "t": 20.4,
       "cube_pos": [
         -0.0267,
-        0.0213,
-        0.3496
+        0.0199,
+        0.3497
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1560,11 +1560,11 @@
     {
       "t": 20.57,
       "cube_pos": [
-        -0.0265,
-        0.0221,
-        0.3496
+        -0.0262,
+        0.0216,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0045,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1572,11 +1572,11 @@
     {
       "t": 20.74,
       "cube_pos": [
-        -0.0265,
+        -0.0261,
         0.0222,
-        0.3496
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0046,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1584,11 +1584,11 @@
     {
       "t": 20.91,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0224,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1596,11 +1596,11 @@
     {
       "t": 21.08,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1608,11 +1608,11 @@
     {
       "t": 21.25,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1620,11 +1620,11 @@
     {
       "t": 21.42,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1632,11 +1632,11 @@
     {
       "t": 21.59,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1644,11 +1644,11 @@
     {
       "t": 21.76,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1656,11 +1656,11 @@
     {
       "t": 21.93,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1668,11 +1668,11 @@
     {
       "t": 22.1,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1680,11 +1680,11 @@
     {
       "t": 22.27,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1692,11 +1692,11 @@
     {
       "t": 22.44,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1704,11 +1704,11 @@
     {
       "t": 22.61,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1716,11 +1716,11 @@
     {
       "t": 22.78,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1728,11 +1728,11 @@
     {
       "t": 22.95,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1740,11 +1740,11 @@
     {
       "t": 23.12,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1752,11 +1752,11 @@
     {
       "t": 23.29,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1764,11 +1764,11 @@
     {
       "t": 23.46,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1776,11 +1776,11 @@
     {
       "t": 23.63,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1788,11 +1788,11 @@
     {
       "t": 23.8,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1800,11 +1800,11 @@
     {
       "t": 23.97,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1812,11 +1812,11 @@
     {
       "t": 24.14,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1824,11 +1824,11 @@
     {
       "t": 24.31,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1836,11 +1836,11 @@
     {
       "t": 24.48,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1848,11 +1848,11 @@
     {
       "t": 24.65,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1860,11 +1860,11 @@
     {
       "t": 24.82,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1872,11 +1872,11 @@
     {
       "t": 24.99,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1884,11 +1884,11 @@
     {
       "t": 25.16,
       "cube_pos": [
-        -0.0269,
-        0.023,
+        -0.0272,
+        0.0254,
         0.3496
       ],
-      "planar_drift_m": 0.0057,
+      "planar_drift_m": 0.0075,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -1896,11 +1896,11 @@
     {
       "t": 25.33,
       "cube_pos": [
-        -0.027,
-        0.0233,
-        0.3497
+        -0.0276,
+        0.0275,
+        0.3499
       ],
-      "planar_drift_m": 0.0059,
+      "planar_drift_m": 0.0093,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -1908,11 +1908,11 @@
     {
       "t": 25.5,
       "cube_pos": [
-        -0.0265,
-        0.0226,
+        -0.0263,
+        0.0261,
         0.3496
       ],
-      "planar_drift_m": 0.0053,
+      "planar_drift_m": 0.0075,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1920,11 +1920,11 @@
     {
       "t": 25.67,
       "cube_pos": [
-        -0.0265,
-        0.0224,
-        0.3496
+        -0.0263,
+        0.0254,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0069,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1932,11 +1932,11 @@
     {
       "t": 25.84,
       "cube_pos": [
-        -0.0265,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0251,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0066,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1944,11 +1944,11 @@
     {
       "t": 26.01,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.025,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1956,11 +1956,11 @@
     {
       "t": 26.18,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1968,11 +1968,11 @@
     {
       "t": 26.35,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1980,11 +1980,11 @@
     {
       "t": 26.52,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -1992,11 +1992,11 @@
     {
       "t": 26.69,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2004,11 +2004,11 @@
     {
       "t": 26.86,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2016,11 +2016,11 @@
     {
       "t": 27.03,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2028,11 +2028,11 @@
     {
       "t": 27.2,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2040,11 +2040,11 @@
     {
       "t": 27.37,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2052,11 +2052,11 @@
     {
       "t": 27.54,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2064,11 +2064,11 @@
     {
       "t": 27.71,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2076,11 +2076,11 @@
     {
       "t": 27.88,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2088,11 +2088,11 @@
     {
       "t": 28.05,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2100,11 +2100,11 @@
     {
       "t": 28.22,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2112,11 +2112,11 @@
     {
       "t": 28.39,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2124,11 +2124,11 @@
     {
       "t": 28.56,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2136,11 +2136,11 @@
     {
       "t": 28.73,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2148,11 +2148,11 @@
     {
       "t": 28.9,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2160,11 +2160,11 @@
     {
       "t": 29.07,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2172,11 +2172,11 @@
     {
       "t": 29.24,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2184,11 +2184,11 @@
     {
       "t": 29.41,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2196,11 +2196,11 @@
     {
       "t": 29.58,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2208,11 +2208,11 @@
     {
       "t": 29.75,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2220,11 +2220,11 @@
     {
       "t": 29.92,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2232,11 +2232,11 @@
     {
       "t": 30.09,
       "cube_pos": [
-        -0.0268,
-        0.0231,
+        -0.027,
+        0.0271,
         0.3496
       ],
-      "planar_drift_m": 0.0057,
+      "planar_drift_m": 0.0087,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2244,11 +2244,11 @@
     {
       "t": 30.26,
       "cube_pos": [
-        -0.0268,
-        0.0238,
-        0.3497
+        -0.0274,
+        0.0299,
+        0.3499
       ],
-      "planar_drift_m": 0.0061,
+      "planar_drift_m": 0.0112,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2256,11 +2256,11 @@
     {
       "t": 30.43,
       "cube_pos": [
-        -0.0266,
-        0.0239,
-        0.3497
+        -0.0265,
+        0.0308,
+        0.35
       ],
-      "planar_drift_m": 0.0061,
+      "planar_drift_m": 0.0118,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2268,11 +2268,11 @@
     {
       "t": 30.6,
       "cube_pos": [
-        -0.0265,
-        0.0227,
+        -0.0263,
+        0.028,
         0.3496
       ],
-      "planar_drift_m": 0.0053,
+      "planar_drift_m": 0.0091,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2280,11 +2280,11 @@
     {
       "t": 30.77,
       "cube_pos": [
-        -0.0265,
-        0.0224,
-        0.3496
+        -0.0263,
+        0.0258,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0073,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2292,11 +2292,11 @@
     {
       "t": 30.94,
       "cube_pos": [
-        -0.0265,
-        0.0223,
-        0.3496
+        -0.0263,
+        0.0253,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0068,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2304,11 +2304,11 @@
     {
       "t": 31.11,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.025,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0066,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2316,11 +2316,11 @@
     {
       "t": 31.28,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2328,11 +2328,11 @@
     {
       "t": 31.45,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2340,11 +2340,11 @@
     {
       "t": 31.62,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2352,11 +2352,11 @@
     {
       "t": 31.79,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2364,11 +2364,11 @@
     {
       "t": 31.96,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2376,11 +2376,11 @@
     {
       "t": 32.13,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2388,11 +2388,11 @@
     {
       "t": 32.3,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2400,11 +2400,11 @@
     {
       "t": 32.47,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2412,11 +2412,11 @@
     {
       "t": 32.64,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2424,11 +2424,11 @@
     {
       "t": 32.81,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2436,11 +2436,11 @@
     {
       "t": 32.98,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2448,11 +2448,11 @@
     {
       "t": 33.15,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2460,11 +2460,11 @@
     {
       "t": 33.32,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2472,11 +2472,11 @@
     {
       "t": 33.49,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2484,11 +2484,11 @@
     {
       "t": 33.66,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2496,11 +2496,11 @@
     {
       "t": 33.83,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2508,11 +2508,11 @@
     {
       "t": 34.0,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2520,11 +2520,11 @@
     {
       "t": 34.17,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2532,11 +2532,11 @@
     {
       "t": 34.34,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2544,11 +2544,11 @@
     {
       "t": 34.51,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2556,11 +2556,11 @@
     {
       "t": 34.68,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2568,11 +2568,11 @@
     {
       "t": 34.85,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2581,10 +2581,10 @@
       "t": 35.02,
       "cube_pos": [
         -0.0266,
-        0.0222,
-        0.3496
+        0.0244,
+        0.3494
       ],
-      "planar_drift_m": 0.0051,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2592,11 +2592,11 @@
     {
       "t": 35.19,
       "cube_pos": [
-        -0.0269,
-        0.0217,
-        0.3496
+        -0.0272,
+        0.0234,
+        0.3497
       ],
-      "planar_drift_m": 0.0052,
+      "planar_drift_m": 0.0062,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2604,11 +2604,11 @@
     {
       "t": 35.36,
       "cube_pos": [
-        -0.0269,
-        0.0216,
-        0.3496
+        -0.0273,
+        0.0229,
+        0.3498
       ],
-      "planar_drift_m": 0.0052,
+      "planar_drift_m": 0.0061,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2616,11 +2616,11 @@
     {
       "t": 35.53,
       "cube_pos": [
-        -0.0265,
-        0.0221,
-        0.3496
+        -0.0262,
+        0.0239,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0057,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2628,11 +2628,11 @@
     {
       "t": 35.7,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0261,
+        0.0243,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.006,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2640,11 +2640,11 @@
     {
       "t": 35.87,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0245,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0061,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2652,11 +2652,11 @@
     {
       "t": 36.04,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0246,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0062,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2664,11 +2664,11 @@
     {
       "t": 36.21,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0247,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2676,11 +2676,11 @@
     {
       "t": 36.38,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0247,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2688,11 +2688,11 @@
     {
       "t": 36.55,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0247,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2700,11 +2700,11 @@
     {
       "t": 36.72,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0247,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2712,11 +2712,11 @@
     {
       "t": 36.89,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0247,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2724,11 +2724,11 @@
     {
       "t": 37.06,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2736,11 +2736,11 @@
     {
       "t": 37.23,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2748,11 +2748,11 @@
     {
       "t": 37.4,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2760,11 +2760,11 @@
     {
       "t": 37.57,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2772,11 +2772,11 @@
     {
       "t": 37.74,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2784,11 +2784,11 @@
     {
       "t": 37.91,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2796,11 +2796,11 @@
     {
       "t": 38.08,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2808,11 +2808,11 @@
     {
       "t": 38.25,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0063,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2820,11 +2820,11 @@
     {
       "t": 38.42,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2832,11 +2832,11 @@
     {
       "t": 38.59,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2844,11 +2844,11 @@
     {
       "t": 38.76,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2856,11 +2856,11 @@
     {
       "t": 38.93,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2868,11 +2868,11 @@
     {
       "t": 39.1,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2880,11 +2880,11 @@
     {
       "t": 39.27,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2892,11 +2892,11 @@
     {
       "t": 39.44,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2904,11 +2904,11 @@
     {
       "t": 39.61,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2916,11 +2916,11 @@
     {
       "t": 39.78,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2928,11 +2928,11 @@
     {
       "t": 39.95,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2940,11 +2940,11 @@
     {
       "t": 40.12,
       "cube_pos": [
-        -0.0264,
-        0.0232,
+        -0.0261,
+        0.028,
         0.3497
       ],
-      "planar_drift_m": 0.0054,
+      "planar_drift_m": 0.0089,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2952,11 +2952,11 @@
     {
       "t": 40.29,
       "cube_pos": [
-        -0.0264,
-        0.024,
-        0.3497
+        -0.026,
+        0.0312,
+        0.3499
       ],
-      "planar_drift_m": 0.006,
+      "planar_drift_m": 0.0119,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -2964,11 +2964,11 @@
     {
       "t": 40.46,
       "cube_pos": [
-        -0.0265,
-        0.0239,
-        0.3497
+        -0.0262,
+        0.0318,
+        0.3501
       ],
-      "planar_drift_m": 0.006,
+      "planar_drift_m": 0.0125,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2976,11 +2976,11 @@
     {
       "t": 40.63,
       "cube_pos": [
-        -0.0265,
-        0.0227,
-        0.3496
+        -0.0262,
+        0.0288,
+        0.3498
       ],
-      "planar_drift_m": 0.0052,
+      "planar_drift_m": 0.0098,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -2988,11 +2988,11 @@
     {
       "t": 40.8,
       "cube_pos": [
-        -0.0265,
-        0.0224,
+        -0.0263,
+        0.0262,
         0.3496
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0076,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3000,11 +3000,11 @@
     {
       "t": 40.97,
       "cube_pos": [
-        -0.0265,
-        0.0223,
-        0.3496
+        -0.0263,
+        0.0254,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0069,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3012,11 +3012,11 @@
     {
       "t": 41.14,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0251,
+        0.3495
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0066,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3024,11 +3024,11 @@
     {
       "t": 41.31,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.025,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3036,11 +3036,11 @@
     {
       "t": 41.48,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0065,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3048,11 +3048,11 @@
     {
       "t": 41.65,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0249,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3060,11 +3060,11 @@
     {
       "t": 41.82,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3072,11 +3072,11 @@
     {
       "t": 41.99,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3084,11 +3084,11 @@
     {
       "t": 42.16,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3096,11 +3096,11 @@
     {
       "t": 42.33,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3108,11 +3108,11 @@
     {
       "t": 42.5,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3120,11 +3120,11 @@
     {
       "t": 42.67,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3132,11 +3132,11 @@
     {
       "t": 42.84,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3144,11 +3144,11 @@
     {
       "t": 43.01,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3156,11 +3156,11 @@
     {
       "t": 43.18,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3168,11 +3168,11 @@
     {
       "t": 43.35,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3180,11 +3180,11 @@
     {
       "t": 43.52,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3192,11 +3192,11 @@
     {
       "t": 43.69,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3204,11 +3204,11 @@
     {
       "t": 43.86,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3216,11 +3216,11 @@
     {
       "t": 44.03,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3228,11 +3228,11 @@
     {
       "t": 44.2,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3240,11 +3240,11 @@
     {
       "t": 44.37,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3252,11 +3252,11 @@
     {
       "t": 44.54,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3264,11 +3264,11 @@
     {
       "t": 44.71,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3276,11 +3276,11 @@
     {
       "t": 44.88,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0262,
+        0.0248,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0064,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3289,10 +3289,10 @@
       "t": 45.05,
       "cube_pos": [
         -0.0266,
-        0.0218,
+        0.0237,
         0.3496
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0059,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -3300,11 +3300,11 @@
     {
       "t": 45.22,
       "cube_pos": [
-        -0.0267,
-        0.0214,
-        0.3496
+        -0.0266,
+        0.022,
+        0.3495
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0051,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -3313,10 +3313,10 @@
       "t": 45.39,
       "cube_pos": [
         -0.0267,
-        0.0213,
+        0.0207,
         0.3496
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -3324,11 +3324,11 @@
     {
       "t": 45.56,
       "cube_pos": [
-        -0.0265,
-        0.0221,
-        0.3496
+        -0.0261,
+        0.022,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0046,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3336,11 +3336,11 @@
     {
       "t": 45.73,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0261,
+        0.0223,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3348,11 +3348,11 @@
     {
       "t": 45.9,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0224,
+        0.3493
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3360,11 +3360,11 @@
     {
       "t": 46.07,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3372,11 +3372,11 @@
     {
       "t": 46.24,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0047,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3384,11 +3384,11 @@
     {
       "t": 46.41,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0225,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3396,11 +3396,11 @@
     {
       "t": 46.58,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3408,11 +3408,11 @@
     {
       "t": 46.75,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3420,11 +3420,11 @@
     {
       "t": 46.92,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3432,11 +3432,11 @@
     {
       "t": 47.09,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3444,11 +3444,11 @@
     {
       "t": 47.26,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3456,11 +3456,11 @@
     {
       "t": 47.43,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3468,11 +3468,11 @@
     {
       "t": 47.6,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3480,11 +3480,11 @@
     {
       "t": 47.77,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3492,11 +3492,11 @@
     {
       "t": 47.94,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3504,11 +3504,11 @@
     {
       "t": 48.11,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3516,11 +3516,11 @@
     {
       "t": 48.28,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3528,11 +3528,11 @@
     {
       "t": 48.45,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3540,11 +3540,11 @@
     {
       "t": 48.62,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3552,11 +3552,11 @@
     {
       "t": 48.79,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3564,11 +3564,11 @@
     {
       "t": 48.96,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3576,11 +3576,11 @@
     {
       "t": 49.13,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3588,11 +3588,11 @@
     {
       "t": 49.3,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3600,11 +3600,11 @@
     {
       "t": 49.47,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3612,11 +3612,11 @@
     {
       "t": 49.64,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3624,11 +3624,11 @@
     {
       "t": 49.81,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3636,11 +3636,11 @@
     {
       "t": 49.98,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.026,
+        0.0226,
+        0.3494
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0048,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3648,11 +3648,11 @@
     {
       "t": 50.15,
       "cube_pos": [
-        -0.026,
-        0.0218,
-        0.3498
+        -0.024,
+        0.0213,
+        0.3507
       ],
-      "planar_drift_m": 0.0043,
+      "planar_drift_m": 0.0024,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -3660,11 +3660,11 @@
     {
       "t": 50.32,
       "cube_pos": [
-        -0.0259,
-        0.0218,
-        0.3498
+        -0.0232,
+        0.0212,
+        0.3515
       ],
-      "planar_drift_m": 0.0043,
+      "planar_drift_m": 0.0017,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -3672,11 +3672,11 @@
     {
       "t": 50.49,
       "cube_pos": [
-        -0.0264,
-        0.0221,
-        0.3497
+        -0.024,
+        0.0226,
+        0.3516
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0033,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3684,11 +3684,11 @@
     {
       "t": 50.66,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3497
+        -0.0237,
+        0.0233,
+        0.3516
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0037,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3696,9 +3696,9 @@
     {
       "t": 50.83,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0232,
+        0.0249,
+        0.3515
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -3708,11 +3708,11 @@
     {
       "t": 51.0,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3720,11 +3720,11 @@
     {
       "t": 51.17,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3732,11 +3732,11 @@
     {
       "t": 51.34,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3744,11 +3744,11 @@
     {
       "t": 51.51,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3756,11 +3756,11 @@
     {
       "t": 51.68,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3768,11 +3768,11 @@
     {
       "t": 51.85,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3780,11 +3780,11 @@
     {
       "t": 52.02,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3792,11 +3792,11 @@
     {
       "t": 52.19,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3804,11 +3804,11 @@
     {
       "t": 52.36,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3816,11 +3816,11 @@
     {
       "t": 52.53,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3828,11 +3828,11 @@
     {
       "t": 52.7,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3840,11 +3840,11 @@
     {
       "t": 52.87,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3852,11 +3852,11 @@
     {
       "t": 53.04,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3864,11 +3864,11 @@
     {
       "t": 53.21,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3876,11 +3876,11 @@
     {
       "t": 53.38,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3888,11 +3888,11 @@
     {
       "t": 53.55,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3900,11 +3900,11 @@
     {
       "t": 53.72,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3912,11 +3912,11 @@
     {
       "t": 53.89,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3924,11 +3924,11 @@
     {
       "t": 54.06,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3936,11 +3936,11 @@
     {
       "t": 54.23,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3948,11 +3948,11 @@
     {
       "t": 54.4,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3960,11 +3960,11 @@
     {
       "t": 54.57,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3972,11 +3972,11 @@
     {
       "t": 54.74,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3984,11 +3984,11 @@
     {
       "t": 54.91,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -3996,11 +3996,11 @@
     {
       "t": 55.08,
       "cube_pos": [
-        -0.0266,
-        0.0231,
-        0.3497
+        -0.0235,
+        0.0272,
+        0.3517
       ],
-      "planar_drift_m": 0.0055,
+      "planar_drift_m": 0.0074,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -4008,11 +4008,11 @@
     {
       "t": 55.25,
       "cube_pos": [
-        -0.0266,
-        0.0241,
-        0.3497
+        -0.0235,
+        0.0304,
+        0.3519
       ],
-      "planar_drift_m": 0.0061,
+      "planar_drift_m": 0.0104,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -4020,11 +4020,11 @@
     {
       "t": 55.42,
       "cube_pos": [
-        -0.0266,
-        0.0246,
-        0.3497
+        -0.0232,
+        0.0323,
+        0.3523
       ],
-      "planar_drift_m": 0.0065,
+      "planar_drift_m": 0.0124,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4032,11 +4032,11 @@
     {
       "t": 55.59,
       "cube_pos": [
-        -0.0265,
-        0.0232,
-        0.3497
+        -0.023,
+        0.0297,
+        0.3524
       ],
-      "planar_drift_m": 0.0055,
+      "planar_drift_m": 0.0098,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4044,11 +4044,11 @@
     {
       "t": 55.76,
       "cube_pos": [
-        -0.0265,
-        0.0224,
-        0.3496
+        -0.023,
+        0.0275,
+        0.3522
       ],
-      "planar_drift_m": 0.0051,
+      "planar_drift_m": 0.0076,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4056,11 +4056,11 @@
     {
       "t": 55.93,
       "cube_pos": [
-        -0.0265,
-        0.0223,
-        0.3496
+        -0.023,
+        0.0257,
+        0.352
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0058,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4068,11 +4068,11 @@
     {
       "t": 56.1,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.023,
+        0.0252,
+        0.3519
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0053,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4080,11 +4080,11 @@
     {
       "t": 56.27,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.023,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0053,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4092,11 +4092,11 @@
     {
       "t": 56.44,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4104,11 +4104,11 @@
     {
       "t": 56.61,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4116,11 +4116,11 @@
     {
       "t": 56.78,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4128,11 +4128,11 @@
     {
       "t": 56.95,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4140,11 +4140,11 @@
     {
       "t": 57.12,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4152,11 +4152,11 @@
     {
       "t": 57.29,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4164,11 +4164,11 @@
     {
       "t": 57.46,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4176,11 +4176,11 @@
     {
       "t": 57.63,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4188,11 +4188,11 @@
     {
       "t": 57.8,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4200,11 +4200,11 @@
     {
       "t": 57.97,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4212,11 +4212,11 @@
     {
       "t": 58.14,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4224,11 +4224,11 @@
     {
       "t": 58.31,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4236,11 +4236,11 @@
     {
       "t": 58.48,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4248,11 +4248,11 @@
     {
       "t": 58.65,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4260,11 +4260,11 @@
     {
       "t": 58.82,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4272,11 +4272,11 @@
     {
       "t": 58.99,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4284,11 +4284,11 @@
     {
       "t": 59.16,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4296,11 +4296,11 @@
     {
       "t": 59.33,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4308,11 +4308,11 @@
     {
       "t": 59.5,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4320,11 +4320,11 @@
     {
       "t": 59.67,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4332,11 +4332,11 @@
     {
       "t": 59.84,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4344,11 +4344,11 @@
     {
       "t": 60.01,
       "cube_pos": [
-        -0.0263,
-        0.0222,
-        0.3496
+        -0.0226,
+        0.0249,
+        0.3519
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -4356,9 +4356,9 @@
     {
       "t": 60.18,
       "cube_pos": [
-        -0.026,
-        0.0218,
-        0.3497
+        -0.0207,
+        0.0242,
+        0.3531
       ],
       "planar_drift_m": 0.0044,
       "grip_tighten": 0.0,
@@ -4368,11 +4368,11 @@
     {
       "t": 60.35,
       "cube_pos": [
-        -0.0259,
-        0.0218,
-        0.3498
+        -0.0199,
+        0.024,
+        0.3542
       ],
-      "planar_drift_m": 0.0043,
+      "planar_drift_m": 0.0045,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -4380,11 +4380,11 @@
     {
       "t": 60.52,
       "cube_pos": [
-        -0.0265,
-        0.0221,
-        0.3497
+        -0.0217,
+        0.0249,
+        0.3542
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4392,11 +4392,11 @@
     {
       "t": 60.69,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.022,
+        0.0249,
+        0.3541
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4404,11 +4404,11 @@
     {
       "t": 60.86,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0221,
+        0.0249,
+        0.3539
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4416,11 +4416,11 @@
     {
       "t": 61.03,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0222,
+        0.0249,
+        0.3537
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4428,11 +4428,11 @@
     {
       "t": 61.2,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0223,
+        0.0249,
+        0.3535
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4440,11 +4440,11 @@
     {
       "t": 61.37,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0224,
+        0.0249,
+        0.3533
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4452,9 +4452,9 @@
     {
       "t": 61.54,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0225,
+        0.0249,
+        0.3531
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -4464,9 +4464,9 @@
     {
       "t": 61.71,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0226,
+        0.025,
+        0.3528
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -4476,9 +4476,9 @@
     {
       "t": 61.88,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0227,
+        0.025,
+        0.3526
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -4488,11 +4488,11 @@
     {
       "t": 62.05,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0228,
+        0.025,
+        0.3524
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0051,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4500,11 +4500,11 @@
     {
       "t": 62.22,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0229,
+        0.025,
+        0.3522
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0051,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4512,11 +4512,11 @@
     {
       "t": 62.39,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.023,
+        0.0251,
+        0.352
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4524,11 +4524,11 @@
     {
       "t": 62.56,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.023,
+        0.0251,
+        0.3519
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4536,11 +4536,11 @@
     {
       "t": 62.73,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.023,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4548,11 +4548,11 @@
     {
       "t": 62.9,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4560,11 +4560,11 @@
     {
       "t": 63.07,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4572,11 +4572,11 @@
     {
       "t": 63.24,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4584,11 +4584,11 @@
     {
       "t": 63.41,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4596,11 +4596,11 @@
     {
       "t": 63.58,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4608,11 +4608,11 @@
     {
       "t": 63.75,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3518
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4620,11 +4620,11 @@
     {
       "t": 63.92,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4632,11 +4632,11 @@
     {
       "t": 64.09,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4644,11 +4644,11 @@
     {
       "t": 64.26,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4656,11 +4656,11 @@
     {
       "t": 64.43,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4668,11 +4668,11 @@
     {
       "t": 64.6,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4680,11 +4680,11 @@
     {
       "t": 64.77,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4692,11 +4692,11 @@
     {
       "t": 64.94,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4704,11 +4704,11 @@
     {
       "t": 65.11,
       "cube_pos": [
-        -0.0267,
-        0.0216,
-        0.3496
+        -0.0238,
+        0.0233,
+        0.352
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0038,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -4716,11 +4716,11 @@
     {
       "t": 65.28,
       "cube_pos": [
-        -0.0267,
-        0.0214,
-        0.3496
+        -0.024,
+        0.0228,
+        0.3517
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0034,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -4728,11 +4728,11 @@
     {
       "t": 65.45,
       "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3496
+        -0.0237,
+        0.024,
+        0.3513
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0043,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4740,11 +4740,11 @@
     {
       "t": 65.62,
       "cube_pos": [
-        -0.0265,
-        0.0221,
-        0.3496
+        -0.0232,
+        0.0251,
+        0.3515
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4752,11 +4752,11 @@
     {
       "t": 65.79,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.025,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4764,11 +4764,11 @@
     {
       "t": 65.96,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4776,11 +4776,11 @@
     {
       "t": 66.13,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4788,11 +4788,11 @@
     {
       "t": 66.3,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4800,11 +4800,11 @@
     {
       "t": 66.47,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4812,11 +4812,11 @@
     {
       "t": 66.64,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4824,11 +4824,11 @@
     {
       "t": 66.81,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4836,11 +4836,11 @@
     {
       "t": 66.98,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4848,11 +4848,11 @@
     {
       "t": 67.15,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4860,11 +4860,11 @@
     {
       "t": 67.32,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4872,11 +4872,11 @@
     {
       "t": 67.49,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4884,11 +4884,11 @@
     {
       "t": 67.66,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4896,11 +4896,11 @@
     {
       "t": 67.83,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4908,11 +4908,11 @@
     {
       "t": 68.0,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4920,11 +4920,11 @@
     {
       "t": 68.17,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4932,11 +4932,11 @@
     {
       "t": 68.34,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4944,11 +4944,11 @@
     {
       "t": 68.51,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4956,11 +4956,11 @@
     {
       "t": 68.68,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4968,11 +4968,11 @@
     {
       "t": 68.85,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4980,11 +4980,11 @@
     {
       "t": 69.02,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -4992,11 +4992,11 @@
     {
       "t": 69.19,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5004,11 +5004,11 @@
     {
       "t": 69.36,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5016,11 +5016,11 @@
     {
       "t": 69.53,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5028,11 +5028,11 @@
     {
       "t": 69.7,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5040,11 +5040,11 @@
     {
       "t": 69.87,
       "cube_pos": [
-        -0.0265,
-        0.0222,
-        0.3496
+        -0.0231,
+        0.0251,
+        0.3517
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0052,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5052,11 +5052,11 @@
     {
       "t": 70.04,
       "cube_pos": [
-        -0.0262,
-        0.0225,
-        0.3497
+        -0.022,
+        0.0255,
+        0.352
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0055,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -5064,11 +5064,11 @@
     {
       "t": 70.21,
       "cube_pos": [
-        -0.026,
-        0.0228,
-        0.3498
+        -0.0211,
+        0.0265,
+        0.3533
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0066,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -5076,11 +5076,11 @@
     {
       "t": 70.38,
       "cube_pos": [
-        -0.026,
-        0.0229,
-        0.3499
+        -0.0204,
+        0.0274,
+        0.3546
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0076,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -5088,11 +5088,11 @@
     {
       "t": 70.55,
       "cube_pos": [
-        -0.0264,
-        0.0224,
-        0.3496
+        -0.022,
+        0.0258,
+        0.3542
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0058,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5100,9 +5100,9 @@
     {
       "t": 70.72,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0221,
+        0.025,
+        0.354
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -5112,11 +5112,11 @@
     {
       "t": 70.89,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0222,
+        0.0249,
+        0.3538
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5124,11 +5124,11 @@
     {
       "t": 71.06,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0223,
+        0.0249,
+        0.3536
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5136,11 +5136,11 @@
     {
       "t": 71.23,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0224,
+        0.0249,
+        0.3534
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5148,11 +5148,11 @@
     {
       "t": 71.4,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0224,
+        0.0249,
+        0.3531
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5160,9 +5160,9 @@
     {
       "t": 71.57,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0225,
+        0.0249,
+        0.3529
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -5172,9 +5172,9 @@
     {
       "t": 71.74,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
+        -0.0226,
+        0.025,
+        0.3527
       ],
       "planar_drift_m": 0.005,
       "grip_tighten": 0.0,
@@ -5184,261 +5184,9 @@
     {
       "t": 71.91,
       "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 72.08,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 72.25,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 72.42,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 72.59,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 72.76,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 72.93,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 73.1,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 73.27,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 73.44,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 73.61,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 73.78,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 73.95,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 74.12,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 74.29,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 74.46,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 74.63,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 74.8,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 74.97,
-      "cube_pos": [
-        -0.0264,
-        0.0223,
-        0.3496
-      ],
-      "planar_drift_m": 0.005,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 75.14,
-      "cube_pos": [
-        -0.0269,
-        0.0227,
-        0.3496
-      ],
-      "planar_drift_m": 0.0056,
-      "grip_tighten": 0.0,
-      "perturb_active": true,
-      "held": true
-    },
-    {
-      "t": 75.31,
-      "cube_pos": [
-        -0.027,
-        0.0226,
-        0.3496
-      ],
-      "planar_drift_m": 0.0056,
-      "grip_tighten": 0.0,
-      "perturb_active": true,
-      "held": true
-    },
-    {
-      "t": 75.48,
-      "cube_pos": [
-        -0.0266,
-        0.0222,
-        0.3496
+        -0.0227,
+        0.025,
+        0.3525
       ],
       "planar_drift_m": 0.0051,
       "grip_tighten": 0.0,
@@ -5446,13 +5194,265 @@
       "held": true
     },
     {
+      "t": 72.08,
+      "cube_pos": [
+        -0.0228,
+        0.025,
+        0.3523
+      ],
+      "planar_drift_m": 0.0051,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 72.25,
+      "cube_pos": [
+        -0.0229,
+        0.0251,
+        0.352
+      ],
+      "planar_drift_m": 0.0051,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 72.42,
+      "cube_pos": [
+        -0.023,
+        0.0251,
+        0.3519
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 72.59,
+      "cube_pos": [
+        -0.023,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 72.76,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 72.93,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 73.1,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 73.27,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 73.44,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 73.61,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 73.78,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3518
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 73.95,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 74.12,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 74.29,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 74.46,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 74.63,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 74.8,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 74.97,
+      "cube_pos": [
+        -0.0231,
+        0.0251,
+        0.3517
+      ],
+      "planar_drift_m": 0.0052,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 75.14,
+      "cube_pos": [
+        -0.0252,
+        0.0266,
+        0.3515
+      ],
+      "planar_drift_m": 0.0073,
+      "grip_tighten": 0.0,
+      "perturb_active": true,
+      "held": true
+    },
+    {
+      "t": 75.31,
+      "cube_pos": [
+        -0.0259,
+        0.0269,
+        0.3514
+      ],
+      "planar_drift_m": 0.0079,
+      "grip_tighten": 0.0,
+      "perturb_active": true,
+      "held": true
+    },
+    {
+      "t": 75.48,
+      "cube_pos": [
+        -0.0243,
+        0.0251,
+        0.3514
+      ],
+      "planar_drift_m": 0.0056,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
       "t": 75.65,
       "cube_pos": [
-        -0.0266,
-        0.0219,
-        0.3497
+        -0.0244,
+        0.0243,
+        0.3514
       ],
-      "planar_drift_m": 0.005,
+      "planar_drift_m": 0.0049,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5460,11 +5460,11 @@
     {
       "t": 75.82,
       "cube_pos": [
-        -0.0266,
-        0.0218,
-        0.3497
+        -0.0244,
+        0.0239,
+        0.3513
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0046,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5472,11 +5472,11 @@
     {
       "t": 75.99,
       "cube_pos": [
-        -0.0266,
-        0.0218,
-        0.3497
+        -0.0243,
+        0.0236,
+        0.3514
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0043,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5484,333 +5484,9 @@
     {
       "t": 76.16,
       "cube_pos": [
-        -0.0266,
-        0.0218,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 76.33,
-      "cube_pos": [
-        -0.0266,
-        0.0218,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 76.5,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 76.67,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 76.84,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 77.01,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 77.18,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 77.35,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 77.52,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 77.69,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 77.86,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 78.03,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 78.2,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 78.37,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 78.54,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 78.71,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 78.88,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 79.05,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 79.22,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 79.39,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 79.56,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 79.73,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 79.9,
-      "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
-      ],
-      "planar_drift_m": 0.0049,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 80.07,
-      "cube_pos": [
-        -0.0261,
-        0.0211,
-        0.3499
-      ],
-      "planar_drift_m": 0.0043,
-      "grip_tighten": 0.0,
-      "perturb_active": true,
-      "held": true
-    },
-    {
-      "t": 80.24,
-      "cube_pos": [
-        -0.0259,
-        0.0204,
-        0.3503
-      ],
-      "planar_drift_m": 0.0039,
-      "grip_tighten": 0.0,
-      "perturb_active": true,
-      "held": true
-    },
-    {
-      "t": 80.41,
-      "cube_pos": [
-        -0.0257,
-        0.02,
-        0.3507
-      ],
-      "planar_drift_m": 0.0037,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 80.58,
-      "cube_pos": [
-        -0.0259,
-        0.0207,
-        0.3506
-      ],
-      "planar_drift_m": 0.004,
-      "grip_tighten": 0.0,
-      "perturb_active": false,
-      "held": true
-    },
-    {
-      "t": 80.75,
-      "cube_pos": [
-        -0.026,
-        0.0209,
-        0.3505
+        -0.0243,
+        0.0234,
+        0.3515
       ],
       "planar_drift_m": 0.0041,
       "grip_tighten": 0.0,
@@ -5818,13 +5494,337 @@
       "held": true
     },
     {
+      "t": 76.33,
+      "cube_pos": [
+        -0.0243,
+        0.0234,
+        0.3516
+      ],
+      "planar_drift_m": 0.0041,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 76.5,
+      "cube_pos": [
+        -0.0243,
+        0.0234,
+        0.3516
+      ],
+      "planar_drift_m": 0.0041,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 76.67,
+      "cube_pos": [
+        -0.0242,
+        0.0232,
+        0.3517
+      ],
+      "planar_drift_m": 0.0039,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 76.84,
+      "cube_pos": [
+        -0.0242,
+        0.023,
+        0.3518
+      ],
+      "planar_drift_m": 0.0037,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 77.01,
+      "cube_pos": [
+        -0.0241,
+        0.0229,
+        0.3519
+      ],
+      "planar_drift_m": 0.0036,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 77.18,
+      "cube_pos": [
+        -0.0241,
+        0.0227,
+        0.352
+      ],
+      "planar_drift_m": 0.0034,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 77.35,
+      "cube_pos": [
+        -0.024,
+        0.0226,
+        0.3522
+      ],
+      "planar_drift_m": 0.0032,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 77.52,
+      "cube_pos": [
+        -0.0239,
+        0.0224,
+        0.3524
+      ],
+      "planar_drift_m": 0.0031,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 77.69,
+      "cube_pos": [
+        -0.0238,
+        0.0223,
+        0.3525
+      ],
+      "planar_drift_m": 0.0029,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 77.86,
+      "cube_pos": [
+        -0.0238,
+        0.0222,
+        0.3526
+      ],
+      "planar_drift_m": 0.0028,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 78.03,
+      "cube_pos": [
+        -0.0237,
+        0.0221,
+        0.3528
+      ],
+      "planar_drift_m": 0.0027,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 78.2,
+      "cube_pos": [
+        -0.0237,
+        0.0221,
+        0.3528
+      ],
+      "planar_drift_m": 0.0027,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 78.37,
+      "cube_pos": [
+        -0.0237,
+        0.0221,
+        0.3529
+      ],
+      "planar_drift_m": 0.0026,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 78.54,
+      "cube_pos": [
+        -0.0236,
+        0.022,
+        0.353
+      ],
+      "planar_drift_m": 0.0026,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 78.71,
+      "cube_pos": [
+        -0.0236,
+        0.022,
+        0.353
+      ],
+      "planar_drift_m": 0.0026,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 78.88,
+      "cube_pos": [
+        -0.0236,
+        0.022,
+        0.3531
+      ],
+      "planar_drift_m": 0.0026,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 79.05,
+      "cube_pos": [
+        -0.0236,
+        0.022,
+        0.3531
+      ],
+      "planar_drift_m": 0.0025,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 79.22,
+      "cube_pos": [
+        -0.0236,
+        0.022,
+        0.3531
+      ],
+      "planar_drift_m": 0.0025,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 79.39,
+      "cube_pos": [
+        -0.0235,
+        0.022,
+        0.3531
+      ],
+      "planar_drift_m": 0.0025,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 79.56,
+      "cube_pos": [
+        -0.0235,
+        0.022,
+        0.3532
+      ],
+      "planar_drift_m": 0.0025,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 79.73,
+      "cube_pos": [
+        -0.0235,
+        0.022,
+        0.3532
+      ],
+      "planar_drift_m": 0.0025,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 79.9,
+      "cube_pos": [
+        -0.0235,
+        0.022,
+        0.3532
+      ],
+      "planar_drift_m": 0.0025,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 80.07,
+      "cube_pos": [
+        -0.0223,
+        0.0207,
+        0.3539
+      ],
+      "planar_drift_m": 0.0008,
+      "grip_tighten": 0.0,
+      "perturb_active": true,
+      "held": true
+    },
+    {
+      "t": 80.24,
+      "cube_pos": [
+        -0.0218,
+        0.0201,
+        0.3542
+      ],
+      "planar_drift_m": 0.0002,
+      "grip_tighten": 0.0,
+      "perturb_active": true,
+      "held": true
+    },
+    {
+      "t": 80.41,
+      "cube_pos": [
+        -0.022,
+        0.0203,
+        0.3541
+      ],
+      "planar_drift_m": 0.0002,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 80.58,
+      "cube_pos": [
+        -0.0233,
+        0.0218,
+        0.3536
+      ],
+      "planar_drift_m": 0.0022,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
+      "t": 80.75,
+      "cube_pos": [
+        -0.0233,
+        0.0219,
+        0.3535
+      ],
+      "planar_drift_m": 0.0023,
+      "grip_tighten": 0.0,
+      "perturb_active": false,
+      "held": true
+    },
+    {
       "t": 80.92,
       "cube_pos": [
-        -0.026,
-        0.021,
-        0.3505
+        -0.0234,
+        0.022,
+        0.3535
       ],
-      "planar_drift_m": 0.0042,
+      "planar_drift_m": 0.0024,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5832,11 +5832,11 @@
     {
       "t": 81.09,
       "cube_pos": [
-        -0.0261,
-        0.0211,
-        0.3504
+        -0.0234,
+        0.022,
+        0.3534
       ],
-      "planar_drift_m": 0.0042,
+      "planar_drift_m": 0.0024,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5844,11 +5844,11 @@
     {
       "t": 81.26,
       "cube_pos": [
-        -0.0261,
-        0.0211,
-        0.3504
+        -0.0234,
+        0.022,
+        0.3534
       ],
-      "planar_drift_m": 0.0042,
+      "planar_drift_m": 0.0024,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5856,11 +5856,11 @@
     {
       "t": 81.43,
       "cube_pos": [
-        -0.0261,
-        0.0211,
-        0.3504
+        -0.0234,
+        0.022,
+        0.3533
       ],
-      "planar_drift_m": 0.0043,
+      "planar_drift_m": 0.0024,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5868,11 +5868,11 @@
     {
       "t": 81.6,
       "cube_pos": [
-        -0.0262,
-        0.0212,
-        0.3503
+        -0.0235,
+        0.022,
+        0.3533
       ],
-      "planar_drift_m": 0.0043,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5880,11 +5880,11 @@
     {
       "t": 81.77,
       "cube_pos": [
-        -0.0262,
-        0.0212,
-        0.3503
+        -0.0235,
+        0.022,
+        0.3533
       ],
-      "planar_drift_m": 0.0043,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5892,11 +5892,11 @@
     {
       "t": 81.94,
       "cube_pos": [
-        -0.0262,
-        0.0212,
-        0.3502
+        -0.0235,
+        0.022,
+        0.3533
       ],
-      "planar_drift_m": 0.0044,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5904,11 +5904,11 @@
     {
       "t": 82.11,
       "cube_pos": [
-        -0.0262,
-        0.0213,
-        0.3502
+        -0.0235,
+        0.022,
+        0.3533
       ],
-      "planar_drift_m": 0.0044,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5916,11 +5916,11 @@
     {
       "t": 82.28,
       "cube_pos": [
-        -0.0263,
-        0.0213,
-        0.3502
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0044,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5928,11 +5928,11 @@
     {
       "t": 82.45,
       "cube_pos": [
-        -0.0263,
-        0.0213,
-        0.3501
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0045,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5940,11 +5940,11 @@
     {
       "t": 82.62,
       "cube_pos": [
-        -0.0263,
-        0.0214,
-        0.3501
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0045,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5952,11 +5952,11 @@
     {
       "t": 82.79,
       "cube_pos": [
-        -0.0263,
-        0.0214,
-        0.35
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0046,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5964,11 +5964,11 @@
     {
       "t": 82.96,
       "cube_pos": [
-        -0.0264,
-        0.0214,
-        0.35
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0046,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5976,11 +5976,11 @@
     {
       "t": 83.13,
       "cube_pos": [
-        -0.0264,
-        0.0215,
-        0.3499
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0046,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -5988,11 +5988,11 @@
     {
       "t": 83.3,
       "cube_pos": [
-        -0.0264,
-        0.0215,
-        0.3499
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0047,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6000,11 +6000,11 @@
     {
       "t": 83.47,
       "cube_pos": [
-        -0.0265,
-        0.0216,
-        0.3498
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0047,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6012,11 +6012,11 @@
     {
       "t": 83.64,
       "cube_pos": [
-        -0.0265,
-        0.0216,
-        0.3498
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6024,11 +6024,11 @@
     {
       "t": 83.81,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6036,11 +6036,11 @@
     {
       "t": 83.98,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6048,11 +6048,11 @@
     {
       "t": 84.15,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6060,11 +6060,11 @@
     {
       "t": 84.32,
       "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6072,11 +6072,11 @@
     {
       "t": 84.49,
       "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6084,11 +6084,11 @@
     {
       "t": 84.66,
       "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6096,11 +6096,11 @@
     {
       "t": 84.83,
       "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6108,11 +6108,11 @@
     {
       "t": 85.0,
       "cube_pos": [
-        -0.0266,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0049,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -6120,11 +6120,11 @@
     {
       "t": 85.17,
       "cube_pos": [
-        -0.0266,
-        0.0206,
-        0.3498
+        -0.0239,
+        0.0196,
+        0.3533
       ],
-      "planar_drift_m": 0.0047,
+      "planar_drift_m": 0.0019,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -6132,11 +6132,11 @@
     {
       "t": 85.34,
       "cube_pos": [
-        -0.0266,
-        0.02,
-        0.3501
+        -0.0241,
+        0.0189,
+        0.3533
       ],
-      "planar_drift_m": 0.0046,
+      "planar_drift_m": 0.0023,
       "grip_tighten": 0.0,
       "perturb_active": true,
       "held": true
@@ -6144,11 +6144,11 @@
     {
       "t": 85.51,
       "cube_pos": [
-        -0.0264,
+        -0.0239,
         0.0208,
-        0.3501
+        0.3529
       ],
-      "planar_drift_m": 0.0044,
+      "planar_drift_m": 0.002,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6156,11 +6156,11 @@
     {
       "t": 85.68,
       "cube_pos": [
-        -0.0263,
-        0.0212,
-        0.35
+        -0.0237,
+        0.0217,
+        0.3528
       ],
-      "planar_drift_m": 0.0045,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6168,11 +6168,11 @@
     {
       "t": 85.85,
       "cube_pos": [
-        -0.0263,
-        0.0214,
-        0.3499
+        -0.0237,
+        0.022,
+        0.3529
       ],
-      "planar_drift_m": 0.0046,
+      "planar_drift_m": 0.0026,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6180,11 +6180,11 @@
     {
       "t": 86.02,
       "cube_pos": [
-        -0.0264,
-        0.0215,
-        0.3499
+        -0.0236,
+        0.022,
+        0.353
       ],
-      "planar_drift_m": 0.0046,
+      "planar_drift_m": 0.0026,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6192,11 +6192,11 @@
     {
       "t": 86.19,
       "cube_pos": [
-        -0.0264,
-        0.0215,
-        0.3498
+        -0.0236,
+        0.022,
+        0.353
       ],
-      "planar_drift_m": 0.0047,
+      "planar_drift_m": 0.0026,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6204,11 +6204,11 @@
     {
       "t": 86.36,
       "cube_pos": [
-        -0.0265,
-        0.0216,
-        0.3498
+        -0.0236,
+        0.022,
+        0.3531
       ],
-      "planar_drift_m": 0.0047,
+      "planar_drift_m": 0.0026,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6216,11 +6216,11 @@
     {
       "t": 86.53,
       "cube_pos": [
-        -0.0265,
-        0.0216,
-        0.3497
+        -0.0236,
+        0.022,
+        0.3531
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6228,11 +6228,11 @@
     {
       "t": 86.7,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0236,
+        0.022,
+        0.3531
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6240,11 +6240,11 @@
     {
       "t": 86.87,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3531
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6252,11 +6252,11 @@
     {
       "t": 87.04,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6264,11 +6264,11 @@
     {
       "t": 87.21,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6276,11 +6276,11 @@
     {
       "t": 87.38,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6288,11 +6288,11 @@
     {
       "t": 87.55,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6300,11 +6300,11 @@
     {
       "t": 87.72,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6312,11 +6312,11 @@
     {
       "t": 87.89,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6324,11 +6324,11 @@
     {
       "t": 88.06,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6336,11 +6336,11 @@
     {
       "t": 88.23,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6348,11 +6348,11 @@
     {
       "t": 88.4,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6360,11 +6360,11 @@
     {
       "t": 88.57,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6372,11 +6372,11 @@
     {
       "t": 88.74,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6384,11 +6384,11 @@
     {
       "t": 88.91,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6396,11 +6396,11 @@
     {
       "t": 89.08,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6408,11 +6408,11 @@
     {
       "t": 89.25,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6420,11 +6420,11 @@
     {
       "t": 89.42,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6432,11 +6432,11 @@
     {
       "t": 89.59,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6444,11 +6444,11 @@
     {
       "t": 89.76,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
@@ -6456,11 +6456,11 @@
     {
       "t": 89.93,
       "cube_pos": [
-        -0.0265,
-        0.0217,
-        0.3497
+        -0.0235,
+        0.022,
+        0.3532
       ],
-      "planar_drift_m": 0.0048,
+      "planar_drift_m": 0.0025,
       "grip_tighten": 0.0,
       "perturb_active": false,
       "held": true
