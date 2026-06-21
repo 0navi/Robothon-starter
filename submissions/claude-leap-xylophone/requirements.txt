@@ -1,0 +1,8 @@
+# Pinned for the LEAP xylophone submission.
+# Tested with Python 3.10.10 on Windows 10.
+mujoco==3.9.0
+numpy==1.26.4
+imageio[ffmpeg]==2.37.3
+imageio-ffmpeg==0.6.0
+Pillow==12.1.1
+pytest==9.0.2
