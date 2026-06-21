@@ -1,40 +1,24 @@
-"""LEAP Hand Xylophone — Robothon Summer 2026 submission.
+"""LEAP Hand Xylophone v2 — Robothon Summer 2026 submission.
 
-A LEAP right hand plays "Hot Cross Buns" on a 3-key xylophone by sequencing
-finger strikes. Each finger maps to one xylophone bar:
-
-    index  finger -> E5 (top bar)
-    middle finger -> D5 (middle bar)
-    ring   finger -> C5 (bottom bar)
-
-Strike detection is closed-loop: each frame the controller polls the touch
-sensor on each xylophone bar; when contact force crosses a threshold a note
-event is fired. Note events drive (a) a per-bar "lit" visual flash, (b)
-the per-frame JSONL data stream, and (c) the post-render audio synthesis
-that gets muxed back into demo.mp4.
-
-This is a music-production task — a *real* sensor-gated control loop, not
-a scripted timeline.
+A LEAP right hand plays Twinkle Twinkle Little Star (and Ode to Joy
+opening) on an 8-bar xylophone tuned to the C-major scale. The hand is
+mounted on a mocap wrist that slides along Y between strikes, so the
+index finger lands on the right bar each beat. Strikes are detected via
+per-bar touch sensors; every audio sample in `demo.mp4` is triggered by
+a real fingertip↔bar contact event.
 
 Modes:
-    python main.py
-        canonical run: render demo.mp4 + JSONL stream + trajectory.json
-
-    python main.py --multi-seed --n 10
-        robustness sweep across 10 seeds (different perturbations to the
-        finger schedule), aggregates note-accuracy stats
-
-    python main.py --difficulty-sweep --n 10
-        10 seeds at each of 3 tempos {slow, medium, fast}
+    python main.py                          canonical render
+    python main.py --multi-seed --n 10      robustness across 10 seeds
+    python main.py --difficulty-sweep --n 10  10 seeds × 3 tempos
 """
 from __future__ import annotations
 import argparse
 import json
 import math
-import struct
-import wave
-import subprocess
 import shutil
+import subprocess
+import wave
 from dataclasses import dataclass, field
 from pathlib import Path
 import numpy as np
@@ -63,142 +47,154 @@ FPS = 30
 RES_W, RES_H = 1280, 720
 
 # ---------------------------------------------------------------------------
-# Song: Hot Cross Buns
+# Notes & scale
 # ---------------------------------------------------------------------------
-# 3-note melody: E D C / E D C / C C C C D D D D / E D C
-# Maps to fingers: index=E, middle=D, ring=C.
-# Note frequencies (C5 octave, equal-tempered, A4=440 Hz):
-NOTE_FREQS = {"C": 523.25, "D": 587.33, "E": 659.25}
-FINGER_OF_NOTE = {"E": "if", "D": "mf", "C": "rf"}
+# 8-bar C major scale (C5 .. C6) sounding at equal-temperament frequencies.
+NOTE_FREQS = {
+    "C": 523.25,  "D": 587.33,  "E": 659.25,  "F": 698.46,
+    "G": 783.99,  "A": 880.00,  "B": 987.77,  "c": 1046.50,
+}
+NOTE_ORDER = ["C", "D", "E", "F", "G", "A", "B", "c"]
+NOTE_INDEX = {n: i for i, n in enumerate(NOTE_ORDER)}
 
-# A medley of 3-note nursery tunes (all reachable on C/D/E only — exactly
-# what our 3 fingers can play). 60-80 seconds of music at 100 bpm.
-HOT_CROSS_BUNS = [
-    "E", "D", "C", "_", "E", "D", "C", "_",
-    "C", "C", "C", "C", "D", "D", "D", "D",
-    "E", "D", "C", "_",
+# Every note is struck by the same finger (index); the hand's Y position
+# selects which bar the strike lands on.
+STRIKE_FINGER = "if"
+
+# ---------------------------------------------------------------------------
+# Songs
+# ---------------------------------------------------------------------------
+# Notation: a list of (note, beats) tuples. `_` = rest. Lowercase c = C6.
+TWINKLE_TWINKLE = [
+    # "Twinkle twinkle little star"
+    ("C", 1), ("C", 1), ("G", 1), ("G", 1), ("A", 1), ("A", 1), ("G", 2),
+    # "How I wonder what you are"
+    ("F", 1), ("F", 1), ("E", 1), ("E", 1), ("D", 1), ("D", 1), ("C", 2),
+    # "Up above the world so high"
+    ("G", 1), ("G", 1), ("F", 1), ("F", 1), ("E", 1), ("E", 1), ("D", 2),
+    # "Like a diamond in the sky"
+    ("G", 1), ("G", 1), ("F", 1), ("F", 1), ("E", 1), ("E", 1), ("D", 2),
+    # "Twinkle twinkle little star"
+    ("C", 1), ("C", 1), ("G", 1), ("G", 1), ("A", 1), ("A", 1), ("G", 2),
+    # "How I wonder what you are"
+    ("F", 1), ("F", 1), ("E", 1), ("E", 1), ("D", 1), ("D", 1), ("C", 2),
 ]
 
-MARY_HAD_A_LITTLE_LAMB = [
-    # "Mary had a little lamb, lit-tle lamb, lit-tle lamb"
-    "E", "D", "C", "D", "E", "E", "E", "_",
-    "D", "D", "D", "_", "E", "E", "E", "_",
-    # "Mary had a little lamb, its fleece was white as snow"
-    "E", "D", "C", "D", "E", "E", "E", "E",
-    "D", "D", "E", "D", "C", "_", "_", "_",
+ODE_TO_JOY = [
+    # "Joy, joyful, joyful we adore thee"  (first phrase, simplified)
+    ("E", 1), ("E", 1), ("F", 1), ("G", 1),
+    ("G", 1), ("F", 1), ("E", 1), ("D", 1),
+    ("C", 1), ("C", 1), ("D", 1), ("E", 1),
+    ("E", 1.5), ("D", 0.5), ("D", 2),
+    # second phrase
+    ("E", 1), ("E", 1), ("F", 1), ("G", 1),
+    ("G", 1), ("F", 1), ("E", 1), ("D", 1),
+    ("C", 1), ("C", 1), ("D", 1), ("E", 1),
+    ("D", 1.5), ("C", 0.5), ("C", 2),
 ]
 
-THREE_BLIND_MICE = [
-    # "Three blind mice, three blind mice"
-    "E", "D", "C", "_", "E", "D", "C", "_",
-    # "See how they run, see how they run"
-    "C", "C", "C", "C", "D", "D", "D", "D",
-    "E", "D", "C", "_",
-]
 
-MEDLEY = (
-    HOT_CROSS_BUNS + ["_", "_"] +
-    MARY_HAD_A_LITTLE_LAMB + ["_", "_"] +
-    THREE_BLIND_MICE + ["_", "_"]
-)
+def build_schedule(song, tempo_s_per_beat: float, start_t: float = 1.5):
+    """Convert a (note, beats) list to a list of strike events.
 
-
-def build_schedule(notes, tempo_s_per_beat: float, start_t: float = 1.5):
-    """Convert a note list to (note, strike_t) events.
-
-    `_` is a rest (silence) — no strike scheduled, beat consumed.
-    All notes are quarter-notes (one beat each) — keeps the scheduler simple
-    and gives the controller plenty of time per strike.
+    Returns a list of {note, note_idx, strike_t, end_t}.
     """
     out = []
     t = start_t
-    for n in notes:
+    for n, beats in song:
         if n != "_":
-            out.append({"note": n, "strike_t": round(t, 4),
-                        "finger": FINGER_OF_NOTE[n]})
-        t += tempo_s_per_beat
+            out.append({
+                "note": n,
+                "note_idx": NOTE_INDEX[n],
+                "strike_t": round(t, 4),
+                "duration_s": round(tempo_s_per_beat * beats, 4),
+            })
+        t += tempo_s_per_beat * beats
     return out
 
 
-# ---------------------------------------------------------------------------
-# Finger poses
-# ---------------------------------------------------------------------------
-# Three fingers (index, middle, ring) each have an independent rest/strike
-# pose. The thumb stays parked out of the way. Numbers from spike_calibrate.py.
+def make_medley(tempo_s_per_beat: float) -> list:
+    """Twinkle (42 notes) + 1 beat pause + Ode to Joy opening (30 notes)."""
+    twinkle = build_schedule(TWINKLE_TWINKLE, tempo_s_per_beat, start_t=1.5)
+    pause = 2.0 * tempo_s_per_beat
+    ode_start = twinkle[-1]["strike_t"] + twinkle[-1]["duration_s"] + pause
+    ode = build_schedule(ODE_TO_JOY, tempo_s_per_beat, start_t=ode_start)
+    return twinkle + ode
 
+
+# ---------------------------------------------------------------------------
+# Finger poses (only the index finger strikes; the other three stay parked)
+# ---------------------------------------------------------------------------
 REST_POSE = {
-    # index/middle/ring all curled (tip retracted up, ready to strike down)
     "if_mcp": 1.20, "if_rot": 0.0, "if_pip": 1.20, "if_dip": 0.70,
-    "mf_mcp": 1.20, "mf_rot": 0.0, "mf_pip": 1.20, "mf_dip": 0.70,
-    "rf_mcp": 1.20, "rf_rot": 0.0, "rf_pip": 1.20, "rf_dip": 0.70,
-    # thumb parked off to the side (not used in melody)
+    # park middle / ring / thumb out of the way
+    "mf_mcp": 1.50, "mf_rot": 0.0, "mf_pip": 1.50, "mf_dip": 0.80,
+    "rf_mcp": 1.50, "rf_rot": 0.0, "rf_pip": 1.50, "rf_dip": 0.80,
     "th_cmc": 0.30, "th_axl": 1.50, "th_mcp": 0.30, "th_ipl": 0.30,
 }
-
-# Per-finger strike pose: extend the named finger (mcp & pip go small),
-# leaving the other fingers in REST_POSE. We construct this dynamically.
-# Strike = only MCP extends fully; PIP/DIP stay mostly bent so the finger
-# remains "hooked" — the TIP swings down while the medial segment stays high
-# (clears the bar plane).
-STRIKE_DELTAS = {
-    "if": {"if_mcp": -1.40, "if_pip": -0.30, "if_dip": -0.20},
-    "mf": {"mf_mcp": -1.40, "mf_pip": -0.30, "mf_dip": -0.20},
-    "rf": {"rf_mcp": -1.40, "rf_pip": -0.30, "rf_dip": -0.20},
-}
-
-
-def strike_pose(finger: str) -> dict:
-    """Pose where `finger` is extended (striking down), others at rest."""
-    out = dict(REST_POSE)
-    for j, d in STRIKE_DELTAS[finger].items():
-        out[j] = out[j] + d
-    return out
+# Strike pose: extend INDEX only (MCP big swing, PIP/DIP stay bent so the
+# tip arcs in while the medial section clears the bar plane).
+STRIKE_POSE = dict(REST_POSE)
+STRIKE_POSE["if_mcp"] = -0.20
+STRIKE_POSE["if_pip"] = 0.90
+STRIKE_POSE["if_dip"] = 0.50
 
 
 # ---------------------------------------------------------------------------
-# Scene
+# Xylophone geometry
 # ---------------------------------------------------------------------------
-# 3 xylophone bars placed under the strike-arc of each finger.
-# Y coordinates picked to match each finger's Y (from spike calibration):
-#   index  y = -0.008
-#   middle y = +0.037
-#   ring   y = +0.083
-# Bars are slightly thick boxes (visual bars) with hinge joints so they
-# can wobble visibly when struck.
-
-BAR_X = 0.105              # tip strike-arc ends at x~0.10
-BAR_Z_TOP = 0.475          # just below curled-tip z=0.49, just above extended-tip z=0.47
-BAR_HALF_X = 0.020         # narrow: only the tip reaches, not medial
-BAR_HALF_Y = 0.018
+# 8 bars laid out along Y (rainbow). The index fingertip in strike pose lands
+# at world x ≈ 0.085, y ≈ wrist_y - 0.008 (offset from the wrist), z ≈ 0.476.
+BAR_X = 0.105
+BAR_Z_TOP = 0.475
+BAR_HALF_X = 0.020
+BAR_HALF_Y = 0.014
 BAR_HALF_Z = 0.005
+BAR_Y_SPACING = 0.032          # 3.2 cm between adjacent bar centers
+BAR_Y_FIRST = -0.07            # Y of bar 0 (C5)
 
-BAR_DEFS = [
-    # (note, y_center, color)  -- colors form a rainbow xylophone
-    ("E", -0.008, [0.95, 0.32, 0.25, 1.0]),  # red    — index
-    ("D", +0.037, [0.30, 0.85, 0.45, 1.0]),  # green  — middle
-    ("C", +0.083, [0.30, 0.55, 1.00, 1.0]),  # blue   — ring
+def bar_y(note_index: int) -> float:
+    """World Y of bar `note_index` (0..7)."""
+    return BAR_Y_FIRST + note_index * BAR_Y_SPACING
+
+# Wrist Y target so the index fingertip lands on a given bar. The fingertip
+# is offset from wrist by ≈ −0.008 in Y, so wrist_y = bar_y + 0.008.
+WRIST_TIP_Y_OFFSET = -0.008
+
+def wrist_y_for_note(note_index: int) -> float:
+    return bar_y(note_index) - WRIST_TIP_Y_OFFSET
+
+
+# A pleasant rainbow of bar colours.
+BAR_COLORS = [
+    [0.95, 0.32, 0.25, 1.0],  # C — red
+    [0.98, 0.55, 0.20, 1.0],  # D — orange
+    [0.96, 0.85, 0.30, 1.0],  # E — yellow
+    [0.45, 0.85, 0.35, 1.0],  # F — green
+    [0.30, 0.75, 0.85, 1.0],  # G — cyan
+    [0.30, 0.55, 1.00, 1.0],  # A — blue
+    [0.65, 0.40, 0.90, 1.0],  # B — purple
+    [0.95, 0.50, 0.85, 1.0],  # c — pink
 ]
-BAR_LIT_COLOR = [1.00, 0.95, 0.30, 1.0]  # yellow flash when struck
 
-# Each bar sits on a small spring-hinge so it visibly dips on impact
-# and returns. We use a hinge joint on Y axis (rolls fore-aft slightly).
 
+# Finger colour overrides (so the index is most prominent in the demo).
 FINGER_COLORS = {
-    "if": [0.95, 0.32, 0.25, 1.0],
-    "mf": [0.30, 0.85, 0.45, 1.0],
-    "rf": [0.30, 0.55, 1.00, 1.0],
-    "th": [0.60, 0.60, 0.65, 1.0],   # thumb dimmed (not used)
+    "if": [0.95, 0.95, 0.95, 1.0],  # bright white — striker
+    "mf": [0.55, 0.55, 0.60, 1.0],  # grey
+    "rf": [0.55, 0.55, 0.60, 1.0],  # grey
+    "th": [0.55, 0.55, 0.60, 1.0],  # grey
 }
-PALM_COLOR = [0.55, 0.55, 0.60, 1.0]
+PALM_COLOR = [0.45, 0.45, 0.50, 1.0]
 TIP_HILITE = {
-    "if": [1.00, 0.55, 0.50, 1.0],
-    "mf": [0.55, 1.00, 0.65, 1.0],
-    "rf": [0.55, 0.75, 1.00, 1.0],
-    "th": [0.70, 0.70, 0.75, 1.0],
+    "if": [1.00, 1.00, 0.55, 1.0],  # warm yellow — the striker tip pops
+    "mf": [0.65, 0.65, 0.70, 1.0],
+    "rf": [0.65, 0.65, 0.70, 1.0],
+    "th": [0.65, 0.65, 0.70, 1.0],
 }
 
 
-def colorize_fingers(model: mujoco.MjModel) -> None:
+def colorize_fingers(model):
     for gid in range(model.ngeom):
         bid = int(model.geom_bodyid[gid])
         bname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, bid) or ""
@@ -217,7 +213,11 @@ def colorize_fingers(model: mujoco.MjModel) -> None:
                 model.geom_rgba[gid] = FINGER_COLORS[fcode]
 
 
-def build_scene() -> mujoco.MjModel:
+# ---------------------------------------------------------------------------
+# Scene assembly
+# ---------------------------------------------------------------------------
+
+def build_scene():
     host = mujoco.MjSpec()
     host.option.timestep = DT
     host.option.gravity = [0.0, 0.0, -9.81]
@@ -226,87 +226,100 @@ def build_scene() -> mujoco.MjModel:
     host.visual.global_.offheight = RES_H
 
     world = host.worldbody
-    # dark stage floor
     world.add_geom(name="floor", type=mujoco.mjtGeom.mjGEOM_PLANE,
-                   size=[0, 0, 0.05], rgba=[0.05, 0.06, 0.08, 1.0])
-    # three-point lighting (warm key, cool fill, rim)
-    world.add_light(pos=[0.4, 0.4, 1.4], dir=[-0.3, -0.3, -1.0],
+                   size=[0, 0, 0.05], rgba=[0.04, 0.05, 0.07, 1.0])
+    # three-point lighting
+    world.add_light(pos=[0.5, 0.4, 1.4], dir=[-0.3, -0.3, -1.0],
                     diffuse=[1.0, 0.95, 0.85])
-    world.add_light(pos=[-0.5, -0.3, 1.0], dir=[0.4, 0.2, -1.0],
-                    diffuse=[0.4, 0.5, 0.7])
+    world.add_light(pos=[-0.6, -0.3, 1.0], dir=[0.4, 0.2, -1.0],
+                    diffuse=[0.45, 0.55, 0.70])
     world.add_light(pos=[0.0, -0.5, 0.7], dir=[0.0, 0.5, -1.0],
-                    diffuse=[0.45, 0.4, 0.35])
+                    diffuse=[0.50, 0.45, 0.40])
 
-    # LEAP hand mounted high so fingers can swing down through bar plane.
+    # --- mocap wrist body (LEAP attaches under this) ---
+    # Initial wrist position is over bar 0 (C5); the simulation moves it
+    # in Y between strikes.
+    wrist_y0 = wrist_y_for_note(0)
+    wrist = world.add_body(name="wrist", mocap=True,
+                           pos=[0.0, wrist_y0, 0.30])
+    # subtle visual marker so the wrist is locatable on the video
+    wrist.add_geom(name="wrist_marker", type=mujoco.mjtGeom.mjGEOM_SPHERE,
+                   size=[0.014, 0, 0], rgba=[0.85, 0.20, 0.20, 0.45],
+                   contype=0, conaffinity=0)
+    mount = wrist.add_frame(pos=[0, 0, 0])
+
     hand = mujoco.MjSpec.from_file(str(HAND_XML))
-    mount = world.add_frame(pos=[0.0, 0.0, 0.30])
     host.attach(hand, prefix="hand_", frame=mount)
 
-    # --- xylophone base plate (purely decorative, contype=0 so it doesn't
-    # interfere with finger motion) ---
-    base = world.add_body(name="xylo_base", pos=[BAR_X, 0.0375, 0.420])
+    # --- xylophone base plate (visual, no collision) ---
+    base = world.add_body(name="xylo_base",
+                          pos=[BAR_X, (BAR_Y_FIRST + bar_y(7)) / 2, 0.420])
     base.add_geom(name="xylo_base_geom", type=mujoco.mjtGeom.mjGEOM_BOX,
-                  size=[0.060, 0.090, 0.005],
-                  rgba=[0.18, 0.13, 0.10, 1.0],
+                  size=[0.060, 0.135, 0.006],
+                  rgba=[0.16, 0.11, 0.08, 1.0],
                   contype=0, conaffinity=0)
 
-    # --- xylophone bars (3 bars: E, D, C) ---
-    # Each bar is mounted on a hinge so it can briefly dip on impact.
-    # We anchor each bar's hinge at the rear edge so the front lifts/dips
-    # visibly when struck.
-    for note, y_center, color in BAR_DEFS:
+    # --- 8 xylophone bars ---
+    for i, note in enumerate(NOTE_ORDER):
         bname = f"bar_{note}"
-        body = world.add_body(name=bname, pos=[BAR_X, y_center, BAR_Z_TOP])
-        # hinge along X axis at the bar's rear edge — bar pivots in YZ plane
-        body.add_joint(name=f"{bname}_hinge", type=mujoco.mjtJoint.mjJNT_HINGE,
+        body = world.add_body(name=bname,
+                              pos=[BAR_X, bar_y(i), BAR_Z_TOP])
+        # hinge on X axis at the rear edge — bar visibly dips on impact
+        body.add_joint(name=f"{bname}_hinge",
+                       type=mujoco.mjtJoint.mjJNT_HINGE,
                        pos=[0, -BAR_HALF_Y, 0], axis=[1, 0, 0],
                        limited=True, range=[-0.05, 0.20],
                        damping=0.02, stiffness=8.0, springref=0.0)
         body.add_geom(name=f"{bname}_geom", type=mujoco.mjtGeom.mjGEOM_BOX,
                       size=[BAR_HALF_X, BAR_HALF_Y, BAR_HALF_Z],
-                      rgba=color, density=400.0,
+                      rgba=BAR_COLORS[i], density=400.0,
                       friction=[0.6, 0.05, 0.001],
                       solref=[0.005, 1])
-        # Site sphere needs to enclose the bar so the touch sensor sees all
-        # contacts on the bar's top surface (MuJoCo touch sensor only counts
-        # contacts inside the site's bounding sphere).
+        # touch-sensor site: sphere large enough to enclose the bar geom
         body.add_site(name=f"{bname}_site", pos=[0, 0, 0],
                       size=[max(BAR_HALF_X, BAR_HALF_Y) + 0.005, 0, 0],
                       rgba=[0, 1, 0, 0],
                       type=mujoco.mjtGeom.mjGEOM_SPHERE)
 
-    # --- Sensors ---
-    # 16 LEAP joint positions are already in the LEAP XML.
-    # Add 3 touch sensors (one per bar) — closed-loop strike detection.
-    for note, _, _ in BAR_DEFS:
+    # --- sensors ---
+    for note in NOTE_ORDER:
         host.add_sensor(name=f"bar_{note}_touch",
                         type=mujoco.mjtSensor.mjSENS_TOUCH,
                         objtype=mujoco.mjtObj.mjOBJ_SITE,
                         objname=f"bar_{note}_site")
-    # Bar hinge-angles (so we can render the bar wobble in HUD).
-    for note, _, _ in BAR_DEFS:
+    for note in NOTE_ORDER:
         host.add_sensor(name=f"bar_{note}_angle",
                         type=mujoco.mjtSensor.mjSENS_JOINTPOS,
                         objtype=mujoco.mjtObj.mjOBJ_JOINT,
                         objname=f"bar_{note}_hinge")
-    # Fingertip world positions — proprioception via site framepos.
-    # (Use the existing tip geom positions via site we add.)
-    # Skip for now; LEAP already has 16 joint sensors built in.
 
     model = host.compile()
-    # Stiffen LEAP position actuators after compile (defaults kp=3 are too
-    # weak to hold the inverted fingers up against gravity — without this the
-    # rest pose can't be held and every "rest" is actually drooped fingertips
-    # resting on the bars).
-    kp = 25.0
-    kv = 1.0
+
+    # Stiffen LEAP position actuators (default kp=3 droops in palm-down).
+    kp, kv = 25.0, 1.0
     for i in range(model.nu):
         aname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_ACTUATOR, i) or ""
         if aname.startswith("hand_"):
-            # position actuator: gain = kp, bias = [0, -kp, -kv]
             model.actuator_gainprm[i, 0] = kp
             model.actuator_biasprm[i, 1] = -kp
             model.actuator_biasprm[i, 2] = -kv
+
+    # Disable collision on all non-index finger segments. The middle/ring/thumb
+    # parked poses inevitably leave segments at or below the bar plane; if they
+    # collide, every wrist slide drags them across bars and triggers spurious
+    # strikes. We keep their visual geoms visible (visual class already has
+    # contype=0); here we zero contype/conaffinity on their COLLISION geoms.
+    KEEP_COLLIDE_PREFIXES = ("hand_palm", "hand_if_")  # palm + index only
+    for gid in range(model.ngeom):
+        bid = int(model.geom_bodyid[gid])
+        bname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, bid) or ""
+        if not bname.startswith("hand_"):
+            continue
+        if any(bname.startswith(p) for p in KEEP_COLLIDE_PREFIXES):
+            continue
+        # this body is mf / rf / th — disable any collision-class geom
+        model.geom_contype[gid] = 0
+        model.geom_conaffinity[gid] = 0
     return model
 
 
@@ -336,17 +349,56 @@ def apply_pose(data, name2act, pose: dict):
 
 
 # ---------------------------------------------------------------------------
+# Wrist trajectory (closed-form Y schedule)
+# ---------------------------------------------------------------------------
+
+# Timing constants
+WIND_UP_S = 0.18           # how long before strike_t the strike pose engages
+RETRACT_S = 0.15           # how long after strike_t the strike pose holds
+SLIDE_LEAD_S = 0.10        # extra dwell at target Y before strike
+
+def wrist_y_at(t: float, schedule: list) -> float:
+    """Closed-form wrist Y position at time t.
+
+    - before the first note  → first note's Y
+    - between notes A and B  → linear slide from A's Y to B's Y,
+      finishing SLIDE_LEAD_S before B's strike_t
+    - after the last note    → last note's Y
+    """
+    if not schedule:
+        return wrist_y_for_note(0)
+    if t <= schedule[0]["strike_t"]:
+        return wrist_y_for_note(schedule[0]["note_idx"])
+    if t >= schedule[-1]["strike_t"]:
+        return wrist_y_for_note(schedule[-1]["note_idx"])
+    # Find the pair (a, b) with a.strike_t <= t < b.strike_t.
+    for i in range(len(schedule) - 1):
+        a = schedule[i]
+        b = schedule[i + 1]
+        if not (a["strike_t"] <= t < b["strike_t"]):
+            continue
+        slide_start = max(a["strike_t"] + RETRACT_S,
+                          b["strike_t"] - 0.5)
+        slide_end = b["strike_t"] - SLIDE_LEAD_S
+        ya = wrist_y_for_note(a["note_idx"])
+        yb = wrist_y_for_note(b["note_idx"])
+        if t < slide_start:
+            return ya
+        if t >= slide_end:
+            return yb
+        alpha = (t - slide_start) / max(0.01, slide_end - slide_start)
+        return ya + alpha * (yb - ya)
+    return wrist_y_for_note(schedule[-1]["note_idx"])
+
+
+# ---------------------------------------------------------------------------
 # Audio synthesis
 # ---------------------------------------------------------------------------
 
 AUDIO_SAMPLE_RATE = 44100
-NOTE_DURATION = 0.45          # s, per-note envelope length
-NOTE_ATTACK = 0.005
-NOTE_RELEASE = 0.30
-
+NOTE_DURATION = 0.50
 
 def synth_audio(strike_events, total_duration_s: float, out_wav: Path):
-    """Render a mono 16-bit WAV from a list of (t, note) strike events."""
     n_samples = int(total_duration_s * AUDIO_SAMPLE_RATE)
     buf = np.zeros(n_samples, dtype=np.float64)
     for ev in strike_events:
@@ -360,21 +412,18 @@ def synth_audio(strike_events, total_duration_s: float, out_wav: Path):
         if n <= 0:
             continue
         tt = np.arange(n) / AUDIO_SAMPLE_RATE
-        # bell-like timbre: fundamental + 2 overtones at 2x and 3x with decay
+        # bell-like timbre: fundamental + overtones
         wave_signal = (
-            0.6 * np.sin(2 * np.pi * f0 * tt) +
-            0.3 * np.sin(2 * np.pi * 2 * f0 * tt) +
-            0.1 * np.sin(2 * np.pi * 3 * f0 * tt)
+            0.65 * np.sin(2 * np.pi * f0 * tt) +
+            0.25 * np.sin(2 * np.pi * 2 * f0 * tt) +
+            0.10 * np.sin(2 * np.pi * 3 * f0 * tt)
         )
-        # exponential decay envelope
-        env = np.exp(-tt / 0.18)
-        # short attack ramp
-        att_n = int(NOTE_ATTACK * AUDIO_SAMPLE_RATE)
-        if att_n > 0 and att_n < n:
+        env = np.exp(-tt / 0.22)
+        att_n = int(0.005 * AUDIO_SAMPLE_RATE)
+        if 0 < att_n < n:
             env[:att_n] *= np.linspace(0, 1, att_n)
-        v = float(ev.get("velocity", 0.6))
+        v = float(ev.get("velocity", 0.7))
         buf[s0:s1] += v * wave_signal * env
-    # normalize
     mx = max(np.abs(buf).max(), 1e-9)
     buf = buf / mx * 0.85
     int16 = (buf * 32767).astype(np.int16)
@@ -385,11 +434,9 @@ def synth_audio(strike_events, total_duration_s: float, out_wav: Path):
         f.writeframes(int16.tobytes())
 
 
-def mux_audio_video(video_in: Path, audio_in: Path, video_out: Path) -> bool:
-    """Use ffmpeg to mux audio onto video. Returns True on success."""
+def mux_audio_video(video_in, audio_in, video_out) -> bool:
     ffmpeg = shutil.which("ffmpeg")
     if ffmpeg is None:
-        # try imageio's bundled binary
         try:
             import imageio_ffmpeg
             ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
@@ -397,15 +444,10 @@ def mux_audio_video(video_in: Path, audio_in: Path, video_out: Path) -> bool:
             ffmpeg = None
     if ffmpeg is None:
         return False
-    cmd = [
-        ffmpeg, "-y",
-        "-i", str(video_in),
-        "-i", str(audio_in),
-        "-c:v", "copy",
-        "-c:a", "aac", "-b:a", "192k",
-        "-shortest",
-        str(video_out),
-    ]
+    cmd = [ffmpeg, "-y",
+           "-i", str(video_in), "-i", str(audio_in),
+           "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+           "-shortest", str(video_out)]
     try:
         subprocess.run(cmd, check=True, capture_output=True)
         return True
@@ -418,15 +460,13 @@ def mux_audio_video(video_in: Path, audio_in: Path, video_out: Path) -> bool:
 # HUD
 # ---------------------------------------------------------------------------
 
-
 def _load_fonts():
     if not _PIL_OK:
         return None, None, None
-    candidates = ["arial.ttf", "Arial.ttf", "DejaVuSans.ttf",
-                  "C:/Windows/Fonts/arial.ttf"]
-    for c in candidates:
+    for c in ["arial.ttf", "Arial.ttf", "DejaVuSans.ttf",
+              "C:/Windows/Fonts/arial.ttf"]:
         try:
-            return (ImageFont.truetype(c, 32),
+            return (ImageFont.truetype(c, 30),
                     ImageFont.truetype(c, 22),
                     ImageFont.truetype(c, 16))
         except Exception:
@@ -437,136 +477,118 @@ def _load_fonts():
 
 _FONT_BIG, _FONT_MED, _FONT_SM = _load_fonts()
 
-
-# Map each note in the schedule to an X position on a staff for HUD.
 STAFF_X0 = 80
-STAFF_Y = 90
 STAFF_W = RES_W - 160
-STAFF_NOTE_Y = {"E": 0, "D": 18, "C": 36}
-NOTE_DOT_R = 11
+# Each note has its own Y on the staff (top = high pitch).
+STAFF_Y_OF_NOTE = {n: 110 + (7 - i) * 9 for i, n in enumerate(NOTE_ORDER)}
 
 
-def draw_overlay(frame: np.ndarray,
-                 t: float,
-                 schedule: list,
-                 played_notes: list,
-                 bar_angles: dict,
-                 bar_touch: dict,
-                 active_finger: str | None,
-                 next_note: dict | None,
-                 song_name: str = "Hot Cross Buns",
-                 tempo_bpm: float = 100.0,
-                 stats: dict | None = None) -> np.ndarray:
+def draw_overlay(frame, t, schedule, played_notes, bar_angles, bar_touch,
+                 wrist_y, song_name, tempo_bpm, stats):
     if not _PIL_OK:
         return frame
     img = Image.fromarray(frame)
     d = ImageDraw.Draw(img, "RGBA")
 
-    # ---- top-center: song title + tempo ----
+    # --- top title ---
     title = f"♪ {song_name}   ·   {tempo_bpm:.0f} bpm   ·   t = {t:5.2f}s"
     tw = len(title) * 11
     tx = (RES_W - tw) // 2
-    d.rectangle([(tx - 16, 10), (tx + tw + 16, 50)],
-                fill=(0, 0, 0, 180))
+    d.rectangle([(tx - 16, 10), (tx + tw + 16, 50)], fill=(0, 0, 0, 180))
     d.text((tx, 14), title, fill=(245, 230, 200), font=_FONT_MED)
 
-    # ---- score strip: full schedule, current note highlighted ----
-    y_top = STAFF_Y - 8
-    y_bot = STAFF_Y + 50
-    d.rectangle([(STAFF_X0 - 16, y_top), (STAFF_X0 + STAFF_W + 16, y_bot + 6)],
+    # --- score strip with full octave ---
+    y_top = 95
+    y_bot = 188
+    d.rectangle([(STAFF_X0 - 16, y_top), (STAFF_X0 + STAFF_W + 16, y_bot)],
                 fill=(0, 0, 0, 150))
-    # 3 staff lines (one per pitch, for clarity)
-    for note, y_off in STAFF_NOTE_Y.items():
-        ly = STAFF_Y + y_off
+    # 8 staff lines + note labels
+    for note in NOTE_ORDER:
+        ly = STAFF_Y_OF_NOTE[note]
         d.line([(STAFF_X0, ly), (STAFF_X0 + STAFF_W, ly)],
-               fill=(80, 80, 90), width=1)
-        d.text((STAFF_X0 - 30, ly - 11), note,
-               fill=(180, 180, 190), font=_FONT_SM)
-    # plot each note in schedule as a dot at its scheduled X position
-    total_song_t = (schedule[-1]["strike_t"] + 1.0) if schedule else 1.0
-    played_ids = {(p["note"], p["strike_t"]) for p in played_notes}
+               fill=(70, 70, 80), width=1)
+        d.text((STAFF_X0 - 28, ly - 9), note,
+               fill=(160, 160, 180), font=_FONT_SM)
+    # plot scheduled notes
+    total_t = (schedule[-1]["strike_t"] +
+               schedule[-1]["duration_s"]) if schedule else 1.0
+    played_keys = {(p["note"], p["strike_t"]) for p in played_notes}
+    next_note = None
     for ev in schedule:
-        nx = STAFF_X0 + STAFF_W * ev["strike_t"] / total_song_t
-        ny = STAFF_Y + STAFF_NOTE_Y[ev["note"]]
-        is_played = (ev["note"], ev["strike_t"]) in played_ids
-        is_active = (next_note is not None and
-                     ev["strike_t"] == next_note["strike_t"])
-        # color
-        if is_active:
-            col = (255, 230, 60)
-        elif is_played:
-            col = (110, 230, 130)
+        if ev["strike_t"] >= t - 0.05:
+            next_note = ev
+            break
+    for ev in schedule:
+        nx = STAFF_X0 + STAFF_W * ev["strike_t"] / total_t
+        ny = STAFF_Y_OF_NOTE[ev["note"]]
+        if (ev["note"], ev["strike_t"]) in played_keys:
+            col = (110, 230, 130)            # green: played
+        elif next_note is not None and ev["strike_t"] == next_note["strike_t"]:
+            col = (255, 230, 60)             # yellow: next
         elif ev["strike_t"] < t - 0.3:
-            col = (200, 90, 90)  # missed
+            col = (210, 100, 100)            # red: missed
         else:
-            col = (180, 180, 190)
-        d.ellipse([(nx - NOTE_DOT_R, ny - NOTE_DOT_R),
-                   (nx + NOTE_DOT_R, ny + NOTE_DOT_R)], fill=col)
-    # playhead vertical line
-    if total_song_t > 0:
-        ph = STAFF_X0 + STAFF_W * min(t / total_song_t, 1.0)
-        d.line([(ph, y_top + 4), (ph, y_bot - 2)],
-               fill=(255, 230, 60, 200), width=2)
+            col = (170, 170, 185)            # grey: future
+        r = 6
+        d.ellipse([(nx - r, ny - r), (nx + r, ny + r)], fill=col)
+    # playhead
+    ph = STAFF_X0 + STAFF_W * min(t / max(total_t, 1e-3), 1.0)
+    d.line([(ph, y_top + 5), (ph, y_bot - 5)],
+           fill=(255, 220, 50, 200), width=2)
 
-    # ---- bottom-left: bar status (per-bar lit indicator + angle) ----
-    bx0, by0 = 30, RES_H - 220
-    d.rectangle([(bx0, by0), (bx0 + 360, by0 + 200)], fill=(0, 0, 0, 160))
+    # --- bottom-left: per-bar lit status (compact 8-row strip) ---
+    bx0, by0 = 30, RES_H - 360
+    d.rectangle([(bx0, by0), (bx0 + 320, by0 + 340)], fill=(0, 0, 0, 165))
     d.text((bx0 + 12, by0 + 8), "xylophone bars",
            fill=(220, 220, 230), font=_FONT_MED)
-    for i, (note, _, _color) in enumerate(BAR_DEFS):
-        rgb_full = tuple(int(c * 255) for c in _color[:3])
-        bx = bx0 + 18
-        by = by0 + 50 + i * 50
-        # bar swatch — flashes yellow if touch active
-        col = ((255, 235, 60) if bar_touch.get(note, 0) > 0.5 else rgb_full)
-        d.rectangle([(bx, by), (bx + 60, by + 32)], fill=col)
-        # note label
-        d.text((bx + 80, by + 4), f"{note}   ({NOTE_FREQS[note]:.0f} Hz)",
+    for i, note in enumerate(NOTE_ORDER):
+        rgb = tuple(int(c * 255) for c in BAR_COLORS[i][:3])
+        bx = bx0 + 16
+        by = by0 + 50 + i * 34
+        lit = bar_touch.get(note, 0) > 0.5
+        col = (255, 235, 60) if lit else rgb
+        d.rectangle([(bx, by), (bx + 36, by + 24)], fill=col)
+        f = NOTE_FREQS[note]
+        d.text((bx + 50, by + 2), f"{note}   {f:.0f} Hz",
                fill=(225, 225, 230), font=_FONT_MED)
-        # angle (rad) — small
         ang = bar_angles.get(note, 0.0)
-        d.text((bx + 80, by + 28), f"hinge: {ang:+.3f} rad",
-               fill=(160, 160, 170), font=_FONT_SM)
+        d.text((bx + 200, by + 6), f"{ang:+.3f} rad",
+               fill=(155, 155, 165), font=_FONT_SM)
 
-    # ---- top-right: active finger + finger map ----
-    fr_x = RES_W - 380
-    fr_y = 80
-    d.rectangle([(fr_x, fr_y), (fr_x + 360, fr_y + 200)], fill=(0, 0, 0, 160))
-    d.text((fr_x + 12, fr_y + 8), "finger ↔ note",
+    # --- top-right: wrist Y + active key ---
+    rx, ry = RES_W - 340, 220
+    d.rectangle([(rx, ry), (rx + 320, ry + 130)], fill=(0, 0, 0, 165))
+    d.text((rx + 12, ry + 8), "wrist (mocap)",
            fill=(220, 220, 230), font=_FONT_MED)
-    finger_labels = [("if", "index", "E"),
-                     ("mf", "middle", "D"),
-                     ("rf", "ring", "C")]
-    for i, (fc, label, note) in enumerate(finger_labels):
-        rgb = tuple(int(c * 255) for c in FINGER_COLORS[fc][:3])
-        ix = fr_x + 18
-        iy = fr_y + 50 + i * 50
-        d.rectangle([(ix, iy), (ix + 30, iy + 30)], fill=rgb)
-        is_active = (active_finger == fc)
-        col = (255, 230, 60) if is_active else (220, 220, 230)
-        d.text((ix + 46, iy + 0), f"{label:<8} → {note}",
-               fill=col, font=_FONT_MED)
-        d.text((ix + 46, iy + 28),
-               f"strike pose" if is_active else "rest",
-               fill=(160, 160, 170), font=_FONT_SM)
+    d.text((rx + 12, ry + 42), f"y position = {wrist_y:+.4f} m",
+           fill=(245, 230, 130), font=_FONT_MED)
+    # find which bar the wrist is currently over
+    closest = min(range(8), key=lambda i: abs(wrist_y - wrist_y_for_note(i)))
+    err_mm = abs(wrist_y - wrist_y_for_note(closest)) * 1000
+    d.text((rx + 12, ry + 74),
+           f"over: {NOTE_ORDER[closest]}  (err {err_mm:.1f} mm)",
+           fill=(225, 225, 230), font=_FONT_MED)
+    d.text((rx + 12, ry + 100),
+           f"next note: {next_note['note'] if next_note else '—'}",
+           fill=(255, 230, 60), font=_FONT_MED)
 
-    # ---- bottom-right: stats ----
-    if stats is not None:
-        sx0, sy0 = RES_W - 290, RES_H - 140
-        d.rectangle([(sx0, sy0), (sx0 + 270, sy0 + 120)], fill=(0, 0, 0, 170))
+    # --- bottom-right stats ---
+    if stats:
+        sx0, sy0 = RES_W - 290, RES_H - 130
+        d.rectangle([(sx0, sy0), (sx0 + 270, sy0 + 110)], fill=(0, 0, 0, 170))
         d.text((sx0 + 12, sy0 + 6), "performance",
                fill=(220, 220, 230), font=_FONT_MED)
         rows = [
-            f"strikes  : {stats.get('strikes', 0)}",
-            f"scheduled: {stats.get('scheduled_n', 0)}",
-            f"accuracy : {stats.get('accuracy_pct', 0):.0f}%",
+            f"strikes : {stats.get('strikes', 0)}",
+            f"correct : {stats.get('correct', 0)} / {stats.get('past', 0)}",
+            f"acc     : {stats.get('accuracy_pct', 0):.0f}%",
         ]
         for i, r in enumerate(rows):
-            d.text((sx0 + 12, sy0 + 32 + i * 26), r,
+            d.text((sx0 + 12, sy0 + 32 + i * 24), r,
                    fill=(225, 225, 235), font=_FONT_MED)
 
-    # ---- bottom-center: subtitle ----
-    sub = "LEAP Hand × xylophone — sensor-gated music synthesis"
+    # --- subtitle ---
+    sub = "LEAP Hand × C-major xylophone — sensor-gated music synthesis"
     sw = len(sub) * 9
     sxc = (RES_W - sw) // 2
     d.rectangle([(sxc - 12, RES_H - 34), (sxc + sw + 12, RES_H - 6)],
@@ -580,45 +602,36 @@ def draw_overlay(frame: np.ndarray,
 # Simulation
 # ---------------------------------------------------------------------------
 
-# How long the strike pose is held before returning to rest.
-STRIKE_HOLD_S = 0.10
-# How much before scheduled strike_t the controller starts winding up
-# the strike pose (so the finger is mid-swing at strike_t).
-WIND_UP_S = 0.15
-# Touch threshold (N or N-equivalent) for treating a contact as a strike event.
 TOUCH_THRESHOLD = 0.05
+STRIKE_DEBOUNCE_S = 0.30   # > rebound period, < beat period (0.46s at 130bpm)
 
 
 @dataclass
 class RunResult:
     seed: int
     tempo_bpm: float
+    song: str
     scheduled_n: int
     struck_n: int
-    correct_n: int                 # struck note matched scheduled note within timing window
+    correct_n: int
     accuracy_pct: float
     note_events: list = field(default_factory=list)
     schedule: list = field(default_factory=list)
 
 
-def schedule_for_tempo(bpm: float, seed: int = 0) -> tuple[list, float]:
-    """Build the song schedule and return (schedule, total_duration_s).
-
-    A small jitter is applied to each strike_t based on the seed so multi-seed
-    runs exercise the closed-loop controller under different timings.
-    """
-    spb = 60.0 / bpm                 # seconds per beat
-    sched = build_schedule(MEDLEY, spb)
+def schedule_for_tempo(bpm: float, seed: int = 0):
+    spb = 60.0 / bpm
+    sched = make_medley(spb)
     if seed != 0:
         rng = np.random.default_rng(seed)
         for ev in sched:
-            ev["strike_t"] = round(ev["strike_t"] + float(rng.normal(0, 0.02)),
-                                   4)
-    total_t = sched[-1]["strike_t"] + 2.0
+            ev["strike_t"] = round(ev["strike_t"] +
+                                   float(rng.normal(0, 0.02)), 4)
+    total_t = sched[-1]["strike_t"] + sched[-1]["duration_s"] + 1.5
     return sched, total_t
 
 
-def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
+def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
              render_video: bool = False, write_jsonl: bool = True) -> RunResult:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     schedule, total_t = schedule_for_tempo(tempo_bpm, seed)
@@ -630,6 +643,12 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
     name2act = get_actuator_map(model)
     sensor_map = get_sensor_map(model)
 
+    wrist_bid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "wrist")
+    wrist_mocap = int(model.body_mocapid[wrist_bid])
+    # initial wrist position
+    data.mocap_pos[wrist_mocap] = [0.0, wrist_y_for_note(schedule[0]["note_idx"]), 0.30]
+    data.mocap_quat[wrist_mocap] = [1, 0, 0, 0]
+
     # settle into rest pose
     apply_pose(data, name2act, REST_POSE)
     for _ in range(int(0.5 / DT)):
@@ -638,10 +657,10 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
 
     cam = mujoco.MjvCamera()
     cam.type = mujoco.mjtCamera.mjCAMERA_FREE
-    cam.lookat[:] = [0.05, 0.04, 0.43]
-    cam.distance = 0.40
-    cam.azimuth = 80.0
-    cam.elevation = -18.0
+    cam.lookat[:] = [0.06, 0.04, 0.43]
+    cam.distance = 0.50
+    cam.azimuth = 90.0
+    cam.elevation = -20.0
     renderer = (mujoco.Renderer(model, width=RES_W, height=RES_H)
                 if render_video else None)
 
@@ -649,26 +668,29 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
     steps_per_frame = max(1, int(round((1.0 / FPS) / DT)))
 
     frames = []
-    strike_events = []         # list of {t, note, finger, velocity, scheduled_t}
+    strike_events = []
     played_notes = []
-    bar_touch_prev = {n: 0.0 for n, _, _ in BAR_DEFS}
+    bar_touch_prev = {n: 0.0 for n in NOTE_ORDER}
+    last_strike_t_per_bar = {n: -10.0 for n in NOTE_ORDER}
 
-    jsonl_f = None
-    if write_jsonl:
-        jsonl_f = open(OUT_JSONL, "w", encoding="utf-8")
+    jsonl_f = open(OUT_JSONL, "w", encoding="utf-8") if write_jsonl else None
 
-    next_idx = 0     # index into schedule
-    last_strike_t = {n: -10.0 for n, _, _ in BAR_DEFS}
-    STRIKE_DEBOUNCE_S = 0.20
+    next_idx = 0    # index into schedule
 
     for step in range(total_steps):
         t = step * DT
 
+        # --- update wrist Y (mocap) ---
+        target_wrist_y = wrist_y_at(t, schedule)
+        data.mocap_pos[wrist_mocap] = [0.0, target_wrist_y, 0.30]
+
         # --- read sensors ---
-        bar_touch = {n: float(read_sensor(data, sensor_map, f"bar_{n}_touch")[0])
-                     for n, _, _ in BAR_DEFS}
-        bar_angle = {n: float(read_sensor(data, sensor_map, f"bar_{n}_angle")[0])
-                     for n, _, _ in BAR_DEFS}
+        bar_touch = {n: float(read_sensor(data, sensor_map,
+                                          f"bar_{n}_touch")[0])
+                     for n in NOTE_ORDER}
+        bar_angle = {n: float(read_sensor(data, sensor_map,
+                                          f"bar_{n}_angle")[0])
+                     for n in NOTE_ORDER}
         joint_pos = np.array(
             [read_sensor(data, sensor_map, f"hand_{j}_sensor")[0]
              for j in ["if_mcp", "if_rot", "if_pip", "if_dip",
@@ -676,52 +698,47 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
                        "rf_mcp", "rf_rot", "rf_pip", "rf_dip",
                        "th_cmc", "th_axl", "th_mcp", "th_ipl"]])
 
-        # --- strike detection (closed-loop sensor read) ---
-        for note in bar_touch:
+        # --- strike detection (rising-edge with per-bar debounce) ---
+        for note in NOTE_ORDER:
             cur = bar_touch[note]
             prev = bar_touch_prev[note]
-            # rising edge through threshold = a strike (debounced so contact
-            # bounce on the spring-hinge bar doesn't double-trigger)
             if (cur > TOUCH_THRESHOLD and prev <= TOUCH_THRESHOLD
-                    and t - last_strike_t[note] > STRIKE_DEBOUNCE_S):
-                last_strike_t[note] = t
-                # match against the closest scheduled note (within 0.3s)
-                matched_idx = None
+                    and t - last_strike_t_per_bar[note] > STRIKE_DEBOUNCE_S):
+                last_strike_t_per_bar[note] = t
+                # match the closest scheduled note (within ±0.30s)
+                matched = None
                 for j, ev in enumerate(schedule):
-                    if abs(ev["strike_t"] - t) < 0.30 and ev["note"] == note:
-                        if any(e.get("schedule_idx") == j
-                               for e in strike_events):
-                            continue
-                        matched_idx = j
+                    if (ev["note"] == note and
+                            abs(ev["strike_t"] - t) < 0.30 and
+                            not any(e.get("schedule_idx") == j
+                                    for e in strike_events)):
+                        matched = j
                         break
                 strike_events.append({
                     "t": round(t, 4),
                     "note": note,
                     "freq_hz": NOTE_FREQS[note],
-                    "velocity": min(1.0, cur / 2.0 + 0.3),
-                    "schedule_idx": matched_idx,
-                    "scheduled_t": (schedule[matched_idx]["strike_t"]
-                                    if matched_idx is not None else None),
+                    "velocity": min(1.0, cur / 2.0 + 0.30),
+                    "schedule_idx": matched,
+                    "scheduled_t": (schedule[matched]["strike_t"]
+                                    if matched is not None else None),
                 })
-                played_notes.append({"note": note, "strike_t":
-                                     schedule[matched_idx]["strike_t"]
-                                     if matched_idx is not None
-                                     else round(t, 4)})
+                if matched is not None:
+                    played_notes.append({"note": note,
+                                         "strike_t": schedule[matched]["strike_t"]})
         bar_touch_prev = bar_touch
 
-        # --- advance scheduler: find current target note ---
-        # walk past any scheduled notes whose strike_t has passed by > 0.2 s
-        while next_idx < len(schedule) and schedule[next_idx]["strike_t"] < t - 0.20:
+        # --- advance scheduler pointer ---
+        while (next_idx < len(schedule) and
+               schedule[next_idx]["strike_t"] < t - 0.30):
             next_idx += 1
 
-        active_finger = None
+        # --- finger pose: strike around the current note's window ---
         if next_idx < len(schedule):
             ev = schedule[next_idx]
-            # wind-up window: from (strike_t - WIND_UP_S) to (strike_t + STRIKE_HOLD_S)
-            in_window = (ev["strike_t"] - WIND_UP_S) <= t <= (ev["strike_t"] + STRIKE_HOLD_S)
+            in_window = (ev["strike_t"] - WIND_UP_S) <= t <= (ev["strike_t"] + RETRACT_S)
             if in_window:
-                active_finger = ev["finger"]
-                apply_pose(data, name2act, strike_pose(ev["finger"]))
+                apply_pose(data, name2act, STRIKE_POSE)
             else:
                 apply_pose(data, name2act, REST_POSE)
         else:
@@ -733,7 +750,7 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
         if jsonl_f is not None and step % steps_per_frame == 0:
             jsonl_f.write(json.dumps({
                 "t": round(t, 4),
-                "active_finger": active_finger,
+                "wrist_y": round(target_wrist_y, 5),
                 "bar_touch": {k: round(v, 4) for k, v in bar_touch.items()},
                 "bar_angle_rad": {k: round(v, 4) for k, v in bar_angle.items()},
                 "joint_pos": joint_pos.round(4).tolist(),
@@ -742,28 +759,33 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
 
         # --- video frame ---
         if render_video and renderer is not None and step % steps_per_frame == 0:
-            # slow horizontal camera sway for cinematic feel
-            cam.azimuth = 80.0 + 8.0 * math.sin(0.12 * t)
+            # cinematic camera: gently follow the wrist Y, slight sway
+            cam.lookat[1] = 0.5 * target_wrist_y + 0.04
+            cam.azimuth = 92.0 + 7.0 * math.sin(0.18 * t)
             renderer.update_scene(data, camera=cam)
             frame = renderer.render()
-            next_note = (schedule[next_idx]
-                         if next_idx < len(schedule) else None)
+
+            past = sum(1 for ev in schedule if ev["strike_t"] < t)
+            correct = sum(1 for ev in schedule
+                          if any(e.get("schedule_idx") is not None and
+                                 schedule[e["schedule_idx"]] is ev and
+                                 e["note"] == ev["note"]
+                                 for e in strike_events))
             stats = {
                 "strikes": len(strike_events),
-                "scheduled_n": len(schedule),
-                "accuracy_pct": (100.0 * len(strike_events) / max(1, next_idx)
-                                 if next_idx > 0 else 0.0),
+                "correct": correct,
+                "past": past,
+                "accuracy_pct": (100.0 * correct / max(1, past)),
             }
             frame = draw_overlay(frame, t, schedule, played_notes,
-                                 bar_angle, bar_touch, active_finger,
-                                 next_note, tempo_bpm=tempo_bpm,
-                                 stats=stats)
+                                 bar_angle, bar_touch, target_wrist_y,
+                                 song_name="Twinkle Twinkle + Ode to Joy",
+                                 tempo_bpm=tempo_bpm, stats=stats)
             frames.append(frame)
 
     if jsonl_f is not None:
         jsonl_f.close()
 
-    # Score: how many scheduled notes had a matching strike?
     correct = sum(1 for ev in schedule
                   if any(e.get("schedule_idx") is not None and
                          schedule[e["schedule_idx"]] is ev and
@@ -773,28 +795,25 @@ def simulate(seed: int = 12345, tempo_bpm: float = 100.0,
 
     result = RunResult(
         seed=seed, tempo_bpm=tempo_bpm,
+        song="Twinkle Twinkle + Ode to Joy",
         scheduled_n=len(schedule), struck_n=len(strike_events),
         correct_n=correct, accuracy_pct=round(accuracy, 1),
         note_events=strike_events, schedule=schedule,
     )
 
-    # Render video + audio
     if render_video and frames:
         iio.imwrite(str(OUT_VIDEO_SILENT), frames, fps=FPS,
                     codec="libx264", quality=8)
         synth_audio(strike_events, total_t, OUT_AUDIO)
-        ok = mux_audio_video(OUT_VIDEO_SILENT, OUT_AUDIO, OUT_VIDEO)
-        if not ok:
-            # fallback: keep silent video as demo.mp4
+        if mux_audio_video(OUT_VIDEO_SILENT, OUT_AUDIO, OUT_VIDEO):
+            print(f"  demo.mp4 written with audio ({len(strike_events)} notes).")
+        else:
             shutil.copyfile(OUT_VIDEO_SILENT, OUT_VIDEO)
             print("  Note: ffmpeg unavailable — demo.mp4 is silent.")
-        else:
-            print(f"  demo.mp4 written with audio ({len(strike_events)} notes).")
-        # write trajectory.json summary
         OUT_TRAJECTORY.write_text(json.dumps({
             "seed": seed,
             "tempo_bpm": tempo_bpm,
-            "song": "Hot Cross Buns",
+            "song": result.song,
             "scheduled_n": result.scheduled_n,
             "struck_n": result.struck_n,
             "correct_n": result.correct_n,
@@ -815,7 +834,7 @@ def run_multi_seed(n: int, tempo_bpm: float):
                      render_video=False, write_jsonl=False)
         results.append(r)
         print(f"  seed {seed:5d}  tempo={tempo_bpm:5.1f}  "
-              f"{r.struck_n}/{r.scheduled_n} strikes  "
+              f"{r.correct_n}/{r.scheduled_n} correct  "
               f"acc={r.accuracy_pct:.1f}%")
     accs = [r.accuracy_pct for r in results]
     summary = {
@@ -834,7 +853,7 @@ def run_multi_seed(n: int, tempo_bpm: float):
 
 
 def run_difficulty_sweep(n: int):
-    tempos = [80.0, 100.0, 120.0]
+    tempos = [90.0, 110.0, 130.0]
     out = {"tempos_bpm": tempos, "per_tempo": {}}
     for bpm in tempos:
         results = []
@@ -844,7 +863,7 @@ def run_difficulty_sweep(n: int):
             r = simulate(seed=seed, tempo_bpm=bpm,
                          render_video=False, write_jsonl=False)
             results.append(r)
-            print(f"  seed {seed:5d}  {r.struck_n}/{r.scheduled_n}  "
+            print(f"  seed {seed:5d}  {r.correct_n}/{r.scheduled_n}  "
                   f"acc={r.accuracy_pct:.1f}%")
         accs = [r.accuracy_pct for r in results]
         out["per_tempo"][f"{bpm:.0f}"] = {
@@ -864,8 +883,7 @@ def run_difficulty_sweep(n: int):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--seed", type=int, default=12345)
-    p.add_argument("--tempo", type=float, default=100.0,
-                   help="tempo in BPM (default 100)")
+    p.add_argument("--tempo", type=float, default=110.0)
     p.add_argument("--multi-seed", action="store_true")
     p.add_argument("--difficulty-sweep", action="store_true")
     p.add_argument("--n", type=int, default=10)
@@ -884,6 +902,7 @@ def main():
                      write_jsonl=True)
         print(f"\nCanonical run:")
         print(f"  seed={r.seed}  tempo={r.tempo_bpm:.0f} bpm")
+        print(f"  song: {r.song}")
         print(f"  scheduled notes: {r.scheduled_n}")
         print(f"  strikes detected: {r.struck_n}")
         print(f"  correct: {r.correct_n}")

@@ -1,171 +1,179 @@
-# Build Log — Engineering decisions for the xylophone submission
+# Build Log — Engineering decisions for the xylophone submission (v2)
 
 First-person notes from the AI agent (Claude Opus 4.7, via Claude Code)
-on the architectural decisions behind this submission. Not a diary of
-every iteration — the decisions that shaped what shipped.
+on the architectural decisions behind this submission.
 
-## 1. Why music, after several days of cube-stabilization work
+## 1. Why pivot from cube-stabilize to music
 
-I had shipped a closed-loop disturbance-rejection submission first
-(see `submissions/claude-dex-stabilize`). Reviewing it against the
-official 8-dimension rubric and against a stronger competing submission
-(SlipZero — Franka + LEAP friction-margin) I found two structural gaps:
+The first submission (`submissions/claude-dex-stabilize`) was a closed-loop
+cube disturbance-rejection demo. Reviewing it against the official 8-axis
+rubric and against the strongest competing submission (SlipZero — Franka
+arm + LEAP friction-margin), two gaps stood out:
 
-1. **Presentation** rubric: the cube barely moves (max drift ~ 15 mm) —
-   visually unimpressive without reading the README. Music gives
-   *recognizable* output that a judge can verify by ear, no JSON
-   inspection required.
+1. **Presentation** rubric: cube drift is < 15 mm, visually unimpressive
+   without reading the README. A musical task is recognizable by ear.
 2. **Innovation** rubric: stabilization is the most-attempted task on
-   the LEAP leaderboard. A music task is structurally different —
-   discrete event scheduling × contact-based event detection, not
-   continuous state tracking.
+   the LEAP leaderboard. Music synthesis is structurally different —
+   *discrete event scheduling × contact-based event detection*.
 
-Music keeps the LEAP hand at the center (no Franka arm needed, so the
-scene assembly stays simple) while moving onto a control-problem axis
-none of the leaderboard entries occupy.
+Music keeps the LEAP hand at the center of the visual frame while
+moving onto a control-problem axis no leaderboard entry occupies.
 
-## 2. 3 notes, not 8
+## 2. v1 was 3 notes; v2 is 8 — and the difference is everything
 
-The natural impulse was a full octave (8 keys). After spike-calibrating
-the LEAP fingertip workspace I dropped it to **3 keys, one per finger**
-(index, middle, ring). Reasons:
+The first iteration parked the LEAP hand stationary and used three
+fingers (index, middle, ring) on three bars (C, D, E). It "worked"
+(100 % accuracy across 30 multi-seed runs) but the "songs" — Hot Cross
+Buns, "Mary Had a Little Lamb", "Three Blind Mice" — were ear-test
+failures: Mary and Three Blind Mice both genuinely need notes outside
+C–D–E, and I had silently truncated them. The audio sounded like an
+alarm clock, not music.
 
-- Without arm motion the only way to address 8 keys is finger-by-finger,
-  which means each finger has to reach 8 distinct positions — outside
-  the LEAP MCP/PIP/DIP joint envelope.
-- 3-note melodies are still a real corpus: Hot Cross Buns, Mary Had a
-  Little Lamb, and Three Blind Mice all live in the C-D-E pentatonic
-  subset and are universally recognizable.
-- Three concrete, working notes beat a sketch of eight half-working
-  notes.
+v2 fixes this by going to the full **C-major scale (C5..C6)** on 8 bars
+and adding a **mocap wrist** that slides laterally in Y. The index
+finger does all strikes; the wrist positions it. This lets the demo
+play real recognizable tunes (Twinkle Twinkle, Ode to Joy) with the
+correct notes, not stripped-down approximations.
 
-The thumb is parked. Its MCP arc, in the palm-down orientation, swings
-horizontally (Y axis) rather than vertically — it would need a different
-strike kinematic. A future entry could add the thumb on a 4th note (G)
-by re-orienting it via `th_axl`.
+## 3. The mocap wrist pattern
 
-## 3. The big debug: why the rest pose didn't hold
+The LEAP root attaches directly under a mocap body's frame:
 
-After the first scene compiled, every strike registered zero contact.
-Spike calibration revealed that all fingertips were drooping to ~ z=0.44
-regardless of the commanded REST_POSE (which targeted curled
-fingers at ~ z=0.49). Root cause: the LEAP menagerie default position
-actuator uses `kp = 3.0`, which is fine for the original upright-palm
-orientation but **completely insufficient when the hand is flipped
-180° about X** (palm-down). Gravity then pulls every finger toward the
-extended (downward) position and the actuator can't resist.
+```python
+wrist = world.add_body(name="wrist", mocap=True, pos=[0.0, y0, 0.30])
+mount = wrist.add_frame(pos=[0, 0, 0])
+host.attach(hand, prefix="hand_", frame=mount)
+```
 
-Fix: post-compile, override `actuator_gainprm[:, 0] = 25.0` and
-`actuator_biasprm[:, 1] = -25.0` on every LEAP actuator. The rest pose
-now holds, and strikes become genuine downward-swings.
+Per-step the controller writes `data.mocap_pos[wrist_mocap_id] =
+[0, target_y, 0.30]` and the entire LEAP follows kinematically — no
+weld equality, no carrier body, no constraint solving for the wrist.
 
-## 4. Site-sphere-too-small touch sensor pitfall
+This is cleaner than the *carrier + freejoint + weld* pattern (used in
+the cube-stabilize submission's `cup_ref` body) because here we want
+*the LEAP to follow exactly*, not to interact through a soft
+constraint. Mocap is the right tool when you want kinematic input.
+
+## 4. The wrist trajectory: closed-form, not a state machine
+
+`wrist_y_at(t, schedule)` is a pure function: given current time and
+the full song schedule, return the wrist Y position. It does linear
+interpolation between consecutive notes' bar Y positions, finishing
+the slide `SLIDE_LEAD_S = 0.10 s` before each strike instant.
+
+The first v2 implementation had a control-flow bug: the loop
+short-circuited at `if t < a["strike_t"]` on the first iteration,
+returning the first note's Y *forever*. The fix (re-shipped here) is
+to only act inside the matching pair `a["strike_t"] <= t < b["strike_t"]`
+and `continue` otherwise. Lesson: closed-form trajectory functions
+are wonderful but exhaustively test the edge cases.
+
+## 5. The big debug: parked fingers dragging through bars
+
+After the mocap pattern compiled, the first run reported 142 strikes
+on 72 scheduled notes — almost 2× per beat — and only 12 correct
+matches. Inspecting strike events showed *all* contacts on bar C
+regardless of which note was scheduled. With the wrist-trajectory bug
+the wrist never left C's position, so every strike landed on C.
+
+After the trajectory fix, the count came down — but it was still
+inflated. Root cause: the **parked middle / ring / thumb fingertips
+were at z ≈ 0.455 m, below the bar plane z = 0.480 m**. As the wrist
+slid laterally, those fingertips dragged across bars and triggered
+false-positive contacts.
+
+Two possible fixes:
+1. Choose parking poses that lift the tips above the bar plane —
+   tried, but the LEAP joint envelope doesn't reach high enough
+   without weird thumb gymnastics.
+2. **Disable collision on all non-index hand geoms.** The finger
+   geoms still render (their visual class already had `contype=0`);
+   only the *collision* class geoms get `contype = conaffinity = 0`
+   set after compile.
+
+Fix #2 is one loop over `model.geom_*`. Done.
+
+## 6. Debounce tuned to the beat
+
+Each scheduled strike caused 2 rising-edge events ~ 210 ms apart: the
+initial impact and the spring-hinge rebound. The first debounce window
+was 0.18 s — too short. Bumped to **0.30 s**, which is longer than the
+rebound but shorter than the beat at 130 bpm (0.46 s). At very fast
+tempos the rebound and the next intended strike start to compete; that
+shows up as the 130-bpm accuracy drop in the difficulty sweep.
+
+## 7. Touch-sensor site-sphere pitfall (carried over from v1)
 
 The MuJoCo touch sensor counts contact normal forces whose contact
-*positions* lie inside the site's bounding sphere. The default site
-size is **1 mm**. With a 40-mm-wide bar, contacts at the bar edges
-were 20 mm outside the 1 mm sphere → sensor read 0 even with active
-contact.
+positions lie inside the site's bounding sphere. Default site size is
+**1 mm**. With 40-mm-wide bars the sensor reads 0 even with active
+contact. Fixed by setting the bar site radius to
+`max(bar_half_x, bar_half_y) + 5 mm` so the entire bar surface lies
+inside the receptive volume. One-line change that unlocks the entire
+submission.
 
-Fix: set the bar site to a sphere of radius `max(bar_half_x, bar_half_y) + 5 mm`
-so the entire bar surface lies inside the sensor's receptive volume.
-One-line change that unlocks the entire submission.
+## 8. Actuator stiffness override (carried over from v1)
 
-## 5. Strike pose: keep PIP/DIP bent, only extend MCP
+LEAP menagerie defaults give every position actuator `kp = 3.0`. Fine
+for the original upright-palm orientation; insufficient when the hand
+is flipped 180° about X (palm-down). Post-compile we override every
+LEAP actuator to `kp = 25.0`, `kv = 1.0` via `model.actuator_gainprm`
+and `model.actuator_biasprm`. Without this the fingers droop and the
+REST pose can't be held.
 
-First strike pose extended all three finger joints (MCP, PIP, DIP)
-to fully straight. Result: the *medial* finger segment swung through
-the bar plane *before* the tip got there → bar got hit by the wrong
-geom and the controller registered a strike on a different finger.
+## 9. Strike pose: only MCP extends, PIP/DIP stay bent
 
-Final strike pose keeps PIP at ~ 0.9 rad and DIP at ~ 0.5 rad (still
-quite bent) while extending MCP to −0.2 rad. The fingertip arcs down
-through the bar plane while the medial section stays well above it —
-clean tip-only contact. Each finger has its own delta because the
-finger-specific bar Y coordinate matters.
+This is unchanged from v1 but worth restating: the index finger's
+*strike* pose extends MCP from 1.20 → −0.20 rad while PIP stays at
+0.90 and DIP at 0.50. This keeps the finger "hooked": the fingertip
+arcs down through the bar plane while the medial section stays
+*above* the bar plane. Without this the medial would hit the bar
+first and the controller would register a strike on a neighbouring
+bar.
 
-## 6. Bar position — empirical, not derived
+## 10. Audio: post-render sine synthesis + ffmpeg mux
 
-The first bar layout (`BAR_X = 0.075, top z = 0.460`) caused finger
-segments to bump rails and the medial section to drive bars too hard.
-Final position (`BAR_X = 0.105`, `top z = 0.475`) came from re-running
-the spike with the current strike pose and reading off the fingertip
-contact point. Two lessons from this:
+Each strike event becomes a sine + 2nd + 3rd harmonic with a 220 ms
+exponential-decay envelope. 72 strikes are summed into `demo.wav` and
+muxed into `demo.mp4` via ffmpeg (discovered through
+`shutil.which` with an `imageio_ffmpeg` fallback).
 
-- **Always start with a calibration spike** — the LEAP body chain is
-  too deep to estimate by hand.
-- **Geometry assumptions chain**: changing the strike pose changes the
-  tip XYZ → bars must move → other fingers re-check.
+The whole audio pipeline runs once after `simulate()` returns; no
+real-time audio constraints, no streaming.
 
-## 7. Closed-loop strike detection, not scheduled-time playback
+## 11. What was explored but not shipped
 
-The controller fires the audio synth from the *touch sensor*, not from
-the scheduled `strike_t`. Why this matters:
+- **Polyphony (chords)**. Two fingers strike simultaneously. The
+  touch sensors would handle independent rising edges correctly, but
+  the audio synth currently expects single-note events. Adding
+  additive overlap would be ~ 5 lines.
+- **A real arm carrying the hand**. SlipZero uses a Franka arm; mine
+  uses a mocap wrist. Mocap is cleaner for a music task (zero
+  tracking error by definition) but loses one rubric axis (no arm
+  joints to count). A future v3 could swap the mocap for a 1-DoF
+  slide joint with a stiff position actuator.
+- **Thumb participation**. Thumb anatomy in the palm-down orientation
+  drives the tip *sideways* rather than down on strike. Got it
+  working in v1 in a kludgy way (different strike pose per finger);
+  v2 doesn't need it (mocap covers the full range with a single
+  finger).
 
-- The strike pose physically commands a downward swing, but whether the
-  finger actually reaches the bar depends on impedance, gravity, prior
-  finger state, and any timing-jitter the multi-seed runner injects.
-- Reading from the sensor means: if the controller fails to land a
-  strike, the audio is *also* missing that note. The audio is a faithful
-  rendering of the simulator, not a pre-recorded soundtrack.
-- This is the same closed-loop principle as the cube-stabilization
-  entry: never trust ground truth, always read what the sensor says.
+## 12. Lessons that apply to any LEAP entry
 
-A rising-edge detector with 200 ms debounce (per-bar) collapses
-spring-hinge rebound multi-contacts into a single event. Without the
-debounce, each scheduled note generated ~ 2.7 strike events and the
-audio would stutter.
-
-## 8. Audio synthesis is a single post-render pass
-
-Each strike event becomes a sine tone (fundamental + 2× + 3× harmonics
-with an exponential-decay envelope). The 60 strikes are summed into
-`demo.wav`, then ffmpeg mux'd into `demo.mp4`. The whole pipeline is
-one function call that runs after `simulate()` returns — no real-time
-audio constraints, no streaming.
-
-ffmpeg is discovered via `shutil.which("ffmpeg")` with a fallback to
-`imageio_ffmpeg.get_ffmpeg_exe()` (bundled with `imageio[ffmpeg]`).
-This avoids requiring users to install ffmpeg system-wide.
-
-## 9. Three CLI modes, three artifacts
-
-- `python main.py` — canonical 48 s render with HUD + audio + JSONL
-- `python main.py --multi-seed --n 10` — robustness at 100 bpm
-- `python main.py --difficulty-sweep --n 10` — 30 runs across 3 tempos
-
-Each writes a separate well-typed JSON artifact. The schedule jitter is
-deterministic per seed so re-running gives identical numbers.
-
-## 10. What was explored but not shipped
-
-* **Mocap wrist on a 3-DoF slide** — to reach a full 8-bar chromatic
-  scale, the hand would need horizontal motion above the bars. Built
-  a sketch (carrier body + weld equality to mocap, the same pattern
-  from the cube-stabilization submission), then realized the time
-  budget didn't allow a full retune of the strike pose with a moving
-  wrist. Marked as a clean follow-up.
-* **Twinkle Twinkle Little Star** (6 unique notes) — only reachable
-  with arm motion or a 4th LEAP finger. Out of scope for the
-  fixed-hand version.
-* **Polyphonic chords** — two fingers strike simultaneously. Touch
-  sensors would handle it correctly (independent rising edges per
-  bar), but the audio synth currently expects single-note events;
-  would need an additive overlap pass.
-
-## Lessons that apply to any LEAP entry
-
-* **Default actuator stiffness assumes the menagerie's default
-  orientation.** Any non-default pose (especially gravity inversion)
-  may need a kp override.
-* **Touch sensors silently return zero when their site sphere is too
+- **Build a calibration spike first.** `spike_calibrate.py`,
+  `spike_strike.py`, `spike_mocap.py`, `spike_parked.py` — each one
+  resolved a question that would otherwise have cost hours of trial
+  guessing.
+- **Default actuator stiffness assumes the menagerie's default
+  orientation.** Non-default poses (especially gravity inversion) need
+  a kp override.
+- **Touch sensors silently return zero when their site sphere is too
   small.** Always size sites to enclose the geom being touched.
-* **A calibration spike pays for itself in 10 minutes.** Strike
-  geometry, bar position, and pose deltas all came from one spike
-  script.
-* **Use real sensors for event detection even when you "know" the
-  schedule.** The whole point of the submission is the closed loop;
-  trusting the schedule instead would have been one line shorter
-  and rubric-untouchable.
+- **Collision-disable parked geoms** when they live in the workspace
+  of moving objects. The simulator will dutifully resolve contacts
+  you didn't intend.
+- **Closed-form trajectories beat state machines** when the schedule
+  is fully known in advance. They're easier to test (any time t → one
+  expected position) and easier to reason about.
 
 — Claude

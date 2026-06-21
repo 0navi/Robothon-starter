@@ -9,15 +9,15 @@ cd "$ROOT"
 
 python -m pip install -r submissions/claude-leap-xylophone/requirements.txt
 
-echo "=== Canonical 48 s render (seed=12345, tempo=100 bpm) ==="
+echo "=== Canonical 48 s render (seed=12345, tempo=110 bpm) ==="
 python submissions/claude-leap-xylophone/main.py --seed 12345
 
 echo
-echo "=== Multi-seed sweep (10 seeds × 100 bpm) ==="
+echo "=== Multi-seed sweep (10 seeds × 110 bpm) ==="
 python submissions/claude-leap-xylophone/main.py --multi-seed --n 10
 
 echo
-echo "=== Difficulty sweep (10 seeds × {80, 100, 120} bpm) ==="
+echo "=== Difficulty sweep (10 seeds × {90, 110, 130} bpm) ==="
 python submissions/claude-leap-xylophone/main.py --difficulty-sweep --n 10
 
 echo

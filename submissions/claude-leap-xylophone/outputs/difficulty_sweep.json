@@ -1,0 +1,30 @@
+{
+  "tempos_bpm": [
+    90.0,
+    110.0,
+    130.0
+  ],
+  "per_tempo": {
+    "90": {
+      "n": 10,
+      "mean_accuracy_pct": 100.0,
+      "min_accuracy_pct": 100.0,
+      "max_accuracy_pct": 100.0,
+      "perfect_runs": 10
+    },
+    "110": {
+      "n": 10,
+      "mean_accuracy_pct": 99.72,
+      "min_accuracy_pct": 98.6,
+      "max_accuracy_pct": 100.0,
+      "perfect_runs": 8
+    },
+    "130": {
+      "n": 10,
+      "mean_accuracy_pct": 97.76,
+      "min_accuracy_pct": 97.2,
+      "max_accuracy_pct": 98.6,
+      "perfect_runs": 0
+    }
+  }
+}

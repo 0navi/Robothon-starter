@@ -1,12 +1,4 @@
-"""Unit tests for the LEAP xylophone submission.
-
-Tests cover:
-- scene compiles cleanly
-- sensor map includes per-bar touch + angle sensors
-- finger->note assignment is consistent
-- strike pose differs from rest pose on the targeted finger only
-- song schedule contains the expected note count and ordering
-- a short simulation runs without raising
+"""Unit tests for the LEAP xylophone v2 submission (8-bar mocap-wrist version).
 
 Run with:  python -m pytest submissions/claude-leap-xylophone/test_controller.py -v
 """
@@ -23,96 +15,128 @@ import mujoco
 import main as M
 
 
-def test_scene_compiles_and_has_actuators():
+def test_scene_compiles_with_mocap_wrist_and_8_bars():
     model = M.build_scene()
-    assert model.nu == 16, f"LEAP should expose 16 position actuators, got {model.nu}"
-    assert model.njnt >= 16 + 3, "scene should have 16 LEAP joints + 3 bar hinges"
+    assert model.nu == 16, f"LEAP should expose 16 actuators, got {model.nu}"
+    assert model.nmocap == 1, f"need 1 mocap wrist, got {model.nmocap}"
+    # 16 finger joints + 8 bar hinges = 24
+    assert model.njnt == 24, f"expected 24 joints, got {model.njnt}"
 
 
-def test_sensors_include_per_bar_touch_and_angle():
+def test_sensors_include_per_bar_touch_and_angle_and_leap_jointpos():
     model = M.build_scene()
     smap = M.get_sensor_map(model)
-    for note, _, _ in M.BAR_DEFS:
-        assert f"bar_{note}_touch" in smap
-        assert f"bar_{note}_angle" in smap
-    # also: 16 LEAP joint sensors
+    for note in M.NOTE_ORDER:
+        assert f"bar_{note}_touch" in smap, f"missing touch sensor for bar {note}"
+        assert f"bar_{note}_angle" in smap, f"missing angle sensor for bar {note}"
     for j in ["if_mcp", "if_pip", "if_dip",
               "mf_mcp", "mf_pip", "mf_dip",
               "rf_mcp", "rf_pip", "rf_dip",
               "th_cmc", "th_axl", "th_mcp", "th_ipl"]:
         assert f"hand_{j}_sensor" in smap, f"missing LEAP joint sensor: {j}"
+    # 8 bars × 2 sensors + 16 LEAP joint sensors = 32
+    assert model.nsensor >= 16 + 16
 
 
-def test_finger_note_mapping_is_invertible():
-    # Every finger maps to a distinct note and vice versa.
-    notes = list(M.FINGER_OF_NOTE.keys())
-    fingers = list(M.FINGER_OF_NOTE.values())
-    assert len(notes) == len(set(notes))
-    assert len(fingers) == len(set(fingers))
+def test_note_frequencies_are_monotonic_and_distinct():
+    fs = [M.NOTE_FREQS[n] for n in M.NOTE_ORDER]
+    assert fs == sorted(fs), f"NOTE_FREQS must increase along NOTE_ORDER"
+    assert len(set(fs)) == len(fs), "all note frequencies must be distinct"
 
 
-def test_strike_pose_only_extends_target_finger():
-    rest = M.REST_POSE
-    for finger in ("if", "mf", "rf"):
-        pose = M.strike_pose(finger)
-        # the targeted finger's mcp/pip/dip joints differ from rest
-        for j in (f"{finger}_mcp", f"{finger}_pip", f"{finger}_dip"):
-            assert pose[j] != rest[j], f"{finger} strike should change {j}"
-        # all OTHER fingers must be at rest
-        for other in ("if", "mf", "rf"):
-            if other == finger:
-                continue
-            for j in (f"{other}_mcp", f"{other}_pip", f"{other}_dip"):
-                assert pose[j] == rest[j], \
-                    f"{finger} strike must NOT change {other}'s {j}"
+def test_wrist_y_offset_is_consistent_per_note_index():
+    # bar_y at note_index i should equal BAR_Y_FIRST + i * BAR_Y_SPACING.
+    for i in range(8):
+        expected = M.BAR_Y_FIRST + i * M.BAR_Y_SPACING
+        assert abs(M.bar_y(i) - expected) < 1e-9
+    # wrist_y_for_note(i) places the index fingertip at bar_y(i)
+    for i in range(8):
+        assert abs(M.wrist_y_for_note(i) - (M.bar_y(i) - M.WRIST_TIP_Y_OFFSET)) < 1e-9
 
 
-def test_schedule_has_expected_note_count_and_only_known_notes():
-    sched, total = M.schedule_for_tempo(100.0, 0)
-    assert len(sched) == 60, f"medley should be 60 strikes, got {len(sched)}"
-    for ev in sched:
-        assert ev["note"] in M.NOTE_FREQS
-        assert ev["finger"] in ("if", "mf", "rf")
-        assert ev["strike_t"] > 0
-    # monotonically increasing strike times
-    times = [ev["strike_t"] for ev in sched]
-    assert times == sorted(times)
-    assert total > times[-1]
+def test_strike_pose_only_changes_index_finger():
+    for joint, rest_val in M.REST_POSE.items():
+        strike_val = M.STRIKE_POSE[joint]
+        if joint.startswith("if_"):
+            assert strike_val != rest_val or joint == "if_rot", \
+                f"index joint {joint} should change in STRIKE_POSE"
+        else:
+            assert strike_val == rest_val, \
+                f"non-index joint {joint} must NOT change in STRIKE_POSE"
 
 
-def test_schedule_jitter_is_seed_dependent():
-    s0, _ = M.schedule_for_tempo(100.0, 0)
-    s1, _ = M.schedule_for_tempo(100.0, 12345)
-    s2, _ = M.schedule_for_tempo(100.0, 12345)
-    # seed 0 gives no jitter; seed != 0 gives jitter
+def test_wrist_y_at_returns_first_note_before_start():
+    schedule, _ = M.schedule_for_tempo(110.0, 0)
+    y0 = M.wrist_y_for_note(schedule[0]["note_idx"])
+    assert M.wrist_y_at(0.0, schedule) == y0
+    assert M.wrist_y_at(schedule[0]["strike_t"] - 0.05, schedule) == y0
+
+
+def test_wrist_y_at_returns_last_note_after_end():
+    schedule, _ = M.schedule_for_tempo(110.0, 0)
+    yN = M.wrist_y_for_note(schedule[-1]["note_idx"])
+    assert M.wrist_y_at(schedule[-1]["strike_t"] + 5.0, schedule) == yN
+
+
+def test_wrist_y_at_interpolates_between_consecutive_notes():
+    schedule, _ = M.schedule_for_tempo(110.0, 0)
+    # find first pair (a, b) with different note_idx
+    a, b = None, None
+    for i in range(len(schedule) - 1):
+        if schedule[i]["note_idx"] != schedule[i + 1]["note_idx"]:
+            a, b = schedule[i], schedule[i + 1]
+            break
+    assert a is not None, "expected at least one pitch change in the schedule"
+    ya = M.wrist_y_for_note(a["note_idx"])
+    yb = M.wrist_y_for_note(b["note_idx"])
+    # at the slide_end moment the wrist must already be at yb
+    y_at_strike = M.wrist_y_at(b["strike_t"] - M.SLIDE_LEAD_S, schedule)
+    assert abs(y_at_strike - yb) < 1e-9, \
+        f"wrist must finish slide by strike_t - SLIDE_LEAD_S (was {y_at_strike} expected {yb})"
+
+
+def test_schedule_jitter_is_seed_dependent_and_deterministic():
+    s0, _ = M.schedule_for_tempo(110.0, 0)
+    s1, _ = M.schedule_for_tempo(110.0, 12345)
+    s2, _ = M.schedule_for_tempo(110.0, 12345)
     assert any(a["strike_t"] != b["strike_t"] for a, b in zip(s0, s1))
-    # same seed gives same schedule (deterministic)
     assert all(a["strike_t"] == b["strike_t"] for a, b in zip(s1, s2))
 
 
 def test_short_simulation_runs_without_error(monkeypatch):
-    # patch MEDLEY down to 3 notes to keep the test under a second
-    monkeypatch.setattr(M, "MEDLEY", ["E", "D", "C"])
-    r = M.simulate(seed=42, tempo_bpm=120.0,
+    # patch TWINKLE_TWINKLE down to 3 notes so the test stays under a second
+    monkeypatch.setattr(M, "TWINKLE_TWINKLE", [("C", 1), ("E", 1), ("G", 1)])
+    monkeypatch.setattr(M, "ODE_TO_JOY", [])
+    r = M.simulate(seed=42, tempo_bpm=130.0,
                    render_video=False, write_jsonl=False)
     assert r.scheduled_n == 3
-    # should hit at least 1 note (tight tolerance — full hit count varies
-    # under timing jitter, but at minimum 1 strike must register)
     assert r.struck_n >= 1
 
 
 def test_audio_synthesis_produces_a_wav(tmp_path):
     events = [
         {"t": 0.1, "note": "C", "velocity": 0.7},
-        {"t": 0.5, "note": "E", "velocity": 0.9},
-        {"t": 1.0, "note": "D", "velocity": 0.5},
+        {"t": 0.5, "note": "G", "velocity": 0.9},
+        {"t": 1.0, "note": "c", "velocity": 0.5},
     ]
     out = tmp_path / "out.wav"
     M.synth_audio(events, total_duration_s=1.5, out_wav=out)
     assert out.exists()
-    assert out.stat().st_size > 1000   # non-empty WAV
+    assert out.stat().st_size > 1000
 
 
-def test_note_frequencies_are_distinct_and_monotonic():
-    # C5 < D5 < E5
-    assert M.NOTE_FREQS["C"] < M.NOTE_FREQS["D"] < M.NOTE_FREQS["E"]
+def test_non_index_finger_collisions_disabled():
+    """The mf/rf/th finger collision geoms must be non-collidable so the
+    sliding wrist doesn't drag them across the bars."""
+    model = M.build_scene()
+    bad = []
+    for gid in range(model.ngeom):
+        bid = int(model.geom_bodyid[gid])
+        bname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_BODY, bid) or ""
+        gname = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, gid) or ""
+        if (bname.startswith("hand_") and
+                not bname.startswith("hand_palm") and
+                not bname.startswith("hand_if_")):
+            if model.geom_contype[gid] != 0 or model.geom_conaffinity[gid] != 0:
+                bad.append((bname, gname))
+    assert not bad, f"non-index finger geoms still collidable: {bad}"
