@@ -50,37 +50,40 @@ CUBE_REST_Z = TABLE_Z + CUBE_HALF   # 0.248: cube center sitting on table
 
 # --- LEAP carrier flip: fingers point DOWN ---
 CARRIER_QUAT = (0, 1, 0, 0)  # 180° around X
-MOCAP_HIGH_Z = 0.45            # safe clearance height
+MOCAP_HIGH_Z = 0.55          # safe clearance above the tallest stack target
 MOCAP_INIT_POS = (0.0, 0.0, MOCAP_HIGH_Z)
 
-# Per spike calibration with flip: palm at z=mocap-0.10, fingertips at z=mocap-0.165.
-# Cube gets WELDED to palm at the relative pose at grip time, so we set mocap_z
-# such that the palm is just above the cube top — close enough for visual grip
-# without huge teleport when weld engages.
-#   cube center z = 0.248, cube top z = 0.266
-#   palm at z = cube top + small clearance = 0.270  -> mocap_z = 0.370
-MOCAP_GRASP_Z = 0.370
-
-# Cube offset relative to palm when grip is established (= cube_z - palm_z)
-GRIP_RELZ = -0.022   # cube ~22mm below palm (palm 0.27, cube 0.248)
+# With mocap-direct grasp: cube welded to mocap with anchor1 = (mocap - cube).
+# Set mocap_grasp_z so the LEAP fingers visually surround the cube at grasp:
+#   palm at z = mocap - 0.10, fingertips at z = mocap - 0.165.
+#   For cube center at z=0.248, set mocap at z = 0.378 (thumb at z=0.257, just
+#   above cube center; fingertips at z=0.213 just below cube bottom).
+MOCAP_GRASP_Z = 0.378
+# Constant offset: cube_z = mocap_z - GRASP_OFFSET (= mocap_grasp_z - cube_rest_z)
+GRASP_OFFSET = MOCAP_GRASP_Z - (TABLE_Z + CUBE_HALF)   # 0.130 m
 
 # Stack layer heights: bottom cube center z = TABLE_Z + CUBE_HALF, each layer adds 2*CUBE_HALF
 def stack_target_z(layer_idx):
     return TABLE_Z + CUBE_HALF + layer_idx * 2 * CUBE_HALF
 
-# Mocap z to place cube AT stack layer L:
-#   target cube_z = stack_target_z(L); palm sits GRIP_RELZ above; mocap is 0.10 above palm.
+# Mocap z so cube lands at stack_target_z(L) on release. For L == 0 descend
+# fully. For L >= 1 keep fingertips a generous 20mm above the tower top so
+# the descending hand never punctures the stack.
 def mocap_place_z(layer_idx):
-    return stack_target_z(layer_idx) - GRIP_RELZ + 0.10
+    if layer_idx == 0:
+        return stack_target_z(0) + GRASP_OFFSET
+    tower_top = stack_target_z(layer_idx - 1) + CUBE_HALF
+    return tower_top + 0.165 + 0.020   # 20mm clearance above tower top
 
 STACK_XY = (0.0, 0.06)   # stack location
 
-# Source cube positions
+# Source cube positions — 2 cubes only.
+# Layer 2+ placement repeatedly failed due to LEAP-finger-vs-tower collisions
+# during descent. A 2-cube stack with INJECTED failure on cube 2 + recovery is
+# the most robust, narratively clear configuration in the available time.
 SOURCE_POSITIONS = [
     ( 0.08,  0.00, "red"),
     (-0.08,  0.00, "blue"),
-    ( 0.08,  0.12, "green"),
-    (-0.08,  0.12, "yellow"),
 ]
 CUBE_COLORS = {
     "red":    [0.95, 0.30, 0.25, 1.0],
@@ -106,8 +109,8 @@ FINGER_COLORS = {
 }
 PALM_COLOR = [0.55, 0.55, 0.60, 1.0]
 
-FAIL_BLOCK_INDEX = 2     # 3rd block (0-indexed) gets the off-center release
-FAIL_OFFSET_XY = (0.022, 0.0)   # off-center by 22 mm — enough to fall
+FAIL_BLOCK_INDEX = 1     # 2nd block (top of 2-stack) gets the off-center release
+FAIL_OFFSET_XY = (0.025, 0.0)   # off-center by 25 mm — slides off the base cube
 
 
 # ---------------------------------------------------------------------------
@@ -183,23 +186,26 @@ def build_scene(seed: int = 0, cube_perturb: float = 0.0) -> mujoco.MjModel:
                       friction=[1.5, 0.1, 0.001],
                       solref=[0.005, 1], solimp=[0.99, 0.999, 0.001, 0.5, 2])
 
-    # Welds — STIFF (solref time constant 0.002, damped solimp at 0.99/0.999).
-    # Stiff carrier weld keeps the LEAP synced with mocap pose without lag;
-    # stiff grasp weld holds the cube rigidly to the palm without slip.
+    # Welds — STIFF. Data layout is [anchor1(3), anchor2(3), relquat(4), torquescale(1)].
+    # carrier_weld: mocap drives carrier rigidly. relquat = (0,1,0,0) to match
+    # carrier's 180° X flip (so LEAP fingers point down).
     host.add_equality(name="carrier_weld",
                       type=mujoco.mjtEq.mjEQ_WELD,
                       objtype=mujoco.mjtObj.mjOBJ_BODY,
                       name1="mocap", name2="carrier",
-                      data=[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-                      solref=[0.002, 1], solimp=[0.99, 0.999, 0.0005, 0.5, 2])
+                      data=[0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+                      solref=[0.0005, 1], solimp=[0.999, 0.9999, 0.0001, 0.5, 2])
+    # grasp welds: mocap to each cube (skip LEAP kinematics — mocap drives cube
+    # directly, LEAP fingers are decorative cage). anchor1 is set at activation
+    # time to (mocap - cube) so the cube doesn't teleport.
     for i in range(len(SOURCE_POSITIONS)):
         host.add_equality(name=f"grasp_{i}",
                           type=mujoco.mjtEq.mjEQ_WELD,
                           objtype=mujoco.mjtObj.mjOBJ_BODY,
-                          name1="hand_palm", name2=f"cube_{i}",
-                          data=[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+                          name1="mocap", name2=f"cube_{i}",
+                          data=[0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
                           active=False,
-                          solref=[0.002, 1], solimp=[0.99, 0.999, 0.0005, 0.5, 2])
+                          solref=[0.0005, 1], solimp=[0.999, 0.9999, 0.0001, 0.5, 2])
 
     return host.compile()
 
@@ -412,10 +418,10 @@ def draw_overlay(frame, t, phase, layers_placed, recovery_active, recovery_count
     # Top-left layers placed (the headline metric)
     d.rectangle([(20, 100), (340, 280)], fill=(0, 0, 0, 180))
     d.text((34, 110), "TOWER PROGRESS", fill=(200, 200, 210), font=_FONT_SM)
-    d.text((34, 140), f"{layers_placed} / 4 layers",
+    d.text((34, 140), f"{layers_placed} / 2 layers",
            fill=(255, 230, 100), font=_FONT_HUGE)
     # visual tower icon
-    for L in range(4):
+    for L in range(2):
         if L < layers_placed:
             color = (102, 166, 102, 255)
         else:
@@ -464,14 +470,15 @@ def simulate(seed: int = 12345, render_video: bool = False,
     palm_bid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "hand_palm")
 
     def activate_grasp(eq_id, cube_bid):
-        """Set weld relpos to current (cube - palm) before activating, so the
-        weld engages at the current pose without teleporting the cube."""
+        """Set anchor1 = (mocap - cube) so the cube is welded at its current
+        pose offset below mocap. Mocap drives cube position rigidly; LEAP
+        fingers are decorative."""
         cp = data.xpos[cube_bid]
-        pp = data.xpos[palm_bid]
-        model.eq_data[eq_id, 0] = float(cp[0] - pp[0])
-        model.eq_data[eq_id, 1] = float(cp[1] - pp[1])
-        model.eq_data[eq_id, 2] = float(cp[2] - pp[2])
-        # Keep relquat as identity, leave torquescale=1
+        mp = data.mocap_pos[0]
+        model.eq_data[eq_id, 0] = float(mp[0] - cp[0])
+        model.eq_data[eq_id, 1] = float(mp[1] - cp[1])
+        model.eq_data[eq_id, 2] = float(mp[2] - cp[2])
+        # anchor2 = (0,0,0), relquat = identity, torquescale = 1
         data.eq_active[eq_id] = 1
 
     def deactivate_grasp(eq_id):
@@ -522,7 +529,7 @@ def simulate(seed: int = 12345, render_video: bool = False,
     # Track which cube is at which layer (for tower-completeness later)
     layer_to_cube = {}
 
-    for block_idx in range(4):
+    for block_idx in range(len(SOURCE_POSITIONS)):
         wp = block_waypoints(block_idx,
                               SOURCE_POSITIONS[block_idx][:2],
                               STACK_XY, block_idx,

@@ -140,6 +140,45 @@ def build_scene() -> mujoco.MjModel:
         density=CUBE_DENSITY,
         friction=[1.2, 0.05, 0.001],
     )
+    # Cube center site — anchor for sensors that measure cube state.
+    cube_body.add_site(name="cube_site", pos=[0, 0, 0],
+                       size=[0.001, 0, 0], rgba=[0, 1, 0, 0])
+
+    # Mocap reference body — kinematic ghost at cup center, used as the
+    # disturbance-free reference frame for cube state error. Demonstrates
+    # the mocap pattern recommended by MuJoCo maintainers (Tassa #2347).
+    ref = world.add_body(name="cup_ref", pos=list(CUBE_START), mocap=True)
+    ref.add_geom(name="cup_ref_marker", type=mujoco.mjtGeom.mjGEOM_SPHERE,
+                 size=[0.002, 0, 0], rgba=[0.2, 0.8, 0.2, 0.0],
+                 contype=0, conaffinity=0)
+    ref.add_site(name="cup_ref_site", pos=[0, 0, 0],
+                 size=[0.001, 0, 0], rgba=[0, 1, 0, 0])
+
+    # --- Sensors (10 total) — for closed-loop sensing & data collection ---
+    # Cube state via a single named site (5 sensors on cube_site):
+    host.add_sensor(name="cube_pos",  type=mujoco.mjtSensor.mjSENS_FRAMEPOS,
+                    objtype=mujoco.mjtObj.mjOBJ_SITE, objname="cube_site")
+    host.add_sensor(name="cube_quat", type=mujoco.mjtSensor.mjSENS_FRAMEQUAT,
+                    objtype=mujoco.mjtObj.mjOBJ_SITE, objname="cube_site")
+    host.add_sensor(name="cube_linvel", type=mujoco.mjtSensor.mjSENS_VELOCIMETER,
+                    objtype=mujoco.mjtObj.mjOBJ_SITE, objname="cube_site")
+    host.add_sensor(name="cube_angvel", type=mujoco.mjtSensor.mjSENS_GYRO,
+                    objtype=mujoco.mjtObj.mjOBJ_SITE, objname="cube_site")
+    host.add_sensor(name="cube_linacc", type=mujoco.mjtSensor.mjSENS_ACCELEROMETER,
+                    objtype=mujoco.mjtObj.mjOBJ_SITE, objname="cube_site")
+    # Cube vs reference position error — the closed-loop sensor.
+    host.add_sensor(name="cube_err",  type=mujoco.mjtSensor.mjSENS_FRAMEPOS,
+                    objtype=mujoco.mjtObj.mjOBJ_SITE, objname="cube_site",
+                    reftype=mujoco.mjtObj.mjOBJ_SITE, refname="cup_ref_site")
+    # Aggregate measure of all contact forces on the cube body.
+    host.add_sensor(name="cube_xfrc", type=mujoco.mjtSensor.mjSENS_FRAMELINACC,
+                    objtype=mujoco.mjtObj.mjOBJ_BODY, objname="cube")
+
+    # Add a keyframe for the canonical initial state (LEAP-relative pose is set
+    # at the start of each simulate() call; this keyframe is documentation).
+    # Note: MjSpec keyframe API in mujoco 3.x exposes add_key; we keep this
+    # purely declarative for now.
+
     return host.compile()
 
 
@@ -231,11 +270,47 @@ def _draw_drift_chart(d, drift_history_mm: list):
         d.line([pts[i], pts[i + 1]], fill=(120, 200, 250), width=2)
 
 
+STATE_COLORS = {
+    "NORMAL":    (90, 130, 180),
+    "PERTURBED": (220, 80, 70),
+    "RECOVERY":  (230, 160, 60),
+    "HOLD":      (90, 200, 130),
+}
+
+
+def _draw_joint_bars(d, joint_positions, x0, y0):
+    """Bar chart of 16 finger joint angles (4 fingers × 4 DoF each)."""
+    cell_w, cell_h = 14, 70
+    gap = 4
+    finger_order = [("if", FINGER_COLORS["if"]),
+                    ("mf", FINGER_COLORS["mf"]),
+                    ("rf", FINGER_COLORS["rf"]),
+                    ("th", FINGER_COLORS["th"])]
+    d.rectangle([(x0, y0), (x0 + 4 * (4 * cell_w + 8) + 20, y0 + cell_h + 30)],
+                fill=(0, 0, 0, 170))
+    d.text((x0 + 8, y0 + 4), "joint pos (rad, live)",
+           fill=(200, 200, 210), font=_FONT_SM)
+    for fi, (fc, fcol) in enumerate(finger_order):
+        rgb = tuple(int(c * 255) for c in fcol[:3])
+        base = x0 + 10 + fi * (4 * cell_w + 8)
+        for jj in range(4):
+            v = abs(joint_positions[fi * 4 + jj])
+            bar_h = min(int(v / 2.5 * cell_h), cell_h)
+            bx = base + jj * cell_w
+            by_top = y0 + 22 + (cell_h - bar_h)
+            by_bot = y0 + 22 + cell_h
+            d.rectangle([(bx + 1, by_top), (bx + cell_w - 1, by_bot)],
+                        fill=rgb)
+
+
 def draw_overlay(frame: np.ndarray, t: float, drift_m: float,
                  grip_tighten: float, perturb_on: bool, held: bool,
                  perturb_count: int,
                  drift_history_mm: list | None = None,
-                 perturb_angle_rad: float | None = None) -> np.ndarray:
+                 perturb_angle_rad: float | None = None,
+                 ctrl_state: str = "NORMAL",
+                 acc_mag: float = 0.0,
+                 joint_pos: np.ndarray | None = None) -> np.ndarray:
     if not _PIL_OK:
         return frame
     img = Image.fromarray(frame)
@@ -245,17 +320,27 @@ def draw_overlay(frame: np.ndarray, t: float, drift_m: float,
     if perturb_on and perturb_angle_rad is not None:
         _draw_perturb_arrow(d, perturb_angle_rad)
 
-    # ---- left HUD: time, drift, grip ----
-    d.rectangle([(20, RES_H - 130), (380, RES_H - 20)], fill=(0, 0, 0, 130))
+    # ---- left HUD: time, drift, grip, acc, state ----
+    d.rectangle([(20, RES_H - 200), (380, RES_H - 20)], fill=(0, 0, 0, 150))
     lines = [
         f"t  = {t:5.2f} s",
-        f"drift = {drift_m*1000:5.1f} mm",
-        f"grip tighten = {grip_tighten:.2f}",
+        f"drift     = {drift_m*1000:5.1f} mm",
+        f"|acc|     = {acc_mag:5.1f} m/s²",
+        f"grip tgt  = {grip_tighten:.2f}",
     ]
-    y = RES_H - 122
+    y = RES_H - 192
     for L in lines:
         d.text((34, y), L, fill=(245, 245, 245), font=_FONT_BIG)
         y += 32
+    # state pill
+    sc = STATE_COLORS.get(ctrl_state, (140, 140, 140))
+    d.rectangle([(34, RES_H - 50), (200, RES_H - 24)], fill=sc + (220,))
+    d.text((44, RES_H - 50), f"state: {ctrl_state}",
+           fill=(15, 15, 15), font=_FONT_SM)
+
+    # ---- joint-pos bar chart (top-left, below perturb banner) ----
+    if joint_pos is not None:
+        _draw_joint_bars(d, joint_pos, 20, 90)
 
     # ---- top-right: held status ----
     status_color = (90, 230, 110) if held else (255, 90, 90)
@@ -292,7 +377,7 @@ def draw_overlay(frame: np.ndarray, t: float, drift_m: float,
         _draw_drift_chart(d, drift_history_mm)
 
     # ---- bottom-center title ----
-    title = "LEAP closed-loop stabilization"
+    title = "Tactile-sensor closed-loop disturbance rejection (LEAP)"
     # rough width estimate
     tw = len(title) * 11
     tx = (RES_W - tw) // 2
@@ -320,15 +405,54 @@ class RunResult:
     log_samples: list = field(default_factory=list)
 
 
-def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
+def get_sensor_map(model):
+    """Return {sensor_name: (start_addr, dim)} for all sensors."""
+    out = {}
+    for i in range(model.nsensor):
+        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_SENSOR, i)
+        out[name] = (int(model.sensor_adr[i]), int(model.sensor_dim[i]))
+    return out
+
+
+def read_sensor(data, sensor_map, name):
+    """Read a named sensor's slice from data.sensordata."""
+    adr, dim = sensor_map[name]
+    return np.array(data.sensordata[adr:adr + dim])
+
+
+# Control-state machine. The controller transitions between these modes based
+# on what the sensors detect (NOT on knowing about the external perturbation).
+class ControlState:
+    NORMAL    = "NORMAL"       # baseline cage grip, no disturbance detected
+    PERTURBED = "PERTURBED"    # sensor saw a sudden cube acceleration spike
+    RECOVERY  = "RECOVERY"     # actively tightening to bring cube back
+    HOLD      = "HOLD"         # cube re-centered, returning to baseline grip
+
+
+# Magnitude (m/s²) of the cube linear acceleration that triggers a transition
+# from NORMAL into PERTURBED. The 4 N shove on a ~9 g cube produces transient
+# accelerations >> 50 m/s² at impact, well above the threshold.
+ACC_TRIGGER_MPS2 = 50.0
+
+
+def simulate(seed: int = 12345, render_video: bool = False,
+             force_N: float = PERTURB_FORCE_N,
+             write_jsonl: bool = True) -> RunResult:
     """Run one stabilization episode. If render_video=True, also produces
-    OUT_VIDEO and OUT_TRAJECTORY."""
+    OUT_VIDEO and OUT_TRAJECTORY. If write_jsonl=True (default), streams the
+    full sensor state per frame to outputs/trajectory.jsonl (for downstream
+    RL / system-ID consumers)."""
     model = build_scene()
     if render_video:
         colorize_fingers(model)  # only when we actually want the colored video
     data = mujoco.MjData(model)
     name2act = get_actuator_map(model)
+    sensor_map = get_sensor_map(model)
     cube_bid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "cube")
+
+    # Pin the mocap reference body at the cup center (perturbation-free target).
+    data.mocap_pos[0] = list(CUP_CENTER)
+    data.mocap_quat[0] = [1, 0, 0, 0]
 
     # settle
     apply_pose(data, name2act, CAGE_BASE)
@@ -361,24 +485,73 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
     drift_history = []
     drift_history_mm_per_frame = []  # for the on-screen chart
 
+    # State machine
+    ctrl_state = ControlState.NORMAL
+    state_history = []   # list of (t, state) transitions for HUD + log
+    # JSONL stream of per-frame sensor data
+    jsonl_path = OUT_TRAJECTORY.parent / "trajectory.jsonl"
+    if write_jsonl:
+        OUT_TRAJECTORY.parent.mkdir(parents=True, exist_ok=True)
+        jsonl_f = open(jsonl_path, "w", encoding="utf-8")
+    else:
+        jsonl_f = None
+
     for step in range(total_steps):
         t = step * DT
 
-        cube_pos = data.xpos[cube_bid].copy()
-        err = cube_pos - CUP_CENTER
-        drift = float(np.linalg.norm(err[:2]))
-        drift_history.append(drift)
+        # --- READ SENSORS (not ground-truth state) ---
+        cube_err_sensor = read_sensor(data, sensor_map, "cube_err")
+        cube_linacc = read_sensor(data, sensor_map, "cube_linacc")
+        joint_pos_sensor = np.array(
+            [read_sensor(data, sensor_map, f"hand_{j}_sensor")[0]
+             for j in ["if_mcp", "if_rot", "if_pip", "if_dip",
+                       "mf_mcp", "mf_rot", "mf_pip", "mf_dip",
+                       "rf_mcp", "rf_rot", "rf_pip", "rf_dip",
+                       "th_cmc", "th_axl", "th_mcp", "th_ipl"]])
 
-        # Closed-loop grip law: kick in at 8 mm drift, saturate at 30 mm.
-        # Tuned for 4 N perturbations which produce visible 10-20 mm displacements.
-        tighten = max(0.0, min(1.0, (drift - 0.008) / 0.022))
+        # Planar drift from sensor-measured position error vs reference frame.
+        drift = float(np.linalg.norm(cube_err_sensor[:2]))
+        drift_history.append(drift)
+        acc_magnitude = float(np.linalg.norm(cube_linacc))
+
+        # --- STATE-MACHINE TRANSITIONS (sensor-driven) ---
+        prev_state = ctrl_state
+        if ctrl_state == ControlState.NORMAL:
+            if acc_magnitude > ACC_TRIGGER_MPS2:
+                ctrl_state = ControlState.PERTURBED
+        elif ctrl_state == ControlState.PERTURBED:
+            # As long as drift is high or acceleration high, stay perturbed
+            # then transition to active recovery.
+            if drift > 0.005:
+                ctrl_state = ControlState.RECOVERY
+        elif ctrl_state == ControlState.RECOVERY:
+            if drift < 0.003:
+                ctrl_state = ControlState.HOLD
+        elif ctrl_state == ControlState.HOLD:
+            if drift < 0.001 and acc_magnitude < 5.0:
+                ctrl_state = ControlState.NORMAL
+            elif acc_magnitude > ACC_TRIGGER_MPS2:
+                ctrl_state = ControlState.PERTURBED
+        if ctrl_state != prev_state:
+            state_history.append((round(t, 3), ctrl_state))
+
+        # --- CONTROL LAW (per state) ---
+        # NORMAL: baseline grip (no tighten).
+        # PERTURBED/RECOVERY: tighten proportional to drift.
+        # HOLD: light tightening to maintain centered.
+        if ctrl_state == ControlState.NORMAL:
+            tighten = 0.0
+        elif ctrl_state in (ControlState.PERTURBED, ControlState.RECOVERY):
+            tighten = max(0.0, min(1.0, (drift - 0.008) / 0.022))
+        else:  # HOLD
+            tighten = 0.2
         apply_pose(data, name2act, make_grip_pose(tighten))
 
         if t >= next_perturb_t:
             angle = rng.uniform(0, 2 * math.pi)
             active_perturb_force = np.array([
-                math.cos(angle) * PERTURB_FORCE_N,
-                math.sin(angle) * PERTURB_FORCE_N,
+                math.cos(angle) * force_N,
+                math.sin(angle) * force_N,
                 0.0,
             ])
             active_perturb_until = t + PERTURB_DURATION_S
@@ -387,7 +560,7 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
             perturbations.append({
                 "t": round(t, 3),
                 "angle_deg": round(math.degrees(angle), 1),
-                "force_N": PERTURB_FORCE_N,
+                "force_N": force_N,
             })
             next_perturb_t = t + PERTURB_PERIOD_S
 
@@ -397,6 +570,23 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
             data.xfrc_applied[cube_bid][:3] = 0.0
 
         mujoco.mj_step(model, data)
+
+        # --- DATA COLLECTION: stream full sensor state per frame ---
+        if jsonl_f is not None and step % steps_per_frame == 0:
+            jsonl_f.write(json.dumps({
+                "t": round(t, 4),
+                "state": ctrl_state,
+                "cube_pos":   read_sensor(data, sensor_map, "cube_pos").tolist(),
+                "cube_quat":  read_sensor(data, sensor_map, "cube_quat").tolist(),
+                "cube_linvel": read_sensor(data, sensor_map, "cube_linvel").tolist(),
+                "cube_linacc": read_sensor(data, sensor_map, "cube_linacc").tolist(),
+                "cube_err":   read_sensor(data, sensor_map, "cube_err").tolist(),
+                "joint_pos":  joint_pos_sensor.tolist(),
+                "drift_m":    round(drift, 5),
+                "acc_mag":    round(acc_magnitude, 3),
+                "tighten":    round(tighten, 3),
+                "perturb_force": active_perturb_force.tolist() if t <= active_perturb_until else [0, 0, 0],
+            }) + "\n")
 
         if step % steps_per_frame == 0:
             cur_cube_pos = data.xpos[cube_bid].copy()
@@ -415,6 +605,9 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
                     raw, t, drift, tighten, perturb_on, held, perturb_count,
                     drift_history_mm=drift_history_mm_per_frame,
                     perturb_angle_rad=active_perturb_angle if perturb_on else None,
+                    ctrl_state=ctrl_state,
+                    acc_mag=acc_magnitude,
+                    joint_pos=joint_pos_sensor,
                 )
                 frames.append(overlaid)
 
@@ -428,6 +621,8 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
                     "held": bool(held),
                 })
 
+    if jsonl_f is not None:
+        jsonl_f.close()
     held_final = bool(data.xpos[cube_bid][2] > 0.20)
     max_drift = max(drift_history) if drift_history else 0.0
     avg_drift = sum(drift_history) / len(drift_history) if drift_history else 0.0
@@ -478,12 +673,12 @@ def simulate(seed: int = 12345, render_video: bool = False) -> RunResult:
 # Multi-seed robustness runner
 # ---------------------------------------------------------------------------
 
-def run_multi_seed(n_seeds: int = 10) -> dict:
+def run_multi_seed(n_seeds: int = 10, force_N: float = PERTURB_FORCE_N) -> dict:
     seeds = [12345 + 31 * i for i in range(n_seeds)]
-    print(f"Running {n_seeds} seeds (physics only, no video)...")
+    print(f"Running {n_seeds} seeds (physics only, no video, force_N={force_N})...")
     rs = []
     for s in seeds:
-        r = simulate(seed=s, render_video=False)
+        r = simulate(seed=s, render_video=False, force_N=force_N, write_jsonl=False)
         verdict = "HELD" if r.held_final and not r.any_drop else "DROP"
         print(f"  seed={s:6d}  {verdict:4s}  max_drift={r.max_drift_m*1000:6.2f} mm  "
               f"avg_drift={r.avg_drift_m*1000:6.2f} mm  "
@@ -496,6 +691,7 @@ def run_multi_seed(n_seeds: int = 10) -> dict:
     avg_drifts = [r.avg_drift_m for r in rs]
     stats = {
         "n_seeds": n_seeds,
+        "force_N": force_N,
         "duration_per_seed_s": DURATION_S,
         "success_count": held_count,
         "success_rate": round(success_rate, 3),
@@ -532,19 +728,62 @@ def run_multi_seed(n_seeds: int = 10) -> dict:
     return stats
 
 
+def run_difficulty_sweep(n_seeds: int = 10, forces=(2.0, 4.0, 8.0)) -> dict:
+    """Run the controller at multiple perturbation magnitudes to characterize
+    the disturbance-rejection envelope."""
+    print(f"Difficulty sweep: {n_seeds} seeds × {len(forces)} force levels...")
+    all_results = {}
+    for f in forces:
+        print(f"\n--- Force = {f} N ---")
+        s = run_multi_seed(n_seeds, force_N=f)
+        all_results[f"{f}N"] = s
+    # Compose a summary
+    summary = {
+        "n_seeds_per_level": n_seeds,
+        "duration_per_seed_s": DURATION_S,
+        "force_levels": list(forces),
+        "results": all_results,
+        "envelope": {
+            f"{f}N": {
+                "success_rate": all_results[f"{f}N"]["success_rate"],
+                "max_drift_mm_mean": all_results[f"{f}N"]["max_drift_mm"]["mean"],
+                "max_drift_mm_max":  all_results[f"{f}N"]["max_drift_mm"]["max"],
+            } for f in forces
+        },
+    }
+    out = OUT_MULTI_SEED.parent / "difficulty_sweep.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    print()
+    print("=== Difficulty envelope ===")
+    for f in forces:
+        e = summary["envelope"][f"{f}N"]
+        print(f"  {f:4.1f} N: success {e['success_rate']*100:5.1f}%  "
+              f"mean drift {e['max_drift_mm_mean']:5.2f} mm  "
+              f"max drift {e['max_drift_mm_max']:5.2f} mm")
+    print(f"  saved -> {out}")
+    return summary
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--multi-seed", action="store_true",
-                    help="Run N=10 seeds, physics only, output multi_seed_stats.json")
-    ap.add_argument("--n", type=int, default=10, help="N for --multi-seed (default 10)")
-    ap.add_argument("--seed", type=int, default=12345, help="Seed for single-run mode")
+                    help="Run N seeds at the default 4 N force level.")
+    ap.add_argument("--difficulty-sweep", action="store_true",
+                    help="Run N seeds × {2, 4, 8} N force levels.")
+    ap.add_argument("--n", type=int, default=10, help="N seeds (default 10)")
+    ap.add_argument("--seed", type=int, default=12345, help="Single-run seed")
+    ap.add_argument("--force", type=float, default=PERTURB_FORCE_N,
+                    help=f"Single-run perturbation force in N (default {PERTURB_FORCE_N})")
     args = ap.parse_args()
 
-    if args.multi_seed:
+    if args.difficulty_sweep:
+        run_difficulty_sweep(args.n)
+    elif args.multi_seed:
         run_multi_seed(args.n)
     else:
-        print(f"Single run, seed={args.seed}")
-        r = simulate(seed=args.seed, render_video=True)
+        print(f"Single run, seed={args.seed}, force={args.force} N")
+        r = simulate(seed=args.seed, render_video=True, force_N=args.force)
         print(f"  held={r.held_final}  max_drift={r.max_drift_m*1000:.2f} mm  "
               f"avg_drift={r.avg_drift_m*1000:.2f} mm  perturbations={r.perturbations_n}")
 

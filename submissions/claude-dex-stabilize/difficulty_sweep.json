@@ -1,0 +1,295 @@
+{
+  "n_seeds_per_level": 10,
+  "duration_per_seed_s": 90.0,
+  "force_levels": [
+    2.0,
+    4.0,
+    8.0
+  ],
+  "results": {
+    "2.0N": {
+      "n_seeds": 10,
+      "force_N": 2.0,
+      "duration_per_seed_s": 90.0,
+      "success_count": 10,
+      "success_rate": 1.0,
+      "max_drift_mm": {
+        "mean": 5.3,
+        "min": 5.25,
+        "max": 5.32
+      },
+      "avg_drift_mm": {
+        "mean": 4.83,
+        "min": 4.81,
+        "max": 4.85
+      },
+      "per_seed": [
+        {
+          "seed": 12345,
+          "held": true,
+          "max_drift_mm": 5.32,
+          "avg_drift_mm": 4.82,
+          "perturbations": 17
+        },
+        {
+          "seed": 12376,
+          "held": true,
+          "max_drift_mm": 5.32,
+          "avg_drift_mm": 4.81,
+          "perturbations": 17
+        },
+        {
+          "seed": 12407,
+          "held": true,
+          "max_drift_mm": 5.31,
+          "avg_drift_mm": 4.83,
+          "perturbations": 17
+        },
+        {
+          "seed": 12438,
+          "held": true,
+          "max_drift_mm": 5.3,
+          "avg_drift_mm": 4.83,
+          "perturbations": 17
+        },
+        {
+          "seed": 12469,
+          "held": true,
+          "max_drift_mm": 5.32,
+          "avg_drift_mm": 4.84,
+          "perturbations": 17
+        },
+        {
+          "seed": 12500,
+          "held": true,
+          "max_drift_mm": 5.25,
+          "avg_drift_mm": 4.82,
+          "perturbations": 17
+        },
+        {
+          "seed": 12531,
+          "held": true,
+          "max_drift_mm": 5.3,
+          "avg_drift_mm": 4.83,
+          "perturbations": 17
+        },
+        {
+          "seed": 12562,
+          "held": true,
+          "max_drift_mm": 5.32,
+          "avg_drift_mm": 4.85,
+          "perturbations": 17
+        },
+        {
+          "seed": 12593,
+          "held": true,
+          "max_drift_mm": 5.32,
+          "avg_drift_mm": 4.81,
+          "perturbations": 17
+        },
+        {
+          "seed": 12624,
+          "held": true,
+          "max_drift_mm": 5.26,
+          "avg_drift_mm": 4.82,
+          "perturbations": 17
+        }
+      ]
+    },
+    "4.0N": {
+      "n_seeds": 10,
+      "force_N": 4.0,
+      "duration_per_seed_s": 90.0,
+      "success_count": 10,
+      "success_rate": 1.0,
+      "max_drift_mm": {
+        "mean": 6.52,
+        "min": 5.92,
+        "max": 6.73
+      },
+      "avg_drift_mm": {
+        "mean": 4.91,
+        "min": 4.8,
+        "max": 4.99
+      },
+      "per_seed": [
+        {
+          "seed": 12345,
+          "held": true,
+          "max_drift_mm": 6.69,
+          "avg_drift_mm": 4.95,
+          "perturbations": 17
+        },
+        {
+          "seed": 12376,
+          "held": true,
+          "max_drift_mm": 6.33,
+          "avg_drift_mm": 4.84,
+          "perturbations": 17
+        },
+        {
+          "seed": 12407,
+          "held": true,
+          "max_drift_mm": 6.37,
+          "avg_drift_mm": 4.95,
+          "perturbations": 17
+        },
+        {
+          "seed": 12438,
+          "held": true,
+          "max_drift_mm": 6.73,
+          "avg_drift_mm": 4.97,
+          "perturbations": 17
+        },
+        {
+          "seed": 12469,
+          "held": true,
+          "max_drift_mm": 6.66,
+          "avg_drift_mm": 4.97,
+          "perturbations": 17
+        },
+        {
+          "seed": 12500,
+          "held": true,
+          "max_drift_mm": 5.92,
+          "avg_drift_mm": 4.83,
+          "perturbations": 17
+        },
+        {
+          "seed": 12531,
+          "held": true,
+          "max_drift_mm": 6.71,
+          "avg_drift_mm": 4.9,
+          "perturbations": 17
+        },
+        {
+          "seed": 12562,
+          "held": true,
+          "max_drift_mm": 6.73,
+          "avg_drift_mm": 4.99,
+          "perturbations": 17
+        },
+        {
+          "seed": 12593,
+          "held": true,
+          "max_drift_mm": 6.48,
+          "avg_drift_mm": 4.8,
+          "perturbations": 17
+        },
+        {
+          "seed": 12624,
+          "held": true,
+          "max_drift_mm": 6.6,
+          "avg_drift_mm": 4.9,
+          "perturbations": 17
+        }
+      ]
+    },
+    "8.0N": {
+      "n_seeds": 10,
+      "force_N": 8.0,
+      "duration_per_seed_s": 90.0,
+      "success_count": 10,
+      "success_rate": 1.0,
+      "max_drift_mm": {
+        "mean": 13.48,
+        "min": 9.63,
+        "max": 14.97
+      },
+      "avg_drift_mm": {
+        "mean": 5.23,
+        "min": 4.6,
+        "max": 6.01
+      },
+      "per_seed": [
+        {
+          "seed": 12345,
+          "held": true,
+          "max_drift_mm": 13.75,
+          "avg_drift_mm": 5.21,
+          "perturbations": 17
+        },
+        {
+          "seed": 12376,
+          "held": true,
+          "max_drift_mm": 12.64,
+          "avg_drift_mm": 5.47,
+          "perturbations": 17
+        },
+        {
+          "seed": 12407,
+          "held": true,
+          "max_drift_mm": 12.48,
+          "avg_drift_mm": 5.0,
+          "perturbations": 17
+        },
+        {
+          "seed": 12438,
+          "held": true,
+          "max_drift_mm": 14.97,
+          "avg_drift_mm": 5.55,
+          "perturbations": 17
+        },
+        {
+          "seed": 12469,
+          "held": true,
+          "max_drift_mm": 14.22,
+          "avg_drift_mm": 4.67,
+          "perturbations": 17
+        },
+        {
+          "seed": 12500,
+          "held": true,
+          "max_drift_mm": 9.63,
+          "avg_drift_mm": 4.6,
+          "perturbations": 17
+        },
+        {
+          "seed": 12531,
+          "held": true,
+          "max_drift_mm": 13.12,
+          "avg_drift_mm": 5.14,
+          "perturbations": 17
+        },
+        {
+          "seed": 12562,
+          "held": true,
+          "max_drift_mm": 14.85,
+          "avg_drift_mm": 6.01,
+          "perturbations": 17
+        },
+        {
+          "seed": 12593,
+          "held": true,
+          "max_drift_mm": 14.27,
+          "avg_drift_mm": 5.37,
+          "perturbations": 17
+        },
+        {
+          "seed": 12624,
+          "held": true,
+          "max_drift_mm": 14.82,
+          "avg_drift_mm": 5.3,
+          "perturbations": 17
+        }
+      ]
+    }
+  },
+  "envelope": {
+    "2.0N": {
+      "success_rate": 1.0,
+      "max_drift_mm_mean": 5.3,
+      "max_drift_mm_max": 5.32
+    },
+    "4.0N": {
+      "success_rate": 1.0,
+      "max_drift_mm_mean": 6.52,
+      "max_drift_mm_max": 6.73
+    },
+    "8.0N": {
+      "success_rate": 1.0,
+      "max_drift_mm_mean": 13.48,
+      "max_drift_mm_max": 14.97
+    }
+  }
+}
