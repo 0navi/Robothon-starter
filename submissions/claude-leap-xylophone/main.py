@@ -657,10 +657,15 @@ def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
 
     cam = mujoco.MjvCamera()
     cam.type = mujoco.mjtCamera.mjCAMERA_FREE
-    cam.lookat[:] = [0.06, 0.04, 0.43]
-    cam.distance = 0.50
+    # Camera locked to the xylophone's center — DO NOT track the wrist,
+    # otherwise the hand looks stationary while the bars appear to scroll.
+    # With a fixed camera the viewer sees the hand actually sliding across
+    # the keyboard, which is what physically happens.
+    xylo_y_center = (bar_y(0) + bar_y(7)) / 2.0   # ~ 0.05
+    cam.lookat[:] = [0.06, xylo_y_center, 0.43]
+    cam.distance = 0.60
     cam.azimuth = 90.0
-    cam.elevation = -20.0
+    cam.elevation = -22.0
     renderer = (mujoco.Renderer(model, width=RES_W, height=RES_H)
                 if render_video else None)
 
@@ -759,9 +764,9 @@ def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
 
         # --- video frame ---
         if render_video and renderer is not None and step % steps_per_frame == 0:
-            # cinematic camera: gently follow the wrist Y, slight sway
-            cam.lookat[1] = 0.5 * target_wrist_y + 0.04
-            cam.azimuth = 92.0 + 7.0 * math.sin(0.18 * t)
+            # Camera is fixed — no wrist tracking. Tiny azimuth sway only,
+            # for cinematic feel without obscuring the hand's lateral motion.
+            cam.azimuth = 90.0 + 4.0 * math.sin(0.15 * t)
             renderer.update_scene(data, camera=cam)
             frame = renderer.render()
 
