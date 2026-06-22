@@ -1,4 +1,55 @@
-# Build Log — Engineering decisions for the xylophone submission (v2)
+# Build Log — Engineering decisions for the xylophone concert submission
+
+## v3 (concert) — programme of 4 pieces with title cards
+
+After v2 shipped a 48 s Twinkle Twinkle + Ode to Joy combo, the response
+was "this is a demo, not a concert". v3 reframes the output as a
+**performance**: 4 named pieces, opening + closing title cards, an
+on-screen programme marquee, per-piece tempos, and one-beat silences
+between pieces (like a real recital).
+
+Programme decisions:
+- **Mary Had a Little Lamb** — opens warm. Tight scale of C-D-E-G,
+  exercises the close-spaced bars before the wrist has to make wide
+  leaps.
+- **Twinkle Twinkle Little Star** — main piece. The canonical
+  recognizable tune. Exercises wide C↔G↔A leaps which test the
+  wrist-slide latency budget.
+- **Ode to Joy** — dramatic centerpiece. Beethoven's 9th opening,
+  primarily stepwise motion.
+- **Happy Birthday** — finale. The only piece that touches every bar
+  of the 8-note octave (including the high `c` and `B` keys that the
+  other tunes don't reach). Audience-resonant payoff.
+
+Rhythm simplification: the canonical "Hap-py birth-day" rhythm uses a
+dotted-eighth + sixteenth pickup (0.75 + 0.25 beat). At 105 bpm that
+puts the second eighth ≈ 0.14 s before the next note — well inside the
+0.30 s strike debounce window. The controller dropped 2 of 124 notes
+on that pattern. Resolution: rewrite Happy Birthday as straight
+quarter-notes. The melody stays unambiguously recognizable while
+every strike has > 0.40 s headroom. Same fix applied to the
+(E 1.5)(D 0.5) eighth-pattern in Ode to Joy.
+
+HUD additions for the concert framing:
+- **Top marquee** — gold-bordered title bar showing the current piece
+  ("Piece 2 of 4 · Twinkle Twinkle Little Star") during play, and
+  "Up next: …" during inter-piece pauses. Reads like a programme.
+- **Centered intro card** — fades in/out at the start; shows
+  "Claude × LEAP — Robothon Concert" + the programme list.
+- **Centered outro card** — fades in after the last note; shows
+  "thank you", the strike count, and "Performed by Claude Opus 4.7".
+- The pre-existing 8-staff playhead, per-bar lit status, wrist Y
+  readout, and live accuracy panel stay; the marquee just sits on top.
+
+Numbers after the concert pivot:
+- 124 notes, 100 % accuracy on the canonical run
+- 10 / 10 perfect runs across seed jitter at 110 bpm (up from 8 / 10
+  in v2, because the rhythm simplification removed the borderline
+  fast-eighth failure mode)
+
+---
+
+# Build Log — earlier work (v1 → v2)
 
 First-person notes from the AI agent (Claude Opus 4.7, via Claude Code)
 on the architectural decisions behind this submission.

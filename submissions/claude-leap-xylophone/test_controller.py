@@ -66,20 +66,20 @@ def test_strike_pose_only_changes_index_finger():
 
 
 def test_wrist_y_at_returns_first_note_before_start():
-    schedule, _ = M.schedule_for_tempo(110.0, 0)
+    schedule, _pieces, _total = M.schedule_for_tempo(110.0, 0)
     y0 = M.wrist_y_for_note(schedule[0]["note_idx"])
     assert M.wrist_y_at(0.0, schedule) == y0
     assert M.wrist_y_at(schedule[0]["strike_t"] - 0.05, schedule) == y0
 
 
 def test_wrist_y_at_returns_last_note_after_end():
-    schedule, _ = M.schedule_for_tempo(110.0, 0)
+    schedule, _pieces, _total = M.schedule_for_tempo(110.0, 0)
     yN = M.wrist_y_for_note(schedule[-1]["note_idx"])
     assert M.wrist_y_at(schedule[-1]["strike_t"] + 5.0, schedule) == yN
 
 
 def test_wrist_y_at_interpolates_between_consecutive_notes():
-    schedule, _ = M.schedule_for_tempo(110.0, 0)
+    schedule, _pieces, _total = M.schedule_for_tempo(110.0, 0)
     # find first pair (a, b) with different note_idx
     a, b = None, None
     for i in range(len(schedule) - 1):
@@ -96,17 +96,37 @@ def test_wrist_y_at_interpolates_between_consecutive_notes():
 
 
 def test_schedule_jitter_is_seed_dependent_and_deterministic():
-    s0, _ = M.schedule_for_tempo(110.0, 0)
-    s1, _ = M.schedule_for_tempo(110.0, 12345)
-    s2, _ = M.schedule_for_tempo(110.0, 12345)
+    s0, _p0, _t0 = M.schedule_for_tempo(110.0, 0)
+    s1, _p1, _t1 = M.schedule_for_tempo(110.0, 12345)
+    s2, _p2, _t2 = M.schedule_for_tempo(110.0, 12345)
     assert any(a["strike_t"] != b["strike_t"] for a, b in zip(s0, s1))
     assert all(a["strike_t"] == b["strike_t"] for a, b in zip(s1, s2))
 
 
+def test_concert_program_has_four_named_pieces():
+    s, pieces, total_t = M.schedule_for_tempo(110.0, 0)
+    assert len(pieces) == 4
+    titles = [p["title"] for p in pieces]
+    assert any("Mary" in t for t in titles)
+    assert any("Twinkle" in t for t in titles)
+    assert any("Joy" in t for t in titles)
+    assert any("Birthday" in t for t in titles)
+    # total_t includes intro + outro
+    assert total_t > pieces[-1]["end_t"]
+
+
+def test_intro_and_outro_durations_are_present():
+    assert M.INTRO_DURATION_S > 0
+    assert M.OUTRO_DURATION_S > 0
+    assert M.INTER_PIECE_S > 0
+    s, pieces, _ = M.schedule_for_tempo(110.0, 0)
+    assert pieces[0]["start_t"] >= M.INTRO_DURATION_S - 0.01
+
+
 def test_short_simulation_runs_without_error(monkeypatch):
-    # patch TWINKLE_TWINKLE down to 3 notes so the test stays under a second
-    monkeypatch.setattr(M, "TWINKLE_TWINKLE", [("C", 1), ("E", 1), ("G", 1)])
-    monkeypatch.setattr(M, "ODE_TO_JOY", [])
+    # patch CONCERT_PROGRAM down to a single short piece for speed
+    monkeypatch.setattr(M, "CONCERT_PROGRAM",
+                        [("Spike", [("C", 1), ("E", 1), ("G", 1)], 130.0)])
     r = M.simulate(seed=42, tempo_bpm=130.0,
                    render_video=False, write_jsonl=False)
     assert r.scheduled_n == 3

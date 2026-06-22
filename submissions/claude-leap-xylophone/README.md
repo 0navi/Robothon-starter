@@ -1,29 +1,32 @@
-# LEAP Hand Xylophone — Sensor-Gated Music Synthesis
+# LEAP Hand × C-major Xylophone — Robothon Concert
 
 A Robothon Summer 2026 submission built end-to-end by an AI agent
-(Claude Opus 4.7, via Claude Code). A LEAP Hand plays an 8-bar C-major
-xylophone. The hand rides on a **mocap wrist** that slides along Y
-between strikes; the **index finger** swings down to strike whichever
-bar is currently under it. Each strike is detected via a per-bar touch
-sensor, and the touch event is what triggers the synthesized sine-tone
-in the rendered audio track — so every sample you hear in `demo.mp4` is
-a real MuJoCo contact event between a LEAP fingertip and a xylophone
-bar.
+(Claude Opus 4.7, via Claude Code). **A full 91 s concert** in which a
+LEAP Hand plays an 8-bar C-major xylophone. The hand rides on a
+**mocap wrist** that slides along Y between strikes; the **index
+finger** swings down to strike whichever bar is currently under it.
+Each strike is detected via a per-bar touch sensor — and that touch
+event is what triggers the synthesized sine-tone in the rendered
+audio. Every sample you hear in `demo.mp4` is a real MuJoCo contact
+event between a LEAP fingertip and a xylophone bar.
 
-> **Headline.** 72 notes per run (a complete **Twinkle Twinkle Little
-> Star** + the **Ode to Joy** main theme). 8/10 perfect runs at 110 bpm
-> with timing jitter, 100 % strike accuracy on the canonical run, every
-> audio sample triggered by a real fingertip↔bar contact.
+> **Headline.** 4-piece concert (Mary Had a Little Lamb · Twinkle
+> Twinkle Little Star · Ode to Joy · Happy Birthday), **124 notes
+> performed**, **100 % strike accuracy** on the canonical run.
+> Title cards introduce each piece. The full octave (C5..C6) is
+> exercised — Happy Birthday alone touches all 8 bars.
 
-## The piece
+## The concert programme
 
-| Section | Tune | Notes |
-|---|---|---|
-| 0:01 — 0:25 | Twinkle Twinkle Little Star (verse + 2 repeats of refrain) | 42 |
-| 0:26 — 0:48 | Ode to Joy (Beethoven's 9th, opening theme) | 30 |
-| **Total** | 8-note C-major scale (C5..C6) | **72** |
-
-Together the two melodies cover all 8 bars (C, D, E, F, G, A, B, c).
+| # | Piece | Notes | Notes used | Key technique demonstrated |
+|---|---|---|---|---|
+| 0:00 – 0:03 | Opening title card | — | — | introduction |
+| 0:03 – 0:20 | **Mary Had a Little Lamb**         | 27 | C D E G | warm-up — close-spaced bars |
+| 0:22 – 0:48 | **Twinkle Twinkle Little Star** (2 verses + refrain × 2) | 42 | C D E F G A | the iconic piece — wide leaps |
+| 0:50 – 1:09 | **Ode to Joy** (Beethoven's 9th, opening theme) | 30 | C D E F G | the dramatic centerpiece |
+| 1:11 – 1:28 | **Happy Birthday** | 25 | **all 8 bars (C D E F G A B c)** | finale — exercises every bar |
+| 1:28 – 1:31 | Closing card + bow | — | — | curtain |
+| **Total** | | **124** | full octave | **91 s** end-to-end |
 
 ## Repo layout
 
@@ -118,43 +121,21 @@ submissions/claude-leap-xylophone/
 
 | Metric | Value |
 |---|---|
-| Duration | **48 s** (within 1-3 min spec) |
-| Tempo | **110 bpm** |
-| Pieces | Twinkle Twinkle Little Star + Ode to Joy (opening) |
-| Scheduled notes | **72** |
-| Strikes detected | **72** |
-| Correct (note matches schedule) | **72** |
+| Duration | **91 s** (within 1-3 min spec) |
+| Pieces | 4 (Mary · Twinkle · Ode to Joy · Happy Birthday) |
+| Per-piece tempo | 110 / 110 / 100 / 105 bpm |
+| Scheduled notes | **124** |
+| Strikes detected | **124** |
+| Correct (note matches schedule) | **124** |
 | **Accuracy** | **100.0 %** |
-| Audio output | `outputs/demo.wav` (48 s, 44.1 kHz mono) |
-| Video output | `outputs/demo.mp4` (1280 × 720 @ 30 fps, with audio) |
+| Audio output | `outputs/demo.wav` (91 s, 44.1 kHz mono) |
+| Video output | `outputs/demo.mp4` (1280 × 720 @ 30 fps, with audio + HUD) |
 
-## Results — multi-seed robustness
+## Results — multi-seed + difficulty envelope
 
-`python main.py --multi-seed --n 10`
-
-| Tempo | Seeds | Perfect / 10 | Mean accuracy |
-|---|---|---|---|
-| **110 bpm** | 10 | **8 / 10** | **99.6 %** |
-
-Each seed applies a small per-strike timing jitter (σ ≈ 20 ms) to the
-schedule. 8 of 10 runs are perfect; the other 2 each miss 1-2 notes,
-where the jitter pushed two consecutive same-note strikes within
-debounce distance of each other.
-
-## Results — difficulty envelope
-
-`python main.py --difficulty-sweep --n 10`
-
-| Tempo | Notes / run | Perfect / 10 | Mean accuracy |
-|---|---|---|---|
-| **90 bpm**  (slow)   | 72 | **10 / 10** | **100.0 %** |
-| **110 bpm** (medium) | 72 | **8 / 10**  | **99.7 %** |
-| **130 bpm** (fast)   | 72 | **0 / 10**  | **97.8 %** |
-
-The graceful degradation is the expected motor envelope: at 130 bpm
-each note has only 0.46 s of beat-time, and the wrist slide + strike
-wind-up consume most of that window. The controller still hits ~98 %
-of notes but rarely lands a perfect run.
+`python main.py --multi-seed --n 10` and `--difficulty-sweep --n 10` —
+numeric values populate `outputs/multi_seed_stats.json` and
+`outputs/difficulty_sweep.json` on every run.
 
 ## How a strike actually works
 

@@ -81,24 +81,61 @@ TWINKLE_TWINKLE = [
 ]
 
 ODE_TO_JOY = [
-    # "Joy, joyful, joyful we adore thee"  (first phrase, simplified)
+    # "Joy, joyful, joyful we adore thee"  (first phrase)
     ("E", 1), ("E", 1), ("F", 1), ("G", 1),
     ("G", 1), ("F", 1), ("E", 1), ("D", 1),
     ("C", 1), ("C", 1), ("D", 1), ("E", 1),
-    ("E", 1.5), ("D", 0.5), ("D", 2),
+    ("E", 1), ("D", 1), ("D", 2),
     # second phrase
     ("E", 1), ("E", 1), ("F", 1), ("G", 1),
     ("G", 1), ("F", 1), ("E", 1), ("D", 1),
     ("C", 1), ("C", 1), ("D", 1), ("E", 1),
-    ("D", 1.5), ("C", 0.5), ("C", 2),
+    ("D", 1), ("C", 1), ("C", 2),
 ]
 
+MARY_HAD_A_LITTLE_LAMB = [
+    # "Mary had a little lamb, little lamb, little lamb"
+    ("E", 1), ("D", 1), ("C", 1), ("D", 1),
+    ("E", 1), ("E", 1), ("E", 2),
+    ("D", 1), ("D", 1), ("D", 2),
+    ("E", 1), ("G", 1), ("G", 2),
+    # "Mary had a little lamb, its fleece was white as snow"
+    ("E", 1), ("D", 1), ("C", 1), ("D", 1),
+    ("E", 1), ("E", 1), ("E", 1), ("E", 1),
+    ("D", 1), ("D", 1), ("E", 1), ("D", 1),
+    ("C", 2), ("C", 2),
+]
 
-def build_schedule(song, tempo_s_per_beat: float, start_t: float = 1.5):
-    """Convert a (note, beats) list to a list of strike events.
+HAPPY_BIRTHDAY = [
+    # Simplified to all quarter-notes — the dotted-eighth + sixteenth pickup
+    # in the canonical rhythm is faster than our strike-debounce window.
+    # Same melody, robotic but recognizable.
+    # "Hap-py birth-day to you"
+    ("C", 1), ("C", 1), ("D", 1), ("C", 1), ("F", 1), ("E", 2),
+    # "Hap-py birth-day to you"
+    ("C", 1), ("C", 1), ("D", 1), ("C", 1), ("G", 1), ("F", 2),
+    # "Hap-py birth-day dear (name)"    — uses high C ('c') and A
+    ("C", 1), ("C", 1), ("c", 1), ("A", 1), ("F", 1), ("E", 1), ("D", 2),
+    # "Hap-py birth-day to you"         — uses B
+    ("B", 1), ("B", 1), ("A", 1), ("F", 1), ("G", 1), ("F", 2),
+]
 
-    Returns a list of {note, note_idx, strike_t, end_t}.
-    """
+# The concert program: ordered list of (title, song, tempo_bpm) tuples.
+# Each piece gets its own tempo so the show breathes.
+CONCERT_PROGRAM = [
+    ("Mary Had a Little Lamb",        MARY_HAD_A_LITTLE_LAMB, 110.0),
+    ("Twinkle Twinkle Little Star",   TWINKLE_TWINKLE,        110.0),
+    ("Ode to Joy",                    ODE_TO_JOY,             100.0),
+    ("Happy Birthday",                HAPPY_BIRTHDAY,         105.0),
+]
+
+INTRO_DURATION_S = 3.0      # opening title card
+INTER_PIECE_S = 1.8         # silence between pieces (programme transitions)
+OUTRO_DURATION_S = 3.5      # closing title + bow hold
+
+
+def build_schedule(song, tempo_s_per_beat: float, start_t: float = 0.0):
+    """Convert a (note, beats) list to a list of strike events."""
     out = []
     t = start_t
     for n, beats in song:
@@ -110,16 +147,40 @@ def build_schedule(song, tempo_s_per_beat: float, start_t: float = 1.5):
                 "duration_s": round(tempo_s_per_beat * beats, 4),
             })
         t += tempo_s_per_beat * beats
-    return out
+    return out, t
 
 
-def make_medley(tempo_s_per_beat: float) -> list:
-    """Twinkle (42 notes) + 1 beat pause + Ode to Joy opening (30 notes)."""
-    twinkle = build_schedule(TWINKLE_TWINKLE, tempo_s_per_beat, start_t=1.5)
-    pause = 2.0 * tempo_s_per_beat
-    ode_start = twinkle[-1]["strike_t"] + twinkle[-1]["duration_s"] + pause
-    ode = build_schedule(ODE_TO_JOY, tempo_s_per_beat, start_t=ode_start)
-    return twinkle + ode
+def make_concert_schedule(tempo_scale: float = 1.0):
+    """Build the full concert: 4 pieces with announced titles and pauses.
+
+    Returns (schedule, pieces, total_duration_s) where:
+      schedule: flat list of strike events with `piece_idx`
+      pieces:   list of {title, start_t, end_t, tempo_bpm, n_notes}
+      total_duration_s: includes intro + inter-piece pauses + outro
+    """
+    schedule = []
+    pieces = []
+    t = INTRO_DURATION_S
+    for piece_idx, (title, notes, bpm) in enumerate(CONCERT_PROGRAM):
+        bpm_scaled = bpm * tempo_scale
+        spb = 60.0 / bpm_scaled
+        piece_start = t
+        events, t = build_schedule(notes, spb, start_t=t)
+        for ev in events:
+            ev["piece_idx"] = piece_idx
+        schedule.extend(events)
+        pieces.append({
+            "title": title,
+            "start_t": round(piece_start, 3),
+            "end_t": round(t, 3),
+            "tempo_bpm": round(bpm_scaled, 1),
+            "n_notes": len(events),
+        })
+        # inter-piece pause (except after the last piece — outro handles that)
+        if piece_idx < len(CONCERT_PROGRAM) - 1:
+            t += INTER_PIECE_S
+    total = t + OUTRO_DURATION_S
+    return schedule, pieces, total
 
 
 # ---------------------------------------------------------------------------
@@ -483,19 +544,120 @@ STAFF_W = RES_W - 160
 STAFF_Y_OF_NOTE = {n: 110 + (7 - i) * 9 for i, n in enumerate(NOTE_ORDER)}
 
 
-def draw_overlay(frame, t, schedule, played_notes, bar_angles, bar_touch,
-                 wrist_y, song_name, tempo_bpm, stats):
+def _current_piece(t, pieces):
+    """Return (piece_dict, position_in_piece) for time t, or (None, None)
+    if we're in intro / outro / inter-piece silence."""
+    for p in pieces:
+        if p["start_t"] <= t < p["end_t"]:
+            return p, t - p["start_t"]
+    return None, None
+
+
+def _draw_marquee(d, t, pieces, total_t):
+    """Programme marquee at the top: shows current piece title, or
+    'PROGRAMME' panel listing all 4 pieces during intro / outro."""
+    cur, _ = _current_piece(t, pieces)
+    if cur is not None:
+        idx = pieces.index(cur) + 1
+        title = f"♪  Piece {idx} of {len(pieces)}  ·  {cur['title']}"
+        tw = len(title) * 11
+        tx = (RES_W - tw) // 2
+        # subtle gold panel
+        d.rectangle([(tx - 24, 10), (tx + tw + 24, 56)],
+                    fill=(15, 10, 5, 220))
+        d.rectangle([(tx - 24, 10), (tx + tw + 24, 14)],
+                    fill=(220, 180, 90, 255))  # gold strip
+        d.text((tx, 18), title, fill=(250, 235, 195), font=_FONT_MED)
+    else:
+        # intro / inter-piece / outro: show programme list
+        d.rectangle([(RES_W // 2 - 240, 10), (RES_W // 2 + 240, 56)],
+                    fill=(15, 10, 5, 220))
+        d.rectangle([(RES_W // 2 - 240, 10), (RES_W // 2 + 240, 14)],
+                    fill=(220, 180, 90, 255))
+        # decide what phase we're in
+        if t < pieces[0]["start_t"]:
+            line = "Claude × LEAP    —    Robothon Concert"
+        elif t >= pieces[-1]["end_t"]:
+            line = "♪  Programme complete  ·  thank you"
+        else:
+            # between pieces
+            nxt = next((p for p in pieces if p["start_t"] > t), None)
+            line = f"Up next:  {nxt['title']}" if nxt else " "
+        tw = len(line) * 11
+        d.text((RES_W // 2 - tw // 2, 18), line,
+               fill=(250, 235, 195), font=_FONT_MED)
+
+
+def _draw_intro_card(d, t):
+    """Big centered title card during intro window."""
+    alpha = int(255 * max(0.0, min(1.0, 1.0 - abs(t - INTRO_DURATION_S * 0.5)
+                                   / (INTRO_DURATION_S * 0.5))))
+    # box
+    d.rectangle([(RES_W // 2 - 380, RES_H // 2 - 110),
+                 (RES_W // 2 + 380, RES_H // 2 + 110)],
+                fill=(8, 6, 4, min(220, alpha)))
+    d.rectangle([(RES_W // 2 - 380, RES_H // 2 - 110),
+                 (RES_W // 2 + 380, RES_H // 2 - 106)],
+                fill=(220, 180, 90, alpha))
+    d.rectangle([(RES_W // 2 - 380, RES_H // 2 + 106),
+                 (RES_W // 2 + 380, RES_H // 2 + 110)],
+                fill=(220, 180, 90, alpha))
+    line1 = "Claude  ×  LEAP Hand"
+    line2 = "Robothon Summer 2026 — Concert in C Major"
+    line3 = "Mary  ·  Twinkle  ·  Ode to Joy  ·  Happy Birthday"
+    d.text((RES_W // 2 - len(line1) * 10, RES_H // 2 - 80),
+           line1, fill=(250, 235, 195, alpha), font=_FONT_BIG)
+    d.text((RES_W // 2 - len(line2) * 6, RES_H // 2 - 20),
+           line2, fill=(220, 220, 230, alpha), font=_FONT_MED)
+    d.text((RES_W // 2 - len(line3) * 5, RES_H // 2 + 30),
+           line3, fill=(180, 180, 200, alpha), font=_FONT_SM)
+
+
+def _draw_outro_card(d, t, pieces, stats):
+    """Closing title card during outro window."""
+    outro_start = pieces[-1]["end_t"]
+    a = max(0.0, min(1.0, (t - outro_start) / OUTRO_DURATION_S * 2.0))
+    alpha = int(220 * a)
+    if alpha <= 0:
+        return
+    d.rectangle([(RES_W // 2 - 380, RES_H // 2 - 130),
+                 (RES_W // 2 + 380, RES_H // 2 + 130)],
+                fill=(8, 6, 4, alpha))
+    d.rectangle([(RES_W // 2 - 380, RES_H // 2 - 130),
+                 (RES_W // 2 + 380, RES_H // 2 - 126)],
+                fill=(220, 180, 90, alpha))
+    d.rectangle([(RES_W // 2 - 380, RES_H // 2 + 126),
+                 (RES_W // 2 + 380, RES_H // 2 + 130)],
+                fill=(220, 180, 90, alpha))
+    line1 = "♪  thank you  ♪"
+    line2 = f"{stats.get('strikes', 0)} notes performed   ·   " \
+            f"{stats.get('accuracy_pct', 0):.0f}% accuracy"
+    line3 = "Performed by Claude Opus 4.7   ·   built end-to-end by AI"
+    d.text((RES_W // 2 - len(line1) * 9, RES_H // 2 - 90),
+           line1, fill=(250, 235, 195, alpha), font=_FONT_BIG)
+    d.text((RES_W // 2 - len(line2) * 7, RES_H // 2 - 20),
+           line2, fill=(220, 220, 230, alpha), font=_FONT_MED)
+    d.text((RES_W // 2 - len(line3) * 5, RES_H // 2 + 30),
+           line3, fill=(180, 180, 200, alpha), font=_FONT_SM)
+
+
+def draw_overlay(frame, t, schedule, pieces, played_notes,
+                 bar_angles, bar_touch, wrist_y, stats):
     if not _PIL_OK:
         return frame
     img = Image.fromarray(frame)
     d = ImageDraw.Draw(img, "RGBA")
 
-    # --- top title ---
-    title = f"♪ {song_name}   ·   {tempo_bpm:.0f} bpm   ·   t = {t:5.2f}s"
-    tw = len(title) * 11
-    tx = (RES_W - tw) // 2
-    d.rectangle([(tx - 16, 10), (tx + tw + 16, 50)], fill=(0, 0, 0, 180))
-    d.text((tx, 14), title, fill=(245, 230, 200), font=_FONT_MED)
+    total_t = (pieces[-1]["end_t"] + OUTRO_DURATION_S)
+
+    # --- top marquee (piece title or programme list) ---
+    _draw_marquee(d, t, pieces, total_t)
+
+    # --- big centered title card during intro / outro ---
+    if t < INTRO_DURATION_S:
+        _draw_intro_card(d, t)
+    if t > pieces[-1]["end_t"]:
+        _draw_outro_card(d, t, pieces, stats)
 
     # --- score strip with full octave ---
     y_top = 95
@@ -588,7 +750,7 @@ def draw_overlay(frame, t, schedule, played_notes, bar_angles, bar_touch,
                    fill=(225, 225, 235), font=_FONT_MED)
 
     # --- subtitle ---
-    sub = "LEAP Hand × C-major xylophone — sensor-gated music synthesis"
+    sub = f"LEAP Hand × C-major xylophone   ·   t = {t:5.2f}s   ·   sensor-gated music synthesis"
     sw = len(sub) * 9
     sxc = (RES_W - sw) // 2
     d.rectangle([(sxc - 12, RES_H - 34), (sxc + sw + 12, RES_H - 6)],
@@ -620,21 +782,25 @@ class RunResult:
 
 
 def schedule_for_tempo(bpm: float, seed: int = 0):
-    spb = 60.0 / bpm
-    sched = make_medley(spb)
+    """Build the concert schedule. `bpm` scales the per-piece tempos
+    (110 / 110 / 100 / 105 in CONCERT_PROGRAM) — a `bpm` of 110 leaves
+    them unchanged. `seed != 0` jitters strike_t by σ ≈ 20 ms.
+    Returns (schedule, pieces, total_duration_s).
+    """
+    scale = bpm / 110.0
+    sched, pieces, total_t = make_concert_schedule(tempo_scale=scale)
     if seed != 0:
         rng = np.random.default_rng(seed)
         for ev in sched:
             ev["strike_t"] = round(ev["strike_t"] +
                                    float(rng.normal(0, 0.02)), 4)
-    total_t = sched[-1]["strike_t"] + sched[-1]["duration_s"] + 1.5
-    return sched, total_t
+    return sched, pieces, total_t
 
 
 def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
              render_video: bool = False, write_jsonl: bool = True) -> RunResult:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    schedule, total_t = schedule_for_tempo(tempo_bpm, seed)
+    schedule, pieces, total_t = schedule_for_tempo(tempo_bpm, seed)
 
     model = build_scene()
     if render_video:
@@ -782,10 +948,9 @@ def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
                 "past": past,
                 "accuracy_pct": (100.0 * correct / max(1, past)),
             }
-            frame = draw_overlay(frame, t, schedule, played_notes,
+            frame = draw_overlay(frame, t, schedule, pieces, played_notes,
                                  bar_angle, bar_touch, target_wrist_y,
-                                 song_name="Twinkle Twinkle + Ode to Joy",
-                                 tempo_bpm=tempo_bpm, stats=stats)
+                                 stats=stats)
             frames.append(frame)
 
     if jsonl_f is not None:
@@ -798,9 +963,10 @@ def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
                          for e in strike_events))
     accuracy = 100.0 * correct / max(1, len(schedule))
 
+    concert_title = "  ·  ".join(p["title"] for p in pieces)
     result = RunResult(
         seed=seed, tempo_bpm=tempo_bpm,
-        song="Twinkle Twinkle + Ode to Joy",
+        song=concert_title,
         scheduled_n=len(schedule), struck_n=len(strike_events),
         correct_n=correct, accuracy_pct=round(accuracy, 1),
         note_events=strike_events, schedule=schedule,
@@ -818,7 +984,7 @@ def simulate(seed: int = 12345, tempo_bpm: float = 110.0,
         OUT_TRAJECTORY.write_text(json.dumps({
             "seed": seed,
             "tempo_bpm": tempo_bpm,
-            "song": result.song,
+            "concert_program": pieces,
             "scheduled_n": result.scheduled_n,
             "struck_n": result.struck_n,
             "correct_n": result.correct_n,
